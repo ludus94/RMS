@@ -1,8 +1,10 @@
 package remotesystemcontrol;
 
+import javax.swing.*;
+
 public class RemoteSystemControl {
     private static String os = System.getProperty("os.name").toLowerCase();
-
+    private String sudopassword;
     private WindowRemoteControll wrc;
     private UnixRemoteControll  urc;
     public RemoteSystemControl(){
@@ -10,20 +12,34 @@ public class RemoteSystemControl {
             wrc=new WindowRemoteControll();
         else{
             urc=new UnixRemoteControll();
+            JPanel panel = new JPanel();
+            JLabel label = new JLabel("Enter a password:");
+            JPasswordField pass = new JPasswordField(20);
+            panel.add(label);
+            panel.add(pass);
+            String[] options = new String[]{"OK", "Cancel"};
+            int option = JOptionPane.showOptionDialog(null, panel, "Enter super user password",
+                    JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                    null, options, options[0]);
+            if(option == 0) // pressing OK button
+            {
+                char[] password = pass.getPassword();
+                sudopassword=new String(password);
+            }
         }
     }
     public void shutDown(){
         if(isWindows()){
             wrc.shutDown();
         }else{
-            urc.shutDown();
+            urc.shutDown(this.sudopassword);
         }
     }
     public void reboot(){
         if(isWindows()){
             wrc.reboot();
         }else{
-            urc.reboot();
+            urc.reboot(this.sudopassword);
         }
     }
     public void killProcessNameProcess(String nameprocess){
@@ -36,7 +52,7 @@ public class RemoteSystemControl {
             wrc.killProcessPID(pid);
         }
         else{
-            urc.killProcessPID(pid);
+            urc.killProcessPID(pid,this.sudopassword);
         }
     }
     public static boolean isWindows() {
