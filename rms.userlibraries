@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="Maven: net.java.dev.jna:jna-platform:5.6.0">
+    <archive path="C:/Users/Ludovico/.m2/repository/net/java/dev/jna/jna-platform/5.6.0/jna-platform-5.6.0.jar" />
+  </library>
+  <library name="Maven: com.github.oshi:oshi-core:5.3.6">
+    <archive path="C:/Users/Ludovico/.m2/repository/com/github/oshi/oshi-core/5.3.6/oshi-core-5.3.6.jar" />
+  </library>
+  <library name="Maven: org.slf4j:slf4j-api:1.7.30">
+    <archive path="C:/Users/Ludovico/.m2/repository/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar" />
+  </library>
+  <library name="Maven: net.java.dev.jna:jna:5.6.0">
+    <archive path="C:/Users/Ludovico/.m2/repository/net/java/dev/jna/jna/5.6.0/jna-5.6.0.jar" />
+  </library>
+</eclipse-userlibraries>
+

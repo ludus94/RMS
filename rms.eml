@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component LANGUAGE_LEVEL="JDK_1_8" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/target/test-classes"/>
+	<contentEntry url="file://$MODULE_DIR$">
+		<testFolder url="file://$MODULE_DIR$/src/test/java"/>
+		<excludeFolder url="file://$MODULE_DIR$/target"/>
+	</contentEntry>
+	<levels>
+		<level name="Maven: com.github.oshi:oshi-core:5.3.6" value="project"/>
+		<level name="Maven: net.java.dev.jna:jna:5.6.0" value="project"/>
+		<level name="Maven: net.java.dev.jna:jna-platform:5.6.0" value="project"/>
+		<level name="Maven: org.slf4j:slf4j-api:1.7.30" value="project"/>
+	</levels>
+</component>

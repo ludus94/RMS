@@ -6,12 +6,13 @@ public class RemoteSystemControl {
     private static String os = System.getProperty("os.name").toLowerCase();
     private String sudopassword;
     private WindowRemoteControll wrc;
-    private UnixRemoteControll  urc;
+    private MacRemoteControll mrc;
+    private UnixRemoteControll urm;
     public RemoteSystemControl(){
         if(isWindows())
             wrc=new WindowRemoteControll();
-        else{
-            urc=new UnixRemoteControll();
+        else if (isMac()){
+            mrc =new MacRemoteControll();
             JPanel panel = new JPanel();
             JLabel label = new JLabel("Enter a password:");
             JPasswordField pass = new JPasswordField(20);
@@ -26,38 +27,52 @@ public class RemoteSystemControl {
                 char[] password = pass.getPassword();
                 sudopassword=new String(password);
             }
+        }else{
+            urm=new UnixRemoteControll();
         }
     }
     public void shutDown(){
         if(isWindows()){
             wrc.shutDown();
+        }else if(isMac()){
+            mrc.shutDown(this.sudopassword);
         }else{
-            urc.shutDown(this.sudopassword);
+            urm.shutDown();
         }
     }
     public void reboot(){
         if(isWindows()){
             wrc.reboot();
+        }else if(isMac()){
+            mrc.reboot(this.sudopassword);
         }else{
-            urc.reboot(this.sudopassword);
+            urm.shutDown();
         }
     }
     public void killProcessNameProcess(String nameprocess){
         if (isWindows()){
             wrc.killProcessNameProcess(nameprocess);
         }
+        throw new UnsupportedOperationException("Unsupported Operating system");
     }
     public void killProcessPID(String pid){
         if (isWindows()){
             wrc.killProcessPID(pid);
         }
-        else{
-            urc.killProcessPID(pid,this.sudopassword);
+        else if (isMac()){
+            mrc.killProcessPID(pid,this.sudopassword);
+        }else{
+            urm.killProcessPID(pid);
         }
     }
     public static boolean isWindows() {
 
         return (os.indexOf("win") >= 0);
+
+    }
+    public static boolean isMac() {
+
+        return (os.indexOf("mac") >= 0);
 
     }
 }

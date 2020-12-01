@@ -1,38 +1,32 @@
 package remotesystemcontrol;
 
-import java.io.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class UnixRemoteControll {
 
     public UnixRemoteControll(){
 
     }
-    public void shutDown(String password) {
+    public void shutDown() {
         try {
-            Process process=Runtime.getRuntime().exec("sudo -S shutdown -h now");
-            PrintWriter pw = new PrintWriter(process.getOutputStream(), true);    // true=autoflush
-            pw.println(password);
+            Runtime.getRuntime().exec("shutdown -h now");
         }catch(IOException e){
             e.printStackTrace();
         }
     }
 
-    public void reboot(String password) {
+    public void reboot() {
         try {
-            Process process=Runtime.getRuntime().exec("sudo -S shutdown -r now");
-            PrintWriter pw = new PrintWriter(process.getOutputStream(), true);
-            pw.println(password);
+            Runtime.getRuntime().exec("shutdown -r now");
         }catch(IOException e){
             e.printStackTrace();
         }
     }
 
-    public void killProcessPID(String pid,String password){
+    public void killProcessPID(String pid){
         try {
-            Process process=Runtime.getRuntime().exec("sudo -S kill "+pid);
-            PrintWriter pw = new PrintWriter(process.getOutputStream(), true);
-            pw.println(password);
+            Runtime.getRuntime().exec("kill "+pid);
         }catch (IOException e){
             e.printStackTrace();
         }
