@@ -75,4 +75,7 @@ public class RemoteSystemControl {
         return (os.indexOf("mac") >= 0);
 
     }
+    public String getOs(){
+        return os;
+    }
 }
