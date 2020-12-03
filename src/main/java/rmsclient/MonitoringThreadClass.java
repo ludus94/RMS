@@ -6,17 +6,29 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/***
+ * Class dedicated to sending constantly data to the server
+ */
 public class MonitoringThreadClass implements Runnable {
     private PrintWriter pw;
     private MonitoringValue mv;
     private Socket sock;
 
+    /***
+     * Initializes required classes
+     * @param sock Reference to the same Socket
+     * @throws IOException
+     */
     public MonitoringThreadClass(Socket sock) throws IOException {
         this.pw=new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
         this.sock = sock;
         this.mv=new MonitoringValue();
     }
 
+    /***
+     * Collects and writes all the varying values
+     * @return Formatted String with all the info
+     */
     public String monitoringSendValueDinamic(){
         String out="";
         out=mv.getProcessActive(20);
@@ -34,6 +46,10 @@ public class MonitoringThreadClass implements Runnable {
         out=out+mv.getPowerSourceInfornation()+"\n";
         return out;
     }
+
+    /***
+     * Thread collecting the values given by monitoringSendValueDynamic every 60 seconds
+     */
     @Override
     public void run() {
         while(true){

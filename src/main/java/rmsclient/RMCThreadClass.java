@@ -8,16 +8,31 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.*;
 
+/***
+ * Class dedicated to receiving and executing the remote commands
+ */
 public class RMCThreadClass implements Runnable{
     private BufferedReader br;
     private RemoteSystemControl rmc;
     private Socket sock;
 
+    /***
+     * Initializes required Classes
+     * @param sock Reference to the same Socket
+     * @throws IOException
+     */
     public RMCThreadClass(Socket sock) throws IOException {
         this.sock=sock;
         this.br=new BufferedReader(new InputStreamReader(sock.getInputStream()));
         this.rmc=new RemoteSystemControl();
     }
+
+    /***
+     * Handles command requests and execute them
+     * @param action Action name
+     * @param br Buffer reader
+     * @throws IOException
+     */
     public void controllAction(String action,BufferedReader br) throws IOException {
         if(action.contains("shutdown")){
             sock.close();
@@ -31,6 +46,10 @@ public class RMCThreadClass implements Runnable{
             rmc.killProcessPID(br.readLine());
         }
     }
+
+    /***
+     *Thread waiting for incoming commands
+     */
     @Override
     public void run() {
         while (true){
