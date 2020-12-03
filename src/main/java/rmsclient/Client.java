@@ -41,7 +41,7 @@ public class Client {
      * @param password2
      * @param name
      * @param surname
-     * @param image
+     * @param path
      * @param extension
      * @return code
      * code 0: success
@@ -50,7 +50,8 @@ public class Client {
      * code 3: generical error
      * @throws IOException
      */
-    public int sigin(String email, String password, String password2,String name, String surname, BufferedImage image,String extension) throws IOException {
+    public int sigin(String email, String password, String password2,String name, String surname, String path,String extension) throws IOException {
+            BufferedImage image=ImageIO.read(new File(path));
             ByteArrayOutputStream imagebin=new ByteArrayOutputStream();
             ImageIO.write(image,extension,imagebin);
             PrintWriter prw = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(), "UTF-16"));
