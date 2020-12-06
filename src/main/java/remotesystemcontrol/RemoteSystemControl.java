@@ -53,7 +53,6 @@ public class RemoteSystemControl {
         if (isWindows()){
             wrc.killProcessNameProcess(nameprocess);
         }
-        throw new UnsupportedOperationException("Unsupported Operating system");
     }
     public void killProcessPID(String pid){
         if (isWindows()){

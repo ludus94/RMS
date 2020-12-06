@@ -76,7 +76,7 @@ public class MonitoringValue {
         Sensors sensor=hal.getSensors();
         return sensor.getCpuVoltage();
     }
-    public String getPowerSourceInfornation(){
+    public String getPowerSourceInformation(){
         List<PowerSource> powerSources=hal.getPowerSources();
         StringBuilder sb = new StringBuilder("Power Sources: ");
         if (powerSources.isEmpty()) {
@@ -86,6 +86,14 @@ public class MonitoringValue {
             sb.append("\n ").append(powerSource.toString());
         }
         return sb.toString();
+    }
+    public double getPower(){
+        List<PowerSource> powerSources=hal.getPowerSources();
+        double power_mW=0;
+        for(PowerSource power: powerSources){
+            power_mW=power.getPowerUsageRate();
+        }
+        return power_mW;
     }
    
 }

@@ -29,12 +29,7 @@ public class Client {
      * Collect static values such as OS and hardware
      * @return Formatted String with info
      */
-    public String monitoringSendValueStatic(){
-        String out="";
-        out=mv.getSystemOP()+"\n";
-        out=out+mv.getBootedSystem()+"\n";
-        return out;
-    }
+
 
     /***Log in with an existing user
      *

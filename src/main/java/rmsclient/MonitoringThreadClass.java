@@ -43,7 +43,7 @@ public class MonitoringThreadClass implements Runnable {
             out = out + "Speed Information not available\n";
         }
         out=out+mv.getCpuVoltage()+"\n";
-        out=out+mv.getPowerSourceInfornation()+"\n";
+        out=out+mv.getPowerSourceInformation()+"\n";
         return out;
     }
 
