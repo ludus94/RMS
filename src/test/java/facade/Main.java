@@ -1,7 +1,5 @@
 package facade;
 
-import facade.MonitoringValue;
-
 public class Main {
     public static void main(String[] args){
         MonitoringValue monit=new MonitoringValue();

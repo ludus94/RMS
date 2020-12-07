@@ -13,8 +13,6 @@ public class ApplicationGUI extends JFrame {
     private JPasswordField passwordField;
     private JButton loginButton;
     private JButton signInButton;
-    private JLabel username;
-    private JLabel password;
     private JLabel image;
     private JButton exitButton;
 
@@ -85,7 +83,7 @@ public class ApplicationGUI extends JFrame {
 
     private void createUIComponents(){
         //modifica con il buffered image
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/java/GUI/lampadina.jpg").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/logoapp.jpeg").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
         image = new JLabel(imageIcon);
     }
 }
