@@ -7,11 +7,11 @@ public class RemoteSystemControl {
     private String sudopassword;
     private WindowRemoteControll wrc;
     private MacRemoteControll mrc;
-    private UnixRemoteControll urm;
+    private RasberryRemoteControll urm;
     public RemoteSystemControl(){
         if(isWindows())
             wrc=new WindowRemoteControll();
-        else if (isMac()){
+        else if (isMac() || isUbuntu()){
             mrc =new MacRemoteControll();
             JPanel panel = new JPanel();
             JLabel label = new JLabel("Enter a password:");
@@ -28,13 +28,13 @@ public class RemoteSystemControl {
                 sudopassword=new String(password);
             }
         }else{
-            urm=new UnixRemoteControll();
+            urm=new RasberryRemoteControll();
         }
     }
     public void shutDown(){
         if(isWindows()){
             wrc.shutDown();
-        }else if(isMac()){
+        }else if(isMac() || isUbuntu()){
             mrc.shutDown(this.sudopassword);
         }else{
             urm.shutDown();
@@ -43,7 +43,7 @@ public class RemoteSystemControl {
     public void reboot(){
         if(isWindows()){
             wrc.reboot();
-        }else if(isMac()){
+        }else if(isMac() || isUbuntu()){
             mrc.reboot(this.sudopassword);
         }else{
             urm.shutDown();
@@ -58,7 +58,7 @@ public class RemoteSystemControl {
         if (isWindows()){
             wrc.killProcessPID(pid);
         }
-        else if (isMac()){
+        else if (isMac() || isUbuntu()){
             mrc.killProcessPID(pid,this.sudopassword);
         }else{
             urm.killProcessPID(pid);
@@ -73,6 +73,10 @@ public class RemoteSystemControl {
 
         return (os.indexOf("mac") >= 0);
 
+    }
+    public static boolean isUbuntu(){
+
+        return (os.indexOf("ubuntu")>=0);
     }
     public String getOs(){
         return os;

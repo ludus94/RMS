@@ -2,7 +2,6 @@ package facade;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Random;
 
 import oshi.SystemInfo;
 import oshi.hardware.GlobalMemory;
