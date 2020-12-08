@@ -28,13 +28,20 @@ public class MacRemoteControll {
         }
     }
 
-    public void killProcessPID(String pid,String password){
+    public String killProcessPID(String pid,String password){
+        String app="";
+        String out="";
         try {
             Process process=Runtime.getRuntime().exec("sudo -S kill "+pid);
             PrintWriter pw = new PrintWriter(process.getOutputStream(), true);
             pw.println(password);
+            BufferedReader buffer=new BufferedReader(new InputStreamReader(process.getInputStream()));
+            while((app= buffer.readLine())!=null){
+                out=out+app+"\n";
+            }
         }catch (IOException e){
             e.printStackTrace();
         }
+        return app;
     }
 }

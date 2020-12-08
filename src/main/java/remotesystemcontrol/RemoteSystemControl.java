@@ -49,19 +49,20 @@ public class RemoteSystemControl {
             urm.shutDown();
         }
     }
-    public void killProcessNameProcess(String nameprocess){
+    public String killProcessNameProcess(String nameprocess){
         if (isWindows()){
-            wrc.killProcessNameProcess(nameprocess);
+            return wrc.killProcessNameProcess(nameprocess);
         }
+        return "Action not available";
     }
-    public void killProcessPID(String pid){
+    public String killProcessPID(String pid){
         if (isWindows()){
-            wrc.killProcessPID(pid);
+            return wrc.killProcessPID(pid);
         }
         else if (isMac() || isUbuntu()){
-            mrc.killProcessPID(pid,this.sudopassword);
+            return mrc.killProcessPID(pid,this.sudopassword);
         }else{
-            urm.killProcessPID(pid);
+            return urm.killProcessPID(pid);
         }
     }
     public static boolean isWindows() {

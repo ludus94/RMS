@@ -1,11 +1,9 @@
 package rmsclient;
 
+import facade.MonitoringValue;
 import remotesystemcontrol.RemoteSystemControl;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.*;
 
 /***
@@ -15,6 +13,7 @@ public class RMCThreadClass implements Runnable{
     private BufferedReader br;
     private RemoteSystemControl rmc;
     private Socket sock;
+    private PrintWriter pw;
 
     /***
      * Initializes required Classes
@@ -24,6 +23,7 @@ public class RMCThreadClass implements Runnable{
     public RMCThreadClass(Socket sock) throws IOException {
         this.sock=sock;
         this.br=new BufferedReader(new InputStreamReader(sock.getInputStream()));
+        this.pw=new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
         this.rmc=new RemoteSystemControl();
     }
 
@@ -41,9 +41,12 @@ public class RMCThreadClass implements Runnable{
             sock.close();
             rmc.reboot();
         }else if(action.contains("kill process with name")){
-            rmc.killProcessNameProcess(br.readLine()); //Ricodati che non deve mai avvenire l' abbord di java
+            pw.println("result kill");
+            pw.println(rmc.killProcessNameProcess(br.readLine())); //Ricodati che non deve mai avvenire l' abbort di java
+
         }else if(action.contains("kill process")){
-            rmc.killProcessPID(br.readLine());
+            pw.println("result kill");
+            pw.println(rmc.killProcessPID(br.readLine()));
         }
     }
 

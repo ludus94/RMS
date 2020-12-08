@@ -1,6 +1,8 @@
 package remotesystemcontrol;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class WindowRemoteControll {
 
@@ -22,22 +24,39 @@ public class WindowRemoteControll {
             e.printStackTrace();
         }
     }
-    public void killProcessNameProcess(String nameprocess){
+    public String killProcessNameProcess(String nameprocess){
+        String out="";
+        String app="";
+        Process process;
         try {
-            if (nameprocess.contains(".exe"))
-                Runtime.getRuntime().exec("Taskkill /F /IM " + nameprocess );
-            else
-                Runtime.getRuntime().exec("Taskkill /F /IM " + nameprocess + ".exe");
+            if (nameprocess.contains(".exe")) {
+                process = Runtime.getRuntime().exec("Taskkill /F /IM " + nameprocess);
+            }else {
+                process = Runtime.getRuntime().exec("Taskkill /F /IM " + nameprocess + ".exe");
+            }
+            BufferedReader buffer=new BufferedReader(new InputStreamReader(process.getInputStream()));
+            while((app= buffer.readLine())!=null){
+                out=out+app+"\n";
+            }
         }catch (IOException e){
             e.printStackTrace();
         }
+        return out;
     }
 
-    public void killProcessPID(String pid){
+    public String killProcessPID(String pid){
+        String out="";
+        String app="";
+        Process process;
         try {
-            Runtime.getRuntime().exec("Taskkill /PID "+pid+" /F");
+            process=Runtime.getRuntime().exec("Taskkill /PID "+pid+" /F");
+            BufferedReader buffer=new BufferedReader(new InputStreamReader(process.getInputStream()));
+            while((app= buffer.readLine())!=null){
+                out=out+app+"\n";
+            }
         }catch (IOException e){
             e.printStackTrace();
         }
+        return out;
     }
 }
