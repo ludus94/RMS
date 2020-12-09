@@ -34,7 +34,7 @@ public class Dial {
         scale.setTickRadius(0.88);
         scale.setTickLabelOffset(0.20);
         plot.addScale(0, scale);
-         JFreeChart freechart=new JFreeChart(plot);
+         JFreeChart freechart=new JFreeChart(titleChart,plot);
          this.chartPanel = new ChartPanel(new JFreeChart(plot));
          chartPanel.setPreferredSize( new java.awt.Dimension(200,200));
          chartPanel.setVisible(true);

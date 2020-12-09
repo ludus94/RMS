@@ -20,7 +20,7 @@ public class ChartLine {
      private ChartPanel chartPanel;
      private DataSet dataset;
      
-     public ChartLine(int width,int height,String titleChart,String labelX,String labelY,DataSet dataset){
+     public ChartLine(int width,int height,String titleChart,DataSet dataset){
          this.dataset=dataset;
          JFreeChart lineChartTemperature = ChartFactory.createLineChart(
          titleChart,

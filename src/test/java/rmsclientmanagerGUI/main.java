@@ -1,6 +1,5 @@
 
-package rmsclientmanagerGUI;
-
+import rmsclientmanagerGUI.*;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -28,13 +27,13 @@ public class main {
             String Cpuvoltage=JOptionPane.showInputDialog(f,"Enter Cpu Voltage"); 
             String power=JOptionPane.showInputDialog(f,"Enter Power");
             client.getDeviceTemperature().get(Integer.parseInt(device))
-                   .setDataSetVale(Double.parseDouble(temperature));
+                   .setDataSetValue(Double.parseDouble(temperature),"C°",ora);
             client.getDeviceCpuLoad().get(Integer.parseInt(device))
                     .setDataSetValue(Double.valueOf(Cpuload),"CPU Load", ora);
             client.getDeviceCpuVoltage().get(Integer.parseInt(device))
-                    .setDataSetVale(Double.parseDouble(Cpuvoltage));
+                    .setDataSetValue(Double.parseDouble(Cpuvoltage),"CPU Voltage",ora);
             client.getDevicePower().get(Integer.parseInt(device))
-                    .setDataSetVale(Double.parseDouble(power));
+                    .setDataSetValue(Double.parseDouble(power),"(mW)",ora);
             a=JOptionPane.showConfirmDialog(f,"Do you want insert other date?"); 
         }
     }

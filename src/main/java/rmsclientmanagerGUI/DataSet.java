@@ -25,7 +25,7 @@ public class DataSet {
         else
             this.dataSetValue=new DefaultValueDataset();    
     }
-     public void setDataSetVale(Double value){
+     public void setDataSetValue(Double value){
          this.dataSetValue.setValue(value);
      }
      public void setDataSetValue(Double value,String title,String time){

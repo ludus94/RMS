@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 /*
@@ -29,11 +30,11 @@ public class ManagerClient extends javax.swing.JFrame {
     private ArrayList<DataSet> devicecpuload;
     private ArrayList<DataSet> devicecpuvoltage;
     private ArrayList<DataSet> devicepower;
-    private DefaultListModel model=new DefaultListModel();
-    private Dial temperature;
+    private DefaultListModel model;
+    private ChartLine temperature;
     private ChartLine cpuload;
-    private Dial cpuvoltage;
-    private Dial power;
+    private ChartLine cpuvoltage;
+    private ChartLine power;
 
     /**
      * Creates new form ManagerClient
@@ -44,34 +45,39 @@ public class ManagerClient extends javax.swing.JFrame {
         devicecpuload=new ArrayList<>();
         devicecpuvoltage=new ArrayList<>();
         devicepower=new ArrayList<>();
+        model=new DefaultListModel();
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/java/rmsclientmanagerGUI/logoapp.jpeg").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-        Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");
+        Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");    
         this.setIconImage(icon);
         jImageUser.setIcon(imageIcon);
         jImageUser.setText("");
-        model.add(0,"Device1");
-        model.add(1,"Device2");
-        model.add(2,"Device3");
-        model.add(3,"Device4");
-        model.add(4,"Device5");
+        
+        ArrayList<String> devicelist=new ArrayList<>();
+        devicelist.add("Device1");
+        devicelist.add("Device2");
+        devicelist.add("Device3");
+        devicelist.add("Device4");
+        devicelist.add("Device5");
+        this.refreshDeviceList(devicelist);
         for(int i=0;i<model.capacity();i++){
-            devicetemperature.add(new DataSet("dial"));
+            devicetemperature.add(new DataSet("chartline"));
             devicecpuload.add(new DataSet("chartline"));
-            devicecpuvoltage.add(new DataSet("dial"));
-            devicepower.add(new DataSet("dial"));
+            devicecpuvoltage.add(new DataSet("chartline"));
+            devicepower.add(new DataSet("chartline"));
         }
+        
         this.datasettemperature=devicetemperature.get(0);
         this.datasetcpuload=devicecpuload.get(0);
         this.datasetcupvoltage=devicecpuvoltage.get(0);
         this.datasetpower=devicepower.get(0);
         
-        this.temperature=new Dial(jTemperaturePanel.getWidth(),jTemperaturePanel.getHeight(),"Temperature",0,100,10,this.datasettemperature);
-        this.cpuload=new ChartLine(jCPULoadPanel.getWidth(),jCPULoadPanel.getHeight(),"CPULoad","min","%",this.datasetcpuload);
-        this.cpuvoltage=new Dial(jCPUVoltagePanel.getWidth(),jCPUVoltagePanel.getHeight(),"CPUVoltage",0,100,10,this.datasetcupvoltage);
-        this.power=new Dial(jPowerPanel.getWidth(),jPowerPanel.getHeight(),"Power",0,100,10,this.datasetpower);
+        this.temperature=new ChartLine(jTemperaturePanel.getWidth(),jTemperaturePanel.getHeight(),"Temperature",this.datasettemperature);
+        this.cpuload=new ChartLine(jCPULoadPanel.getWidth(),jCPULoadPanel.getHeight(),"CPULoad",this.datasetcpuload);
+        this.cpuvoltage=new ChartLine(jCPUVoltagePanel.getWidth(),jCPUVoltagePanel.getHeight(),"CPUVoltage",this.datasetcupvoltage);
+        this.power=new ChartLine(jPowerPanel.getWidth(),jPowerPanel.getHeight(),"Power",this.datasetpower);
         
         jTemperaturePanel.setLayout(new java.awt.BorderLayout());
-        jTemperaturePanel.add(temperature.getChartPannel(), BorderLayout.CENTER);
+        jTemperaturePanel.add(temperature.getChartPannel(),BorderLayout.CENTER);
         jTemperaturePanel.validate();
         jPowerPanel.setLayout(new java.awt.BorderLayout());
         jPowerPanel.add(power.getChartPannel(), BorderLayout.CENTER);
@@ -82,6 +88,7 @@ public class ManagerClient extends javax.swing.JFrame {
         jCPUVoltagePanel.setLayout(new java.awt.BorderLayout());
         jCPUVoltagePanel.add(cpuvoltage.getChartPannel(),BorderLayout.CENTER);
         jCPUVoltagePanel.validate();
+        jDeviceList.setLayout(new java.awt.CardLayout());
         jDeviceList.setSelectedIndex(0);
         jDashBoardPannel.setVisible(true);
     }
@@ -117,7 +124,24 @@ public class ManagerClient extends javax.swing.JFrame {
     public ArrayList<DataSet> getDevicePower() {
         return devicepower;
     }
-    
+    public void refreshDeviceList(ArrayList<String> devicelist){
+        DefaultListModel modelnew=new DefaultListModel();
+        int i=0;
+        for (String device : devicelist) {
+            modelnew.add(i,device);
+            i++;
+        }
+        model=modelnew;
+        JFrame f=new JFrame();
+        if(jDeviceList.getSelectedIndex()>=0){
+            JOptionPane.showMessageDialog(f,"Update device");
+            int index=jDeviceList.getSelectedIndex();
+            model.removeElementAt(jDeviceList.getSelectedIndex());
+            jDeviceList.remove(index);
+            jDeviceList.setModel(model);
+            jDeviceMenu.validate();
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -129,7 +153,7 @@ public class ManagerClient extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuPannel = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jDeviceMenu = new javax.swing.JScrollPane();
         jDeviceList = new javax.swing.JList<>();
         jInformationUserPannel = new javax.swing.JPanel();
         jImageUser = new javax.swing.JLabel();
@@ -154,18 +178,19 @@ public class ManagerClient extends javax.swing.JFrame {
         jMenuPannel.setMaximumSize(new java.awt.Dimension(200, 200));
         jMenuPannel.setPreferredSize(new java.awt.Dimension(100, 150));
 
-        jScrollPane2.setBackground(new java.awt.Color(51, 51, 51));
+        jDeviceMenu.setBackground(new java.awt.Color(51, 51, 51));
 
         jDeviceList.setBackground(new java.awt.Color(51, 51, 51));
         jDeviceList.setForeground(new java.awt.Color(255, 255, 255));
         jDeviceList.setModel(model);
+        jDeviceList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jDeviceList.setSelectionBackground(new java.awt.Color(255, 0, 0));
         jDeviceList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jDeviceListValueChanged(evt);
             }
         });
-        jScrollPane2.setViewportView(jDeviceList);
+        jDeviceMenu.setViewportView(jDeviceList);
 
         jInformationUserPannel.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -215,7 +240,7 @@ public class ManagerClient extends javax.swing.JFrame {
         jMenuPannel.setLayout(jMenuPannelLayout);
         jMenuPannelLayout.setHorizontalGroup(
             jMenuPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
+            .addComponent(jDeviceMenu)
             .addGroup(jMenuPannelLayout.createSequentialGroup()
                 .addComponent(jInformationUserPannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -225,8 +250,7 @@ public class ManagerClient extends javax.swing.JFrame {
             .addGroup(jMenuPannelLayout.createSequentialGroup()
                 .addComponent(jInformationUserPannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jDeviceMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jChartBoard.setBackground(new java.awt.Color(51, 51, 51));
@@ -240,7 +264,7 @@ public class ManagerClient extends javax.swing.JFrame {
         );
         jCPULoadPanelLayout.setVerticalGroup(
             jCPULoadPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 221, Short.MAX_VALUE)
+            .addGap(0, 237, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPowerPanelLayout = new javax.swing.GroupLayout(jPowerPanel);
@@ -262,7 +286,7 @@ public class ManagerClient extends javax.swing.JFrame {
         );
         jCPUVoltagePanelLayout.setVerticalGroup(
             jCPUVoltagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 221, Short.MAX_VALUE)
+            .addGap(0, 237, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jTemperaturePanelLayout = new javax.swing.GroupLayout(jTemperaturePanel);
@@ -273,7 +297,7 @@ public class ManagerClient extends javax.swing.JFrame {
         );
         jTemperaturePanelLayout.setVerticalGroup(
             jTemperaturePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 221, Short.MAX_VALUE)
+            .addGap(0, 237, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jChartBoardLayout = new javax.swing.GroupLayout(jChartBoard);
@@ -281,7 +305,7 @@ public class ManagerClient extends javax.swing.JFrame {
         jChartBoardLayout.setHorizontalGroup(
             jChartBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jChartBoardLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(17, Short.MAX_VALUE)
                 .addGroup(jChartBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jTemperaturePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCPUVoltagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -289,7 +313,7 @@ public class ManagerClient extends javax.swing.JFrame {
                 .addGroup(jChartBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCPULoadPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPowerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         jChartBoardLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jCPULoadPanel, jCPUVoltagePanel, jPowerPanel, jTemperaturePanel});
@@ -305,7 +329,7 @@ public class ManagerClient extends javax.swing.JFrame {
                 .addGroup(jChartBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jCPUVoltagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPowerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jChartBoardLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jCPULoadPanel, jCPUVoltagePanel, jTemperaturePanel});
@@ -352,23 +376,20 @@ public class ManagerClient extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDashBoardPannelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jDashBoardPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jChartBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jDashBoardPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jKillProcessWithNameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jKillProcessButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jRebootButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jChartBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE))
+                .addGap(18, 38, Short.MAX_VALUE)
+                .addGroup(jDashBoardPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jRebootButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jKillProcessButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jKillProcessWithNameButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jShutdownButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(57, 57, 57))
+                .addGap(14, 14, 14))
         );
         jDashBoardPannelLayout.setVerticalGroup(
             jDashBoardPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDashBoardPannelLayout.createSequentialGroup()
                 .addGroup(jDashBoardPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jDashBoardPannelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jChartBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jDashBoardPannelLayout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(jShutdownButton)
@@ -377,7 +398,10 @@ public class ManagerClient extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jKillProcessButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jKillProcessWithNameButton)))
+                        .addComponent(jKillProcessWithNameButton))
+                    .addGroup(jDashBoardPannelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jChartBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1)
                 .addContainerGap())
@@ -418,9 +442,8 @@ public class ManagerClient extends javax.swing.JFrame {
 
     private void jShutdownButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jShutdownButtonMouseClicked
         JFrame f=new JFrame();
-        if(jDeviceList.getSelectedIndex()>0){
+        if(jDeviceList.getSelectedIndex()>=0){
             JOptionPane.showMessageDialog(f,"Send Shutdown ");
-            model.removeElementAt(jDeviceList.getSelectedIndex());
         }
     }//GEN-LAST:event_jShutdownButtonMouseClicked
 
@@ -435,10 +458,12 @@ public class ManagerClient extends javax.swing.JFrame {
         this.datasetcpuload=devicecpuload.get(index);
         this.datasetcupvoltage=devicecpuvoltage.get(index);
         this.datasetpower=devicepower.get(index);
-        this.temperature=new Dial(jTemperaturePanel.getWidth(),jTemperaturePanel.getHeight(),"Temperature",0,100,10,this.datasettemperature);
-        this.cpuload=new ChartLine(jCPULoadPanel.getWidth(),jCPULoadPanel.getHeight(),"CPULoad","min","%",this.datasetcpuload);
-        this.cpuvoltage=new Dial(jCPUVoltagePanel.getWidth(),jCPUVoltagePanel.getHeight(),"CPUVoltage",0,100,10,this.datasetcupvoltage);
-        this.power=new Dial(jPowerPanel.getWidth(),jPowerPanel.getHeight(),"Power",0,100,10,this.datasetpower);
+        
+        this.temperature=new ChartLine(jTemperaturePanel.getWidth(),jTemperaturePanel.getHeight(),"Temperature",this.datasettemperature);
+        this.cpuload=new ChartLine(jCPULoadPanel.getWidth(),jCPULoadPanel.getHeight(),"CPULoad",this.datasetcpuload);
+        this.cpuvoltage=new ChartLine(jCPUVoltagePanel.getWidth(),jCPUVoltagePanel.getHeight(),"CPUVoltage",this.datasetcupvoltage);
+        this.power=new ChartLine(jPowerPanel.getWidth(),jPowerPanel.getHeight(),"Power",this.datasetpower);
+        
         jTemperaturePanel.setLayout(new java.awt.BorderLayout());
         jTemperaturePanel.add(temperature.getChartPannel(), BorderLayout.CENTER);
         jTemperaturePanel.validate();
@@ -455,7 +480,10 @@ public class ManagerClient extends javax.swing.JFrame {
     }//GEN-LAST:event_jDeviceListValueChanged
 
     private void jRebootButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRebootButtonMouseClicked
-        
+        JFrame f=new JFrame();
+        if(jDeviceList.getSelectedIndex()>=0){
+            JOptionPane.showMessageDialog(f,"Send Reboot");
+        }
     }//GEN-LAST:event_jRebootButtonMouseClicked
 
     private void jKillProcessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jKillProcessButtonMouseClicked
@@ -508,6 +536,7 @@ public class ManagerClient extends javax.swing.JFrame {
     private javax.swing.JPanel jChartBoard;
     private javax.swing.JPanel jDashBoardPannel;
     private javax.swing.JList<String> jDeviceList;
+    private javax.swing.JScrollPane jDeviceMenu;
     private javax.swing.JLabel jEmailUser;
     private javax.swing.JLabel jImageUser;
     private javax.swing.JPanel jInformationUserPannel;
@@ -517,7 +546,6 @@ public class ManagerClient extends javax.swing.JFrame {
     private javax.swing.JPanel jPowerPanel;
     private javax.swing.JButton jRebootButton;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jShutdownButton;
     private javax.swing.JPanel jTemperaturePanel;
     private javax.swing.JTextArea jTextArea1;
