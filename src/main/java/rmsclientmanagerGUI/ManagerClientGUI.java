@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
  *
  * @author L.RUSSO62
  */
-public class ManagerClient extends javax.swing.JFrame {
+public class ManagerClientGUI extends javax.swing.JFrame {
     private DataSet datasettemperature;
     private DataSet datasetcpuload;
     private DataSet  datasetcupvoltage;
@@ -39,7 +39,7 @@ public class ManagerClient extends javax.swing.JFrame {
     /**
      * Creates new form ManagerClient
      */
-    public ManagerClient() {
+    public ManagerClientGUI() {
         initComponents();
         devicetemperature=new ArrayList<>();
         devicecpuload=new ArrayList<>();
@@ -511,20 +511,21 @@ public class ManagerClient extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ManagerClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManagerClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ManagerClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManagerClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ManagerClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManagerClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ManagerClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManagerClientGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ManagerClient().setVisible(true);
+                new ManagerClientGUI().setVisible(true);
                 
             }
         });

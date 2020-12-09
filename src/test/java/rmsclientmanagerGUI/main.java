@@ -1,5 +1,5 @@
+package rmsclientmanagerGUI;
 
-import rmsclientmanagerGUI.*;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
  */
 public class main {
     public static void main(String[] args){
-        ManagerClient client=new ManagerClient();
+        ManagerClientGUI client=new ManagerClientGUI();
         client.setVisible(true);
         int a=0;
        JFrame f=new JFrame();
