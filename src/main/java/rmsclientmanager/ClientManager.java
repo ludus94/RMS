@@ -26,11 +26,6 @@ public class ClientManager{
         this.devicesList = new ArrayList<>();
         this.username=username;
     }
-    public ClientManager(ArrayList<String> devicesList,String username) throws IOException {
-        this.sock=new Socket(address,port);
-        this.devicesList = devicesList;
-        this.username=username;
-    }
 
     public ArrayList<String> getDevicesList() {
         return devicesList;

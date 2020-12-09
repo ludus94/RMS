@@ -1,5 +1,7 @@
 package rmsclientmanagerGUI;
 
+import rmsclientmanager.ClientManager;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
@@ -30,7 +32,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private ArrayList<DataSet> devicecpuload;
     private ArrayList<DataSet> devicecpuvoltage;
     private ArrayList<DataSet> devicepower;
-    private DefaultListModel model;
+    private DefaultListModel model=new DefaultListModel();
     private ChartLine temperature;
     private ChartLine cpuload;
     private ChartLine cpuvoltage;
@@ -39,6 +41,8 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private String name;
     private String deviceSelected;
     private ArrayList<String> devicelist;
+    private ClientManager clientManager;
+    private String user;
     /**
      * Creates new form ManagerClient
      */
@@ -54,7 +58,9 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         this.setIconImage(icon);
         jImageUser.setIcon(imageIcon);
         jImageUser.setText("");
-        
+        user=new String();
+        jEmailUser.setText(user);
+
         devicelist=new ArrayList<>();
         devicelist.add("Device1");
         devicelist.add("Device2");
@@ -139,7 +145,12 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     public String getSelectedDevice() {
         return deviceSelected;
     }
-    
+
+    public void setUser(String user) {
+        this.user = user;
+        jEmailUser.setText(this.user);
+    }
+
     public void refreshDeviceList(ArrayList<String> devicelist){
         DefaultListModel modelnew=new DefaultListModel();
         int i=0;

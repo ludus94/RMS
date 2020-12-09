@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class ApplicationGUI extends JFrame {
+public class LoginGUI extends JFrame {
     private JPanel mainPanel;
     private JTextField emailTextField;
     private JPasswordField passwordField;
@@ -16,11 +16,13 @@ public class ApplicationGUI extends JFrame {
     private JLabel image;
     private JButton exitButton;
 
-    public ApplicationGUI(String title){
+    public LoginGUI(String title){
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
         this.pack();
+        Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");
+        this.setIconImage(icon);
         passwordField.setToolTipText("Password must contain at least 8 characters");
 
         emailTextField.addFocusListener(new FocusAdapter() {
@@ -49,10 +51,10 @@ public class ApplicationGUI extends JFrame {
                     JOptionPane.showMessageDialog(null,"Incorrect login\nthere isn't password\nplease retype");
                 else{
                     dispose();
-                    JFrame RMSFrame = new ManageRMSGUI(email,image);
-                    RMSFrame.setSize(500,500);
-                    RMSFrame.setVisible(true);
-                    RMSFrame.setResizable(true);
+                    //JFrame RMSFrame = new ManageRMSGUI(email,image);
+                    //RMSFrame.setSize(500,500);
+                    //RMSFrame.setVisible(true);
+                    //RMSFrame.setResizable(true);
                 }
             }
         });
@@ -75,7 +77,7 @@ public class ApplicationGUI extends JFrame {
     }
 
     public static void main(String[] args){
-        JFrame frame = new ApplicationGUI("Login ARSM");
+        JFrame frame = new LoginGUI("Login ARSM");
         frame.setSize(500, 500);
         frame.setVisible(true);
         frame.setResizable(true);

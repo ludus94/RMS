@@ -1,4 +1,4 @@
-package GUI;
+package rmsclientmanagerGUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +39,7 @@ public class SignInGUI extends JFrame {
             String path;
             @Override
             public void actionPerformed(ActionEvent e) {
-                FileDialog fd=new java.awt.FileDialog((java.awt.Frame) null);
+                FileDialog fd=new FileDialog((Frame) null);
                 fd.setVisible(true);
                 String returnDir = fd.getDirectory();
                 String returnFile = fd.getFile();
