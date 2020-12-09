@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
  */
 public class main {
     public static void main(String[] args){
-        ManagerClientGUI client=new ManagerClientGUI();
+        ManagerClientGUI client=new ManagerClientGUI(null);
         client.setVisible(true);
         int a=0;
        JFrame f=new JFrame();

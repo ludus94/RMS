@@ -42,7 +42,7 @@ public class Client {
      */
     public int login(String email,String password) throws IOException {
         PrintWriter prw=new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),"UTF-16"));
-        prw.println("login");
+        prw.println("login client");
         prw.println(email);
         prw.println(password);
         prw.flush();
@@ -79,6 +79,7 @@ public class Client {
             ImageIO.write(image,extension,imagebin);
             PrintWriter prw = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(), "UTF-16"));
             if(password.equals(password2)) {
+                prw.println("signin");
                 prw.println(email);
                 prw.println(password);
                 prw.println(name);

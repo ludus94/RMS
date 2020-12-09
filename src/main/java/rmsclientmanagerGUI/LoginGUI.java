@@ -1,6 +1,8 @@
 package rmsclientmanagerGUI;
 
 import facade.MonitoringValue;
+import rmsclient.Client;
+import rmsclientmanager.ClientManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.io.IOException;
 
 public class LoginGUI extends JFrame {
     private JPanel mainPanel;
@@ -57,9 +60,21 @@ public class LoginGUI extends JFrame {
                     //RMSFrame.setSize(500,500);
                     //RMSFrame.setVisible(true);
                     //RMSFrame.setResizable(true);
-                    ManagerClientGUI manager=new ManagerClientGUI();
-                    manager.setUser(email);
-                    manager.setVisible(true);
+                    try {
+                        ClientManager clientManager=new ClientManager(email);
+                        int value=clientManager.login(email,password);
+                        if(value==0) {
+                            ManagerClientGUI manager = new ManagerClientGUI(clientManager);
+                            manager.setUser(email);
+                            manager.setVisible(true);
+                        }else if(value==1){
+                            JFrame f=new JFrame();
+                            JOptionPane.showMessageDialog(f,"Incorrect user or password.Retry","Error",JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+
 
                 }
             }

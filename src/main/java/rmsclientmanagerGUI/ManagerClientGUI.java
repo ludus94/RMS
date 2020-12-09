@@ -41,13 +41,14 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private String name;
     private String deviceSelected;
     private ArrayList<String> devicelist;
-    private ClientManager clientManager;
+    private static ClientManager clientManager;
     private String user;
     /**
      * Creates new form ManagerClient
      */
-    public ManagerClientGUI() {
+    public ManagerClientGUI(ClientManager clientManager) {
         initComponents();
+        this.clientManager=clientManager;
         devicetemperature=new ArrayList<>();
         devicecpuload=new ArrayList<>();
         devicecpuvoltage=new ArrayList<>();
@@ -61,12 +62,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         user=new String();
         jEmailUser.setText(user);
 
-        devicelist=new ArrayList<>();
-        devicelist.add("Device1");
-        devicelist.add("Device2");
-        devicelist.add("Device3");
-        devicelist.add("Device4");
-        devicelist.add("Device5");
+        devicelist=clientManager.getDevicesList();
         this.refreshDeviceList(devicelist);
         for(int i=0;i<model.capacity();i++){
             devicetemperature.add(new DataSet("chartline"));
@@ -150,7 +146,6 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         this.user = user;
         jEmailUser.setText(this.user);
     }
-
     public void refreshDeviceList(ArrayList<String> devicelist){
         DefaultListModel modelnew=new DefaultListModel();
         int i=0;
@@ -471,6 +466,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         JFrame f=new JFrame();
         if(jDeviceList.getSelectedIndex()>=0){
             JOptionPane.showMessageDialog(f,"Send Shutdown ");
+            refreshDeviceList(clientManager.getDevicesList());
         }
     }//GEN-LAST:event_jShutdownButtonMouseClicked
 
@@ -511,6 +507,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         JFrame f=new JFrame();
         if(jDeviceList.getSelectedIndex()>=0){
             JOptionPane.showMessageDialog(f,"Send Reboot");
+            refreshDeviceList(clientManager.getDevicesList());
         }
     }//GEN-LAST:event_jRebootButtonMouseClicked
 
@@ -565,7 +562,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ManagerClientGUI().setVisible(true);
+                new ManagerClientGUI(clientManager).setVisible(true);
                 
             }
         });
