@@ -37,6 +37,8 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private ChartLine power;
     private String PID;
     private String name;
+    private String deviceSelected;
+    private ArrayList<String> devicelist;
     /**
      * Creates new form ManagerClient
      */
@@ -53,7 +55,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         jImageUser.setIcon(imageIcon);
         jImageUser.setText("");
         
-        ArrayList<String> devicelist=new ArrayList<>();
+        devicelist=new ArrayList<>();
         devicelist.add("Device1");
         devicelist.add("Device2");
         devicelist.add("Device3");
@@ -91,6 +93,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         jCPUVoltagePanel.validate();
         jDeviceList.setLayout(new java.awt.CardLayout());
         jDeviceList.setSelectedIndex(0);
+        deviceSelected=devicelist.get(0);
         jDashBoardPannel.setVisible(true);
     }
     
@@ -132,6 +135,9 @@ public class ManagerClientGUI extends javax.swing.JFrame {
 
     public String getNameProcess() {
         return name;
+    }
+    public String getSelectedDevice() {
+        return deviceSelected;
     }
     
     public void refreshDeviceList(ArrayList<String> devicelist){
@@ -460,6 +466,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private void jDeviceListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jDeviceListValueChanged
         jDashBoardPannel.setVisible(true);
         int index=jDeviceList.getSelectedIndex();
+        deviceSelected=devicelist.get(index);
         jTemperaturePanel.removeAll();
         jPowerPanel.removeAll();
         jCPULoadPanel.removeAll();
