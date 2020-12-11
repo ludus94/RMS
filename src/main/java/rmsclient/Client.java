@@ -29,8 +29,13 @@ public class Client {
      * Collect static values such as OS and hardware
      * @return Formatted String with info
      */
-
-
+    /***
+     * Return the name of machine
+     * @return
+     */
+    public String getNameMachine(){
+        return System.getenv("COMPUTERNAME");
+    }
     /***Log in with an existing user
      *
      * @param email User's email
@@ -43,6 +48,7 @@ public class Client {
     public int login(String email,String password) throws IOException {
         PrintWriter prw=new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),"UTF-16"));
         prw.println("login client");
+        prw.println(getNameMachine());
         prw.println(email);
         prw.println(password);
         prw.flush();

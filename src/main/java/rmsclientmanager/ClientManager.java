@@ -108,7 +108,7 @@ public class ClientManager{
                     devicesList = retrieveDevices(input);
                 }
                 if (input.readLine().contains("monitoringvalue")) {
-                    //Ricordati di aggiungere i messaggi come mittente e destinatario
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();

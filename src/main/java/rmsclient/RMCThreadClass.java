@@ -35,9 +35,11 @@ public class RMCThreadClass implements Runnable{
      */
     public void controllAction(String action,BufferedReader br) throws IOException {
         if(action.contains("shutdown")){
+            pw.println("shutdown");
             sock.close();
             rmc.shutDown();
         }else if(action.contains("reboot")){
+            pw.println("reboot");
             sock.close();
             rmc.reboot();
         }else if(action.contains("kill process with name")){
