@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class DbRms {
     private Connection connection;
@@ -23,14 +25,24 @@ public class DbRms {
             throwables.printStackTrace();
         }
     }
-    public ResultSet loginQuery(String email, String password) throws SQLException {
+    public synchronized int loginQuery(String email, String password) throws SQLException {
         PreparedStatement pst=connection.prepareStatement(Query.matchingPassword());
         pst.setString(1,email);
         pst.setString(2,password);
         ResultSet resultSet=pst.executeQuery();
-        return resultSet;
+        if(resultSet.getRowId("email")==null){
+            return 1;
+        }else{
+            return 0;
+        }
     }
-    public int signin(String name,String surname,String email,String password,byte[] image) throws SQLException {
+    public synchronized void delateMachine(String name,String email) throws SQLException {
+        PreparedStatement pst=connection.prepareStatement(Query.deleteMachine());
+        pst.setString(1,name);
+        pst.setString(2,email);
+        pst.executeQuery();
+    }
+    public synchronized int signin(String name,String surname,String email,String password,byte[] image) throws SQLException {
         PreparedStatement pst=connection.prepareStatement(Query.selectUser());
         pst.setString(1,email);
         ResultSet resultSet=pst.executeQuery();
@@ -47,57 +59,27 @@ public class DbRms {
         }
         return 2;
     }
-    public void loginmachine(String machine,String email){
-
-    }
-
-    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
-        Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/DB_RMS","postgres","Fabrizio1995");
-        String name="Fabrizio";
-        String surname="Lettieri";
-        String email="fab.lettieri@hotmail.com";
-        String password ="sas";
-        File file = new File("src/logoapp.jpeg");
-        FileInputStream fis = new FileInputStream(file);
-        /*PreparedStatement pst = conn.prepareStatement(Query.selectUser());
+    public synchronized void loginmachine(String name,String email) throws SQLException {
+        PreparedStatement pst=connection.prepareStatement(Query.selectMachine());
         pst.setString(1,email);
-        ResultSet rst = pst.executeQuery();*/
-        //if(rst==null){
-          PreparedStatement pst = conn.prepareStatement(Query.insertUser());
-           pst.setString(1,email);
-           pst.setString(2,name);
-           pst.setString(3,surname);
-           pst.setBinaryStream(4, fis, file.length());
-           pst.setString(5,password);
-           pst.executeUpdate();
-        /*}else{
-            System.out.println("l'user è già presente");
-        }*/
-
-        /*pst = conn.prepareStatement(Query.selectMachine());
-        pst.setString(1,"1987yh");
-        rst = pst.executeQuery();
-        if(rst==null) {
-            pst = conn.prepareStatement(Query.insertMachine());
-            pst.setString(1, "1987yh");
-            pst.setString(2, "fab.lettieri@hotmail.com");
-            pst.setString(3, "Windows Machine");
-            pst.setString(4, "199.234.1.1");
-            pst.setInt(5, 80);
-            pst.executeUpdate();
-        }else{
-            System.out.println("macchina già presente");
+        pst.setString(2,name);
+        ResultSet resultSet=pst.executeQuery();
+        if (resultSet==null){
+            PreparedStatement pst2=connection.prepareStatement(Query.insertMachine());
+            String id=name+email;
+            pst2.setString(1, String.valueOf(id.hashCode()));
+            pst2.setString(2,email);
+            pst2.setString(3,name);
         }
-        pst.close();
-        fis.close();
-        conn.close();
-
-        String email="fab.lettieri@hotmail.com";
-        PreparedStatement pst2 = conn.prepareStatement(Query.deleteUser());
-        pst2.setString(1,email);
-        pst2.setString(2,email);
-        pst2.executeUpdate();
-        pst2.close();
-        conn.close();*/
+    }
+    public synchronized ArrayList<String> retriveListDevice(String email) throws  SQLException{
+        PreparedStatement preparedStatement= connection.prepareStatement(Query.selectMachines());
+        preparedStatement.setString(1,email);
+        ResultSet result=preparedStatement.executeQuery();
+        ArrayList<String> out=new ArrayList<>();
+        while(result.next()){
+            out.add(result.getString("name"));
+        }
+        return out;
     }
 }

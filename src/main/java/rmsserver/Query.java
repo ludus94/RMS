@@ -11,9 +11,13 @@ public class Query {
                 "delete from users " +
                 "where email=?";
     }
+    public static String deleteMachine() {
+        return "delete from machine " +
+                "where name=? and email=?";
+    }
     public static String insertMachine(){
         return "insert into machine " +
-                "values(?,?,?,?,?)";
+                "values(?,?,?)";
     }
     public static String selectMachine(){
         return "select * " +

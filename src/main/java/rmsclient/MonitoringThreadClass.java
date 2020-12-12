@@ -24,6 +24,9 @@ public class MonitoringThreadClass implements Runnable {
         this.sock = sock;
         this.mv=new MonitoringValue();
     }
+    public String getNameMachine(){
+        return System.getenv("COMPUTERNAME");
+    }
 
     /***
      * Collects and writes all the varying values
@@ -55,6 +58,7 @@ public class MonitoringThreadClass implements Runnable {
         while(true){
             try {
             pw.println("monitoringvalue");
+            pw.println(getNameMachine());
             pw.print(monitoringSendValueDinamic());
             pw.flush();
             Thread.sleep(60000);
