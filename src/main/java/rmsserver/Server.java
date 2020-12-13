@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
@@ -39,10 +41,31 @@ public class Server implements Runnable{
          try {
             control(socket);
          }catch (IOException ex){
+
          }catch (SQLException ex2){
+
          }
          }
     }
+
+    public void control(Socket socket) throws IOException, SQLException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-16"));
+        PrintWriter printWriter=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-16"));
+        String action=bufferedReader.readLine();
+        if(action.contains("signin")){
+            signin(bufferedReader,printWriter);
+        }
+        else if(action.contains("login client")){
+            loginclient(bufferedReader,printWriter);
+        }else if(action.contains("login manager")){
+            loginmanager(bufferedReader,printWriter);
+        }else if(action.contains("monitoringvalue")){
+            moinitoringvalue(bufferedReader,printWriter);
+        }else if(action.contains("rms")){
+            rms(bufferedReader,printWriter);
+        }
+    }
+
     public void signin(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException{
         String email=bufferedReader.readLine();
         String password=bufferedReader.readLine();
@@ -60,11 +83,11 @@ public class Server implements Runnable{
         if(value==0){
             if (!user.containsKey(email)) {
                 ManageUser manageUser = new ManageUser();
-                manageUser.addClientUser(namemachine, this.socket);
+                manageUser.addClient(namemachine, this.socket);
                 user.put(email, manageUser);
             }else{
                 ManageUser manageUser=user.get(email);
-                manageUser.addClientUser(namemachine, this.socket);
+                manageUser.addClient(namemachine, this.socket);
             }
             dbrms.loginmachine(namemachine,email);
             log.info("Client "+namemachine+ " user "+ email+" is added");
@@ -98,19 +121,59 @@ public class Server implements Runnable{
             printWriter.flush();
         }
     }
-
-    public void control(Socket socket) throws IOException, SQLException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-16"));
-        PrintWriter printWriter=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-16"));
-        String action=bufferedReader.readLine();
-        if(action.contains("signin")){
-            signin(bufferedReader,printWriter);
+    public void moinitoringvalue(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
+        String namemachine=bufferedReader.readLine();
+        String monitoringValue=bufferedReader.readLine();
+        String email=dbrms.Machine(namemachine);
+        ManageUser manager=user.get(email);
+        Iterator<Socket> itrlistmanager=manager.getSocketManagers().iterator();
+        if(itrlistmanager!=null){
+            while (itrlistmanager.hasNext()){
+                Socket socketManager=itrlistmanager.next();
+                PrintWriter prv=new PrintWriter(new OutputStreamWriter(socketManager.getOutputStream(),"UTF-16"));
+                prv.println(namemachine);
+                prv.println(monitoringValue);
+                printWriter.flush();
+                log.info("Send monitoring message at user "+email);
+            }
+        }else{
+            log.info("No one client manager on line to user "+email);
         }
-        else if(action.contains("login client")){
-            loginclient(bufferedReader,printWriter);
-        }else if(action.contains("login manager")){
-            loginmanager(bufferedReader,printWriter);
-        }
-        //Gestire i messaggi rms e monitoring
     }
+    public void rms(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
+        String namemachine=bufferedReader.readLine();
+        String command=bufferedReader.readLine();
+        String email=dbrms.Machine(namemachine);
+        ManageUser manager=user.get(email);
+        Socket client=manager.getSocketMachine(namemachine);
+        PrintWriter printWriterClient=new PrintWriter(new OutputStreamWriter(client.getOutputStream(),"UTF-16"));
+        if(command.contains("shutdown") || command.contains("reboot")) {
+            printWriterClient.println(command);
+            printWriter.flush();
+            log.info("Send "+command+"message at machine "+namemachine+" at user "+email);
+        }else{
+            String pid=bufferedReader.readLine();
+            printWriterClient.println(command);
+            printWriterClient.println(pid);
+            printWriter.flush();
+            log.info("Send"+command+" "+pid+" message at machine "+namemachine+" at user"+email);
+        }
+        BufferedReader bufferedReaderClient=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-16"));
+        String returned=bufferedReaderClient.readLine();
+        Iterator<Socket> itrlistmanager=manager.getSocketManagers().iterator();
+        if(itrlistmanager!=null){
+            while (itrlistmanager.hasNext()){
+                Socket socketManager=itrlistmanager.next();
+                PrintWriter prv=new PrintWriter(new OutputStreamWriter(socketManager.getOutputStream(),"UTF-16"));
+                prv.println(namemachine);
+                prv.println(returned);
+                printWriter.flush();
+                log.info("Send "+returned+" at machine "+namemachine+" at user "+email);
+            }
+        }else{
+            log.info("No one client manager on line to user "+email);
+        }
+    }
+
+
 }

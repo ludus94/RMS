@@ -72,6 +72,14 @@ public class DbRms {
             pst2.setString(3,name);
         }
     }
+    public synchronized String Machine(String name) throws SQLException {
+        PreparedStatement pst=connection.prepareStatement(Query.selectEmailUser());
+        pst.setString(1,name);
+        ResultSet resultSet=pst.executeQuery();
+        while (resultSet.next())
+               return resultSet.getString("email");
+        return null;
+    }
     public synchronized ArrayList<String> retriveListDevice(String email) throws  SQLException{
         PreparedStatement preparedStatement= connection.prepareStatement(Query.selectMachines());
         preparedStatement.setString(1,email);

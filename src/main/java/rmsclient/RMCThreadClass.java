@@ -36,19 +36,22 @@ public class RMCThreadClass implements Runnable{
     public void controllAction(String action,BufferedReader br) throws IOException {
         if(action.contains("shutdown")){
             pw.println("shutdown");
+            pw.flush();
             sock.close();
             rmc.shutDown();
         }else if(action.contains("reboot")){
             pw.println("reboot");
+            pw.flush();
             sock.close();
             rmc.reboot();
         }else if(action.contains("kill process with name")){
             pw.println("result kill");
             pw.println(rmc.killProcessNameProcess(br.readLine())); //Ricodati che non deve mai avvenire l' abbort di java
-
+            pw.flush();
         }else if(action.contains("kill process")){
             pw.println("result kill");
             pw.println(rmc.killProcessPID(br.readLine()));
+            pw.flush();
         }
     }
 

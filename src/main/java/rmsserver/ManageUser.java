@@ -26,7 +26,7 @@ public class ManageUser {
      * @param name
      * @param socket
      */
-    public void addClientUser(String name,Socket socket){
+    public void addClient(String name, Socket socket){
         clientUserMachines.put(name,socket);
     }
 
