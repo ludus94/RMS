@@ -39,6 +39,20 @@ public class DbRms {
         ResultSet resultSet=pst.executeQuery();
         return resultSet.getString("image");
     }
+    public synchronized String retriveDevice(String email) throws SQLException{
+        PreparedStatement pst=connection.prepareStatement(Query.selectNameMachines());
+        pst.setString(1,email);
+        ResultSet resultSet=pst.executeQuery();
+        if(resultSet!=null){
+            String out = "";
+            while(resultSet.next()){
+                out=out+resultSet.getString("name")+"\n";
+            }
+            return out;
+        }else{
+            return "Client not connect";
+        }
+    }
     public synchronized void delateMachine(String name,String email) throws SQLException {
         PreparedStatement pst=connection.prepareStatement(Query.deleteMachine());
         pst.setString(1,name);

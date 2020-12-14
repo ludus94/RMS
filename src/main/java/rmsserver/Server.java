@@ -64,7 +64,9 @@ public class Server implements Runnable{
             rms(bufferedReader,printWriter);
         }else if(action.contains("image")){
             image(bufferedReader,printWriter);
-        }//Retrive
+        }else if(action.contains("retrieve device")){
+            retriveDevice(bufferedReader,printWriter);
+        }
     }
 
     public void signin(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException{
@@ -132,6 +134,7 @@ public class Server implements Runnable{
             while (itrlistmanager.hasNext()){
                 Socket socketManager=itrlistmanager.next();
                 PrintWriter prv=new PrintWriter(new OutputStreamWriter(socketManager.getOutputStream(),"UTF-16"));
+                prv.println("monitoringvalue");
                 prv.println(namemachine);
                 prv.println(monitoringValue);
                 printWriter.flush();
@@ -181,6 +184,13 @@ public class Server implements Runnable{
             log.info("No one client manager on line to user "+email);
         }
     }
-
+    public void retriveDevice(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
+        String email=bufferedReader.readLine();
+        String out= dbrms.retriveDevice(email);
+        log.info(out);
+        printWriter.println("deviceavabile");
+        printWriter.println(out);
+        printWriter.flush();
+    }
 
 }

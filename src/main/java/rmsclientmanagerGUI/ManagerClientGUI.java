@@ -9,6 +9,8 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -30,10 +32,10 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private DataSet datasetcpuload;
     private DataSet  datasetcupvoltage;
     private DataSet datasetpower;
-    private ArrayList<DataSet> devicetemperature;
-    private ArrayList<DataSet> devicecpuload;
-    private ArrayList<DataSet> devicecpuvoltage;
-    private ArrayList<DataSet> devicepower;
+    private Map<String,DataSet> devicetemperature;
+    private Map<String,DataSet> devicecpuload;
+    private Map<String,DataSet> devicecpuvoltage;
+    private Map<String,DataSet> devicepower;
     private DefaultListModel model=new DefaultListModel();
     private ChartLine temperature;
     private ChartLine cpuload;
@@ -43,6 +45,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private String name;
     private String deviceSelected;
     private ArrayList<String> devicelist;
+    private ArrayList<String> olddevicelist;
     private static ClientManager clientManager;
     private String user;
     /**
@@ -51,11 +54,12 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     public ManagerClientGUI(ClientManager clientManager){
         initComponents();
         this.clientManager=clientManager;
-        devicetemperature=new ArrayList<>();
-        devicecpuload=new ArrayList<>();
-        devicecpuvoltage=new ArrayList<>();
-        devicepower=new ArrayList<>();
+        devicetemperature=new TreeMap<>();
+        devicecpuload=new TreeMap<>();
+        devicecpuvoltage=new TreeMap<>();
+        devicepower=new TreeMap<>();
         model=new DefaultListModel();
+        olddevicelist=new ArrayList<>();
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/java/rmsclientmanagerGUI/logoapp.jpeg").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
         Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");    
         this.setIconImage(icon);
@@ -75,13 +79,13 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         }
         jEmailUser.setText(clientManager.getUsername());
 
-        devicelist=clientManager.getDevicesList();
-        this.refreshDeviceList(devicelist);
+
+        this.refreshDeviceList();
         for(int i=0;i<model.capacity();i++){
-            devicetemperature.add(new DataSet("chartline"));
-            devicecpuload.add(new DataSet("chartline"));
-            devicecpuvoltage.add(new DataSet("chartline"));
-            devicepower.add(new DataSet("chartline"));
+            devicetemperature.put(devicelist.get(i),new DataSet("chartline"));
+            devicecpuload.put(devicelist.get(i),new DataSet("chartline"));
+            devicecpuvoltage.put(devicelist.get(i),new DataSet("chartline"));
+            devicepower.put(devicelist.get(i),new DataSet("chartline"));
         }
         
         this.datasettemperature=devicetemperature.get(0);
@@ -128,19 +132,19 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         return datasetpower;
     }
 
-    public ArrayList<DataSet> getDeviceTemperature() {
+    public Map<String, DataSet> getDeviceTemperature() {
         return devicetemperature;
     }
 
-    public ArrayList<DataSet> getDeviceCpuLoad() {
+    public Map<String, DataSet> getDeviceCpuLoad() {
         return devicecpuload;
     }
 
-    public ArrayList<DataSet> getDeviceCpuVoltage() {
+    public Map<String, DataSet> getDeviceCpuVoltage() {
         return devicecpuvoltage;
     }
 
-    public ArrayList<DataSet> getDevicePower() {
+    public Map<String, DataSet> getDevicePower() {
         return devicepower;
     }
 
@@ -159,10 +163,21 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         this.user = user;
         jEmailUser.setText(this.user);
     }
-    public void refreshDeviceList(ArrayList<String> devicelist){
+
+    public ArrayList<String> getDevicelist() {
+        return devicelist;
+    }
+
+    public ArrayList<String> getOlddevicelist() {
+        return olddevicelist;
+    }
+
+    public void refreshDeviceList(){
+        clientManager.retrieveDevices();
+        ArrayList<String> listdevice=clientManager.getDevicesList();
         DefaultListModel modelnew=new DefaultListModel();
         int i=0;
-        for (String device : devicelist) {
+        for (String device : listdevice) {
             modelnew.add(i,device);
             i++;
         }
@@ -176,6 +191,9 @@ public class ManagerClientGUI extends javax.swing.JFrame {
             jDeviceList.setModel(model);
             jDeviceMenu.validate();
         }
+        this.olddevicelist=devicelist;
+        this.devicelist=listdevice;
+        clientManager.mapRefresh();
     }
 
     /**
@@ -479,7 +497,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         JFrame f=new JFrame();
         if(jDeviceList.getSelectedIndex()>=0){
             JOptionPane.showMessageDialog(f,"Send Shutdown ");
-            refreshDeviceList(clientManager.getDevicesList());
+            refreshDeviceList();
         }
     }//GEN-LAST:event_jShutdownButtonMouseClicked
 
@@ -520,7 +538,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         JFrame f=new JFrame();
         if(jDeviceList.getSelectedIndex()>=0){
             JOptionPane.showMessageDialog(f,"Send Reboot");
-            refreshDeviceList(clientManager.getDevicesList());
+            refreshDeviceList();
         }
     }//GEN-LAST:event_jRebootButtonMouseClicked
 

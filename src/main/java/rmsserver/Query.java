@@ -34,6 +34,11 @@ public class Query {
                 "from machine " +
                 "where email=?";
     }
+    public static String selectNameMachines(){
+        return  "select name " +
+                "from machine " +
+                "where email=?";
+    }
     public static String selectUser(){
         return "select email,name,surname,image from users" +
                 "where email=?";

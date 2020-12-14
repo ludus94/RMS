@@ -2,6 +2,7 @@ package rmsclientmanager;
 
 import rmsclient.MonitoringThreadClass;
 import rmsclient.RMCThreadClass;
+import rmsclientmanagerGUI.DataSet;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Map;
 
 /***
  * Client Manager main class.
@@ -21,13 +23,23 @@ public class ClientManager{
     private int port=33333;
     private static final String address="ludovicorusso.ddns.net";
     private ArrayList<String> devicesList;
+    private ArrayList<String> olddevicelist;
     private String username;
     private String image;
+    private Map<String,DataSet> devicetemperature;
+    private Map<String,DataSet> devicecpuload;
+    private Map<String,DataSet> devicecpuvoltage;
+    private Map<String,DataSet> devicepower;
 
     public ClientManager(String username) throws IOException {
         this.sock=new Socket(address,port);
         this.devicesList = new ArrayList<>();
+        this.olddevicelist=new ArrayList<>();
         this.username=username;
+    }
+
+    public void setOlddevicelist(ArrayList<String> olddevicelist) {
+        this.olddevicelist = olddevicelist;
     }
 
     public ArrayList<String> getDevicesList() {
@@ -68,12 +80,54 @@ public class ClientManager{
         if(returnValue==0) {
            prw.println("image");
            this.image= br.readLine();
-           this.retrieveDevices(br);
+           this.retrieveDevices();
            this.controll();
         }
         return returnValue;
     }
 
+    public Map<String, DataSet> getDevicetemperature() {
+        return devicetemperature;
+    }
+
+    public void setDevicetemperature(Map<String, DataSet> devicetemperature) {
+        this.devicetemperature = devicetemperature;
+    }
+
+    public Map<String, DataSet> getDevicecpuload() {
+        return devicecpuload;
+    }
+
+    public void setDevicecpuload(Map<String, DataSet> devicecpuload) {
+        this.devicecpuload = devicecpuload;
+    }
+
+    public Map<String, DataSet> getDevicecpuvoltage() {
+        return devicecpuvoltage;
+    }
+
+    public void setDevicecpuvoltage(Map<String, DataSet> devicecpuvoltage) {
+        this.devicecpuvoltage = devicecpuvoltage;
+    }
+
+    public Map<String, DataSet> getDevicepower() {
+        return devicepower;
+    }
+
+    public void setDevicepower(Map<String, DataSet> devicepower) {
+        this.devicepower = devicepower;
+    }
+    public void mapRefresh(){
+        //Dove aggiungere l' aggiornameto delle mappe.
+        for(int i=0;i<devicesList.size();i++){
+            if(!devicetemperature.containsKey(devicesList.get(i))){
+                devicetemperature.put(devicesList.get(i),new DataSet("chartline"));
+                devicecpuload.put(devicesList.get(i),new DataSet("chartline"));
+                devicecpuvoltage.put(devicesList.get(i),new DataSet("chartline"));
+                devicepower.put(devicesList.get(i),new DataSet("chartline"));
+            }
+        }
+    }
     /***Sign in a new user into the system
      *
      * @param email User's email
@@ -113,24 +167,27 @@ public class ClientManager{
      * Retrieve list of devices linked to
      * @return
      */
-    public void retrieveDevices(BufferedReader br) throws IOException {
-        PrintWriter printWriter=new PrintWriter(new OutputStreamWriter(this.sock.getOutputStream(),"UTF-16"));
-        printWriter.println("retrieve device");
-        printWriter.flush();
-        ArrayList<String> out=new ArrayList<>();
-        String input=null;
-        while ((input = br.readLine()) != null) {
-                out.add(input);
+    public void retrieveDevices() {
+        try {
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(this.sock.getOutputStream(), "UTF-16"));
+            printWriter.println("retrieve device");
+            printWriter.flush();
+            BufferedReader br = new BufferedReader(new InputStreamReader(this.sock.getInputStream(), "UTF-16"));
+            if (br.readLine().contains("deviceavabile")) {
+                ArrayList<String> out = new ArrayList<>();
+                String input = null;
+                while ((input = br.readLine()) != null) {
+                    out.add(input);
+                }
+                this.devicesList = out;
+            }
+        }catch(IOException ex){
         }
-        this.devicesList=out;
     }
     public void controll(){
         while(true) {
             try {
                 BufferedReader input = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-                if (input.readLine().contains("deviceavabile")) {
-                    retrieveDevices(input);
-                }
                 if (input.readLine().contains("monitoringvalue")) {
 
                 }

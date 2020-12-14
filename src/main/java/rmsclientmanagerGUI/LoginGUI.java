@@ -67,6 +67,11 @@ public class LoginGUI extends JFrame {
                             ManagerClientGUI manager = new ManagerClientGUI(clientManager);
                             manager.setUser(email);
                             manager.setVisible(true);
+                            clientManager.setOlddevicelist(manager.getOlddevicelist());
+                            clientManager.setDevicetemperature(manager.getDeviceTemperature());
+                            clientManager.setDevicecpuload(manager.getDeviceCpuLoad());
+                            clientManager.setDevicecpuvoltage(manager.getDeviceCpuVoltage());
+                            clientManager.setDevicepower(manager.getDevicePower());
                         }else if(value==1){
                             JFrame f=new JFrame();
                             JOptionPane.showMessageDialog(f,"Incorrect user or password.Retry","Error",JOptionPane.ERROR_MESSAGE);

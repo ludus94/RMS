@@ -1,7 +1,10 @@
 package rmsclientmanagerGUI;
 
+import rmsclientmanager.ClientManager;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import java.io.IOException;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,8 +17,9 @@ import javax.swing.JOptionPane;
  * @author L.RUSSO62
  */
 public class main {
-    public static void main(String[] args){
-        ManagerClientGUI client=new ManagerClientGUI(null);
+    public static void main(String[] args) throws IOException {
+        ClientManager clientManager=new ClientManager("aaa@aa.it");
+        ManagerClientGUI client=new ManagerClientGUI(clientManager);
         client.setVisible(true);
         int a=0;
        JFrame f=new JFrame();
