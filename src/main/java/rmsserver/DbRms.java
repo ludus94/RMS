@@ -1,10 +1,7 @@
 package rmsserver;
 
 import javax.xml.transform.Result;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,6 +32,12 @@ public class DbRms {
         }else{
             return 0;
         }
+    }
+    public synchronized String imageManagerQuery(String email) throws SQLException {
+        PreparedStatement pst=connection.prepareStatement(Query.selectImageUser());
+        pst.setString(1,email);
+        ResultSet resultSet=pst.executeQuery();
+        return resultSet.getString("image");
     }
     public synchronized void delateMachine(String name,String email) throws SQLException {
         PreparedStatement pst=connection.prepareStatement(Query.deleteMachine());

@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -63,7 +62,9 @@ public class Server implements Runnable{
             moinitoringvalue(bufferedReader,printWriter);
         }else if(action.contains("rms")){
             rms(bufferedReader,printWriter);
-        }
+        }else if(action.contains("image")){
+            image(bufferedReader,printWriter);
+        }//Retrive
     }
 
     public void signin(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException{
@@ -139,6 +140,12 @@ public class Server implements Runnable{
         }else{
             log.info("No one client manager on line to user "+email);
         }
+    }
+    public void image(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException{
+        String email=bufferedReader.readLine();
+        String image= dbrms.imageManagerQuery(email);
+        printWriter.println(image);
+        printWriter.flush();
     }
     public void rms(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
         String namemachine=bufferedReader.readLine();

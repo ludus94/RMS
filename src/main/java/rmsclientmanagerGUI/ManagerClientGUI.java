@@ -6,11 +6,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 /*
@@ -46,7 +48,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     /**
      * Creates new form ManagerClient
      */
-    public ManagerClientGUI(ClientManager clientManager) {
+    public ManagerClientGUI(ClientManager clientManager){
         initComponents();
         this.clientManager=clientManager;
         devicetemperature=new ArrayList<>();
@@ -57,10 +59,21 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/java/rmsclientmanagerGUI/logoapp.jpeg").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
         Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");    
         this.setIconImage(icon);
-        jImageUser.setIcon(imageIcon);
-        jImageUser.setText("");
-        user=new String();
-        jEmailUser.setText(user);
+        if(clientManager.getImage()==null) {
+            jImageUser.setIcon(imageIcon);
+            jImageUser.setText("");
+        }
+        else{
+            try {
+                jImageUser.setIcon(clientManager.getImageIcon());
+                jImageUser.setText("");
+            }catch(UnsupportedEncodingException ex){
+
+            } catch (IOException e) {
+
+            }
+        }
+        jEmailUser.setText(clientManager.getUsername());
 
         devicelist=clientManager.getDevicesList();
         this.refreshDeviceList(devicelist);

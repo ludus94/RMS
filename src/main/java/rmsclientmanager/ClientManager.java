@@ -4,6 +4,8 @@ import rmsclient.MonitoringThreadClass;
 import rmsclient.RMCThreadClass;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
@@ -20,6 +22,7 @@ public class ClientManager{
     private static final String address="ludovicorusso.ddns.net";
     private ArrayList<String> devicesList;
     private String username;
+    private String image;
 
     public ClientManager(String username) throws IOException {
         this.sock=new Socket(address,port);
@@ -30,7 +33,22 @@ public class ClientManager{
     public ArrayList<String> getDevicesList() {
         return devicesList;
     }
-    /***Log in with an existing user
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public ImageIcon getImageIcon() throws UnsupportedEncodingException,IOException {
+        ByteArrayInputStream imagebin = new ByteArrayInputStream(image.getBytes("UTF-16"));
+        BufferedImage bufferedImage = ImageIO.read(imagebin);
+        ImageIcon imageIconUser = new ImageIcon(new ImageIcon(bufferedImage).getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+        return imageIconUser;
+    }
+        /***Log in with an existing user
      *
      * @param email User's email
      * @param password User's password
@@ -48,6 +66,9 @@ public class ClientManager{
         BufferedReader br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
         int returnValue=Integer.parseInt(br.readLine());
         if(returnValue==0) {
+           prw.println("image");
+           this.image= br.readLine();
+           this.retrieveDevices(br);
            this.controll();
         }
         return returnValue;
@@ -92,20 +113,23 @@ public class ClientManager{
      * Retrieve list of devices linked to
      * @return
      */
-    public ArrayList<String> retrieveDevices(BufferedReader br) throws IOException {
+    public void retrieveDevices(BufferedReader br) throws IOException {
+        PrintWriter printWriter=new PrintWriter(new OutputStreamWriter(this.sock.getOutputStream(),"UTF-16"));
+        printWriter.println("retrieve device");
+        printWriter.flush();
         ArrayList<String> out=new ArrayList<>();
         String input=null;
         while ((input = br.readLine()) != null) {
                 out.add(input);
         }
-            return out;
+        this.devicesList=out;
     }
     public void controll(){
         while(true) {
             try {
                 BufferedReader input = new BufferedReader(new InputStreamReader(sock.getInputStream()));
                 if (input.readLine().contains("deviceavabile")) {
-                    devicesList = retrieveDevices(input);
+                    retrieveDevices(input);
                 }
                 if (input.readLine().contains("monitoringvalue")) {
 

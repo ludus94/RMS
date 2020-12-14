@@ -38,6 +38,10 @@ public class Query {
         return "select email,name,surname,image from users" +
                 "where email=?";
     }
+    public static String selectImageUser(){
+        return "select image from users" +
+                "where email=?";
+    }
     public static String selectIP(){
         return "select IP " +
                 "from machine " +
