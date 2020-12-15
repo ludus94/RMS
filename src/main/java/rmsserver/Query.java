@@ -41,11 +41,13 @@ public class Query {
                 "where email=?";
     }
     public static String selectUser(){
-        return "select email,name,surname,image from users" +
+        return "select email,name,surname,image " +
+                "from users "+
                 "where email=?";
     }
     public static String selectImageUser(){
-        return "select image from users" +
+        return "select image"+
+                " from users " +
                 "where email=?";
     }
     public static String selectIP(){

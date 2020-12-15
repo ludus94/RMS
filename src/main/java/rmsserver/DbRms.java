@@ -64,7 +64,7 @@ public class DbRms {
         pst.setString(1,email);
         ResultSet resultSet=pst.executeQuery();
         ByteArrayInputStream byteArrayInputStream=new ByteArrayInputStream(image);
-        if (resultSet==null){
+        if (resultSet.next()==false){
             pst=connection.prepareStatement(Query.insertUser());
             pst.setString(1,email);
             pst.setString(2,name);

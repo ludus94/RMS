@@ -45,7 +45,7 @@ public class Server implements Runnable{
          }catch (IOException ex){
 
          }catch (SQLException ex2){
-
+             ex2.printStackTrace();
          }
          }
     }
