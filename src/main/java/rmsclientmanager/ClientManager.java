@@ -229,6 +229,7 @@ public class ClientManager{
         managerClientGUI.setJText(Speed);
         managerClientGUI.setJText(cpuVoltage);
     }
+    //Comandi di gestione macchina capire di deve avvaire i thread di monitoraggio dei client
     public void controll(){
         while(true) {
             try {
