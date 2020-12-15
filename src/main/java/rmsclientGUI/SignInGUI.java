@@ -53,6 +53,14 @@ public class SignInGUI extends JFrame {
                         frame.setVisible(true);
                         frame.setResizable(true);
                     }
+                    if(value==2){
+                        JOptionPane optionPane = new JOptionPane("User all ready existis in system", JOptionPane.INFORMATION_MESSAGE);
+                        dispose();
+                        JFrame frame = new LoginGUI("Login ARSM");
+                        frame.setSize(500, 500);
+                        frame.setVisible(true);
+                        frame.setResizable(true);
+                    }
                 }
 
             }

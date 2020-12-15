@@ -112,13 +112,14 @@ public class Client {
                 prw.println(surname);
                 prw.println(imagebin.toByteArray());
                 prw.flush();
+                BufferedReader br = new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-16"));
+                int value = Integer.parseInt(br.readLine());
+                sock.close();
+                return value;
             } else {
                 return 1;
             }
-            BufferedReader br = new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-16"));
-            int value = Integer.parseInt(br.readLine());
-            sock.close();
-            return value;
+
         }catch (IOException ex){
 
         }
