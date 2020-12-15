@@ -1,4 +1,4 @@
-package GUI;
+package rmsclientGUI;
 
 import javax.swing.*;
 import java.awt.*;
