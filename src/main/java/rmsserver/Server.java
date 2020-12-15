@@ -21,7 +21,8 @@ public class Server implements Runnable{
 
     public Server(Socket sock) {
         this.user=new TreeMap<>();
-        this.dbrms=new DbRms("DB_RMS","postgres","dp20202021");
+        this.dbrms=new DbRms("DB_RMS","postgres" +
+                "","dp20202021");
         this.socket=sock;
         this.log=Logger.getLogger("global");
     }
