@@ -53,6 +53,7 @@ public class Server implements Runnable{
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-16"));
         PrintWriter printWriter=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-16"));
         String action=bufferedReader.readLine();
+
         if(action.contains("signin")){
             signin(bufferedReader,printWriter);
         }

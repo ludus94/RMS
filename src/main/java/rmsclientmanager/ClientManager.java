@@ -229,7 +229,35 @@ public class ClientManager{
         managerClientGUI.setJText(Speed);
         managerClientGUI.setJText(cpuVoltage);
     }
-    //Comandi di gestione macchina capire di deve avvaire i thread di monitoraggio dei client
+    public String rmsmanage(String command,Integer index,String PID){
+        try {
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(), "UTF-16"));
+            if (command.contains("shutdown") && (PID.contains("") || PID == null)) {
+                printWriter.println(command);
+                printWriter.println(devicesList.get(index));
+                printWriter.flush();
+            } else if (command.contains("reboot") && (PID.contains("") || PID == null)) {
+                printWriter.println(command);
+                printWriter.println(devicesList.get(index));
+                printWriter.flush();
+            } else if (command.contains("killprocesswithname") && (!PID.contains("") || PID != null)) {
+                printWriter.println(command);
+                printWriter.println(devicesList.get(index));
+                printWriter.println(PID);
+                printWriter.flush();
+            } else if (command.contains("killprocess") && (!PID.contains("") || PID != null)) {
+                printWriter.println(command);
+                printWriter.println(devicesList.get(index));
+                printWriter.println(PID);
+                printWriter.flush();
+            }
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-16"));
+            managerClientGUI.setJText(bufferedReader.readLine());
+        }catch(IOException ex){
+
+        }
+        return null;
+    }
     public void controll(){
         while(true) {
             try {

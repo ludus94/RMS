@@ -483,6 +483,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         JFrame f=new JFrame();
         if(jDeviceList.getSelectedIndex()>=0){
             JOptionPane.showMessageDialog(f,"Send Shutdown ");
+            clientManager.rmsmanage("shutdown",Integer.parseInt(deviceSelected),"");
             refreshDeviceList();
         }
     }//GEN-LAST:event_jShutdownButtonMouseClicked
@@ -524,6 +525,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         JFrame f=new JFrame();
         if(jDeviceList.getSelectedIndex()>=0){
             JOptionPane.showMessageDialog(f,"Send Reboot");
+            clientManager.rmsmanage("reboot", Integer.parseInt(deviceSelected), "");
             refreshDeviceList();
         }
     }//GEN-LAST:event_jRebootButtonMouseClicked
@@ -531,8 +533,10 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private void jKillProcessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jKillProcessButtonMouseClicked
         JFrame f=new JFrame();
         String PID=JOptionPane.showInputDialog(f,"Enter process identify (PID)");
-        if(!PID.contains(""))
-            this.PID=PID;
+        if(!PID.contains("")) {
+            this.PID = PID;
+            clientManager.rmsmanage("killprocess", Integer.parseInt(deviceSelected), PID);
+        }
         else{
             JOptionPane.showMessageDialog(f, "Field of PID mustn't be empty", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -541,8 +545,10 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private void jKillProcessWithNameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jKillProcessWithNameButtonMouseClicked
         JFrame f=new JFrame();
         String name=JOptionPane.showInputDialog(f,"Enter process name");
-        if(!name.contains(""))
-            this.name=name;
+        if(!name.contains("")) {
+            this.name = name;
+            clientManager.rmsmanage("killprocesswithname", Integer.parseInt(deviceSelected), name);
+        }
         else{
             JOptionPane.showMessageDialog(f, "Field of Process name mustn't be empty", "Error", JOptionPane.ERROR_MESSAGE);
         }
