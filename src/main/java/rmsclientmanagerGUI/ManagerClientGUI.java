@@ -1,6 +1,7 @@
 package rmsclientmanagerGUI;
 
 import rmsclientmanager.ClientManager;
+import rmsserver.StringObject;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -33,6 +34,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private Map<String,DataSet> devicecpuload;
     private Map<String,DataSet> devicecpuvoltage;
     private Map<String,DataSet> devicepower;
+    private Map<String, StringObject> jouttext;
     private DefaultListModel model=new DefaultListModel();
     private ChartLine temperature;
     private ChartLine cpuload;
@@ -56,7 +58,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         devicecpuvoltage=new TreeMap<>();
         devicepower=new TreeMap<>();
         model=new DefaultListModel();
-
+        jouttext=new TreeMap<>();
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/java/rmsclientmanagerGUI/logoapp.jpeg").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
         Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");    
         this.setIconImage(icon);
@@ -79,6 +81,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
 
         this.refreshDeviceList();
         clientManager.mapinit();
+        this.jouttext=clientManager.getOutjtext();
         this.devicecpuload=clientManager.getDevicecpuload();
         this.devicetemperature=clientManager.getDevicetemperature();
         this.devicecpuvoltage=clientManager.getDevicecpuvoltage();
@@ -110,6 +113,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         jDeviceList.setSelectedIndex(0);
         deviceSelected=devicelist.get(0);
         jDashBoardPannel.setVisible(true);
+        jTextArea1.setText(jouttext.get(deviceSelected).getOut());
     }
 
     public void setJText(String Test) {
@@ -496,6 +500,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         jPowerPanel.removeAll();
         jCPULoadPanel.removeAll();
         jCPUVoltagePanel.removeAll();
+        jTextArea1.setText("");
         this.datasettemperature=devicetemperature.get(deviceSelected);
         this.datasetcpuload=devicecpuload.get(deviceSelected);
         this.datasetcupvoltage=devicecpuvoltage.get(deviceSelected);
@@ -518,6 +523,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         jCPUVoltagePanel.setLayout(new java.awt.BorderLayout());
         jCPUVoltagePanel.add(cpuvoltage.getChartPannel(),BorderLayout.CENTER);
         jCPUVoltagePanel.validate();
+        jTextArea1.setText(jouttext.get(deviceSelected).getOut());
         
     }//GEN-LAST:event_jDeviceListValueChanged
 

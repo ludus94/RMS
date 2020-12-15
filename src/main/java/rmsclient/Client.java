@@ -29,6 +29,12 @@ public class Client {
      * Collect static values such as OS and hardware
      * @return Formatted String with info
      */
+    public String staticValue(){
+        String out="";
+        out=out+mv.getSystemOP()+"\n";
+        out=out+mv.getBootedSystem()+"\n";
+        return out;
+    }
     /***
      * Return the name of machine
      * @return
@@ -55,6 +61,10 @@ public class Client {
         BufferedReader br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
         int returnValue=Integer.parseInt(br.readLine());
         if(returnValue==0) {
+            prw.println("monitoringvaluestatic");
+            prw.println(getNameMachine());
+            prw.println(staticValue());
+            prw.flush();
             Thread monitoring = new Thread(new MonitoringThreadClass(sock));
             Thread rmc = new Thread(new RMCThreadClass(sock));
             monitoring.start();

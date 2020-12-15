@@ -4,6 +4,7 @@ import rmsclient.MonitoringThreadClass;
 import rmsclient.RMCThreadClass;
 import rmsclientmanagerGUI.DataSet;
 import rmsclientmanagerGUI.ManagerClientGUI;
+import rmsserver.StringObject;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -33,7 +34,7 @@ public class ClientManager{
     private Map<String,DataSet> devicecpuload;
     private Map<String,DataSet> devicecpuvoltage;
     private Map<String,DataSet> devicepower;
-    private ManagerClientGUI managerClientGUI;
+    private Map<String, StringObject>  outjtext;
     public ClientManager(String username) throws IOException {
         this.sock=new Socket(address,port);
         this.devicesList = new ArrayList<>();
@@ -43,9 +44,7 @@ public class ClientManager{
         this.devicecpuload=new TreeMap<>();
         this.devicecpuvoltage=new TreeMap<>();
         this.devicepower=new TreeMap<>();
-    }
-    public void setManagerClientGUI(ManagerClientGUI managerClientGUI){
-        this.managerClientGUI=managerClientGUI;
+        this.outjtext=new TreeMap<>();
     }
     /***Log in with an existing user
      *
@@ -56,6 +55,7 @@ public class ClientManager{
      * code 1: Incorrect parameters
      * @throws IOException
      */
+
     public int login(String email,String password) throws IOException {
         PrintWriter prw=new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),"UTF-16"));
         prw.println("login manager");
@@ -107,6 +107,10 @@ public class ClientManager{
         return devicesList;
     }
 
+    public Map<String, StringObject> getOutjtext() {
+        return outjtext;
+    }
+
     public String getImage() {
         return image;
     }
@@ -128,6 +132,7 @@ public class ClientManager{
             devicecpuload.put(devicesList.get(i),new DataSet("chartline"));
             devicecpuvoltage.put(devicesList.get(i),new DataSet("chartline"));
             devicepower.put(devicesList.get(i),new DataSet("chartline"));
+            outjtext.put(devicesList.get(i),new StringObject());
         }
     }
     public void mapRefresh(){
@@ -211,23 +216,32 @@ public class ClientManager{
     }
     public void monitoringvalue(BufferedReader bufferedReader) throws IOException{
         String namedevice=bufferedReader.readLine();
-        String ProcessActive= bufferedReader.readLine();
+        String ProcessActive= bufferedReader.readLine()+"\n";
         String cpuTotalLoad=bufferedReader.readLine();
-        String cpuAvarageLoad= bufferedReader.readLine();
-        String cpuLoadPerCore= bufferedReader.readLine();
+        String cpuAvarageLoad= bufferedReader.readLine()+"\n";
+        String cpuLoadPerCore= bufferedReader.readLine()+"\n";
         String CpuTemperature=bufferedReader.readLine();
-        String Speed= bufferedReader.readLine();
+        String Speed= bufferedReader.readLine()+"\n";
         String cpuVoltage= bufferedReader.readLine();
         String Power= bufferedReader.readLine();
         String time=bufferedReader.readLine();
         devicetemperature.get(namedevice).setDataSetValue(Double.parseDouble(CpuTemperature),"°C",time);
         devicecpuload.get(namedevice).setDataSetValue(Double.parseDouble(cpuTotalLoad),"%",time);
-        devicecpuvoltage.get(namedevice).setDataSetValue(Double.parseDouble(cpuAvarageLoad),"mV",time);
+        devicecpuvoltage.get(namedevice).setDataSetValue(Double.parseDouble(cpuVoltage),"mV",time);
         devicepower.get(namedevice).setDataSetValue(Double.parseDouble(Power),"mW",time);
-        managerClientGUI.setJText(ProcessActive);
-        managerClientGUI.setJText(cpuLoadPerCore);
-        managerClientGUI.setJText(Speed);
-        managerClientGUI.setJText(cpuVoltage);
+        outjtext.get(namedevice).setOut("--- Measuring at "+time+"---",false);
+        outjtext.get(namedevice).setOut(ProcessActive,false);
+        outjtext.get(namedevice).setOut(cpuAvarageLoad,false);
+        outjtext.get(namedevice).setOut(cpuLoadPerCore,false);
+        outjtext.get(namedevice).setOut(Speed,false);
+
+    }
+    public void monitoringvaluestatic(BufferedReader bufferedReader) throws IOException{
+        String namemachine=bufferedReader.readLine();
+        String os=bufferedReader.readLine();
+        String booted= bufferedReader.readLine();
+        outjtext.get(namemachine).setOut("Operating System: "+os,false);
+        outjtext.get(namemachine).setOut("Booted System: "+booted,false);
     }
     public String rmsmanage(String command,Integer index,String PID){
         try {
@@ -252,7 +266,7 @@ public class ClientManager{
                 printWriter.flush();
             }
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-16"));
-            managerClientGUI.setJText(bufferedReader.readLine());
+            outjtext.get(devicesList.get(index)).setOut(bufferedReader.readLine(), false);
         }catch(IOException ex){
 
         }
@@ -263,6 +277,9 @@ public class ClientManager{
             try {
                 BufferedReader input = new BufferedReader(new InputStreamReader(sock.getInputStream()));
                 if (input.readLine().contains("monitoringvalue")) {
+                    monitoringvalue(input);
+                }
+                if (input.readLine().contains("monitoringvaluestatic")){
                     monitoringvalue(input);
                 }
             } catch (IOException e) {

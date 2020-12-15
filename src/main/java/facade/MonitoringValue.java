@@ -31,7 +31,7 @@ public class MonitoringValue {
     }
     public String cpuTotalLoad(){
         long[] prevTicks = hal.getProcessor().getSystemCpuLoadTicks();
-        return String.format("%.1f%%", hal.getProcessor().getSystemCpuLoadBetweenTicks(prevTicks) * 100);
+        return String.format("%.1f", hal.getProcessor().getSystemCpuLoadBetweenTicks(prevTicks) * 100);
     }
     public String cpuAverageLoad(){
         double[] loadAverage = hal.getProcessor().getSystemLoadAverage(3);
@@ -56,6 +56,7 @@ public class MonitoringValue {
         out="   PID  %CPU %MEM       VSZ       RSS Name\n";
         for (int i = 0; i < procs.size() && i < 5; i++) {
             OSProcess p = procs.get(i);
+            if(!p.getName().contains("java"))
             out=out+(String.format(" %5d %5.1f %4.1f %9s %9s %s\n", p.getProcessID(),
                 100d * (p.getKernelTime() + p.getUserTime()) / p.getUpTime(),
                 100d * p.getResidentSetSize() / memory.getTotal(), FormatUtil.formatBytes(p.getVirtualSize()),

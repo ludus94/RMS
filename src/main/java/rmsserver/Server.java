@@ -65,6 +65,8 @@ public class Server implements Runnable{
             logout(bufferedReader);
         }
         else if(action.contains("monitoringvalue")){
+            if(action.equals("monitoringvaluestatic"))
+                moinitoringValueStatic(bufferedReader,printWriter);
             moinitoringvalue(bufferedReader,printWriter);
         }else if(action.contains("rms")){
             rms(bufferedReader,printWriter);
@@ -168,6 +170,28 @@ public class Server implements Runnable{
                 prv.println(time);
                 printWriter.flush();
                 log.info("Send monitoring message at user "+email);
+            }
+        }else{
+            log.info("No one client manager on line to user "+email);
+        }
+    }
+    public void moinitoringValueStatic(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
+        String namemachine=bufferedReader.readLine();
+        String os=bufferedReader.readLine();
+        String booted= bufferedReader.readLine();
+        String email=dbrms.Machine(namemachine);
+        ManageUser manager=user.get(email);
+        Iterator<Socket> itrlistmanager=manager.getSocketManagers().iterator();
+        if(itrlistmanager!=null){
+            while (itrlistmanager.hasNext()){
+                Socket socketManager=itrlistmanager.next();
+                PrintWriter prv=new PrintWriter(new OutputStreamWriter(socketManager.getOutputStream(),"UTF-16"));
+                prv.println("monitoringvaluestatic");
+                prv.println(namemachine);
+                prv.println(os);
+                prv.println(booted);
+                printWriter.flush();
+                log.info("Send monitoring static message at user "+email);
             }
         }else{
             log.info("No one client manager on line to user "+email);

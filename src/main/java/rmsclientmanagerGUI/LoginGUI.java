@@ -67,7 +67,6 @@ public class LoginGUI extends JFrame {
                             ManagerClientGUI manager = new ManagerClientGUI(clientManager);
                             manager.setUser(email);
                             manager.setVisible(true);
-                            clientManager.setManagerClientGUI(manager);
                         }else if(value==1){
                             JFrame f=new JFrame();
                             JOptionPane.showMessageDialog(f,"Incorrect user or password.Retry","Error",JOptionPane.ERROR_MESSAGE);
