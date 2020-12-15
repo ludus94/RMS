@@ -5,6 +5,7 @@ public class Query {
         return "insert into users " +
             "values(?,?,?,?,crypt(?,gen_salt('bf')))";
     }
+
     public static String deleteUser() {
         return "delete from machine " +
                 "where email=?;" +

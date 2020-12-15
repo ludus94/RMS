@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.time.LocalDateTime;
 
 /***
  * Class dedicated to sending constantly data to the server
@@ -46,7 +47,7 @@ public class MonitoringThreadClass implements Runnable {
             out = out + "Speed Information not available\n";
         }
         out=out+mv.getCpuVoltage()+"\n";
-        out=out+mv.getPowerSourceInformation()+"\n";
+        out=out+mv.getPower()+"\n";
         return out;
     }
 
@@ -57,11 +58,13 @@ public class MonitoringThreadClass implements Runnable {
     public void run() {
         while(true){
             try {
-            pw.println("monitoringvalue");
-            pw.println(getNameMachine());
-            pw.print(monitoringSendValueDinamic());
-            pw.flush();
-            Thread.sleep(60000);
+                LocalDateTime localDateTime=LocalDateTime.now();
+                pw.println("monitoringvalue");
+                pw.println(getNameMachine());
+                pw.print(monitoringSendValueDinamic());
+                pw.println(localDateTime.getHour()+":"+localDateTime.getMinute());
+                pw.flush();
+                Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

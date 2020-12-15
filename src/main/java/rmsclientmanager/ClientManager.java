@@ -3,6 +3,7 @@ package rmsclientmanager;
 import rmsclient.MonitoringThreadClass;
 import rmsclient.RMCThreadClass;
 import rmsclientmanagerGUI.DataSet;
+import rmsclientmanagerGUI.ManagerClientGUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -11,7 +12,9 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 /***
  * Client Manager main class.
@@ -30,37 +33,21 @@ public class ClientManager{
     private Map<String,DataSet> devicecpuload;
     private Map<String,DataSet> devicecpuvoltage;
     private Map<String,DataSet> devicepower;
-
+    private ManagerClientGUI managerClientGUI;
     public ClientManager(String username) throws IOException {
         this.sock=new Socket(address,port);
         this.devicesList = new ArrayList<>();
         this.olddevicelist=new ArrayList<>();
         this.username=username;
+        this.devicetemperature=new TreeMap<>();
+        this.devicecpuload=new TreeMap<>();
+        this.devicecpuvoltage=new TreeMap<>();
+        this.devicepower=new TreeMap<>();
     }
-
-    public void setOlddevicelist(ArrayList<String> olddevicelist) {
-        this.olddevicelist = olddevicelist;
+    public void setManagerClientGUI(ManagerClientGUI managerClientGUI){
+        this.managerClientGUI=managerClientGUI;
     }
-
-    public ArrayList<String> getDevicesList() {
-        return devicesList;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public ImageIcon getImageIcon() throws UnsupportedEncodingException,IOException {
-        ByteArrayInputStream imagebin = new ByteArrayInputStream(image.getBytes("UTF-16"));
-        BufferedImage bufferedImage = ImageIO.read(imagebin);
-        ImageIcon imageIconUser = new ImageIcon(new ImageIcon(bufferedImage).getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-        return imageIconUser;
-    }
-        /***Log in with an existing user
+    /***Log in with an existing user
      *
      * @param email User's email
      * @param password User's password
@@ -85,46 +72,83 @@ public class ClientManager{
         }
         return returnValue;
     }
+    public void logout(){
+        try {
+            PrintWriter prw= new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),"UTF-16"));
+            prw.println("logout manager");
+            prw.println(username);
+            prw.flush();
+            sock.close();
+        } catch (IOException e) {
+        }
 
+    }
     public Map<String, DataSet> getDevicetemperature() {
         return devicetemperature;
     }
 
-    public void setDevicetemperature(Map<String, DataSet> devicetemperature) {
-        this.devicetemperature = devicetemperature;
-    }
 
     public Map<String, DataSet> getDevicecpuload() {
         return devicecpuload;
     }
 
-    public void setDevicecpuload(Map<String, DataSet> devicecpuload) {
-        this.devicecpuload = devicecpuload;
-    }
 
     public Map<String, DataSet> getDevicecpuvoltage() {
         return devicecpuvoltage;
     }
 
-    public void setDevicecpuvoltage(Map<String, DataSet> devicecpuvoltage) {
-        this.devicecpuvoltage = devicecpuvoltage;
-    }
 
     public Map<String, DataSet> getDevicepower() {
         return devicepower;
     }
 
-    public void setDevicepower(Map<String, DataSet> devicepower) {
-        this.devicepower = devicepower;
+
+    public ArrayList<String> getDevicesList() {
+        return devicesList;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public ImageIcon getImageIcon() throws UnsupportedEncodingException,IOException {
+        ByteArrayInputStream imagebin = new ByteArrayInputStream(image.getBytes("UTF-16"));
+        BufferedImage bufferedImage = ImageIO.read(imagebin);
+        ImageIcon imageIconUser = new ImageIcon(new ImageIcon(bufferedImage).getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+        return imageIconUser;
+    }
+    public void mapinit(){
+        retrieveDevices();
+        for(int i=0;i<devicesList.size();i++){
+            devicetemperature.put(devicesList.get(i),new DataSet("chartline"));
+            devicecpuload.put(devicesList.get(i),new DataSet("chartline"));
+            devicecpuvoltage.put(devicesList.get(i),new DataSet("chartline"));
+            devicepower.put(devicesList.get(i),new DataSet("chartline"));
+        }
     }
     public void mapRefresh(){
-        //Dove aggiungere l' aggiornameto delle mappe.
-        for(int i=0;i<devicesList.size();i++){
-            if(!devicetemperature.containsKey(devicesList.get(i))){
-                devicetemperature.put(devicesList.get(i),new DataSet("chartline"));
-                devicecpuload.put(devicesList.get(i),new DataSet("chartline"));
-                devicecpuvoltage.put(devicesList.get(i),new DataSet("chartline"));
-                devicepower.put(devicesList.get(i),new DataSet("chartline"));
+        if(devicesList.size()> olddevicelist.size()) {
+            for (int i = 0; i < devicesList.size(); i++) {
+                if (!devicetemperature.containsKey(devicesList.get(i))) {
+                    devicetemperature.put(devicesList.get(i), new DataSet("chartline"));
+                    devicecpuload.put(devicesList.get(i), new DataSet("chartline"));
+                    devicecpuvoltage.put(devicesList.get(i), new DataSet("chartline"));
+                    devicepower.put(devicesList.get(i), new DataSet("chartline"));
+                }
+            }
+        }else if(devicesList.size()<olddevicelist.size()){
+            for(int i=0;i<devicesList.size();i++){
+                String name=devicesList.get(i);
+                if(!olddevicelist.get(i).contains(name)){
+                    devicetemperature.remove(olddevicelist.get(i));
+                    devicecpuload.remove(olddevicelist.get(i));
+                    devicecpuvoltage.remove(olddevicelist.get(i));
+                    devicepower.remove(olddevicelist.get(i));
+                }
             }
         }
     }
@@ -179,17 +203,38 @@ public class ClientManager{
                 while ((input = br.readLine()) != null) {
                     out.add(input);
                 }
+                this.olddevicelist=this.devicesList;
                 this.devicesList = out;
             }
         }catch(IOException ex){
         }
+    }
+    public void monitoringvalue(BufferedReader bufferedReader) throws IOException{
+        String namedevice=bufferedReader.readLine();
+        String ProcessActive= bufferedReader.readLine();
+        String cpuTotalLoad=bufferedReader.readLine();
+        String cpuAvarageLoad= bufferedReader.readLine();
+        String cpuLoadPerCore= bufferedReader.readLine();
+        String CpuTemperature=bufferedReader.readLine();
+        String Speed= bufferedReader.readLine();
+        String cpuVoltage= bufferedReader.readLine();
+        String Power= bufferedReader.readLine();
+        String time=bufferedReader.readLine();
+        devicetemperature.get(namedevice).setDataSetValue(Double.parseDouble(CpuTemperature),"°C",time);
+        devicecpuload.get(namedevice).setDataSetValue(Double.parseDouble(cpuTotalLoad),"%",time);
+        devicecpuvoltage.get(namedevice).setDataSetValue(Double.parseDouble(cpuAvarageLoad),"mV",time);
+        devicepower.get(namedevice).setDataSetValue(Double.parseDouble(Power),"mW",time);
+        managerClientGUI.setJText(ProcessActive);
+        managerClientGUI.setJText(cpuLoadPerCore);
+        managerClientGUI.setJText(Speed);
+        managerClientGUI.setJText(cpuVoltage);
     }
     public void controll(){
         while(true) {
             try {
                 BufferedReader input = new BufferedReader(new InputStreamReader(sock.getInputStream()));
                 if (input.readLine().contains("monitoringvalue")) {
-
+                    monitoringvalue(input);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

@@ -3,7 +3,9 @@ package rmsserver;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.Buffer;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -58,7 +60,10 @@ public class Server implements Runnable{
             loginclient(bufferedReader,printWriter);
         }else if(action.contains("login manager")){
             loginmanager(bufferedReader,printWriter);
-        }else if(action.contains("monitoringvalue")){
+        }else if(action.contains("logout manager")){
+            logout(bufferedReader);
+        }
+        else if(action.contains("monitoringvalue")){
             moinitoringvalue(bufferedReader,printWriter);
         }else if(action.contains("rms")){
             rms(bufferedReader,printWriter);
@@ -124,9 +129,24 @@ public class Server implements Runnable{
             printWriter.flush();
         }
     }
+    public void logout(BufferedReader bufferedReader) throws IOException{
+        String email=bufferedReader.readLine();
+        ManageUser manager=user.get(email);
+        ArrayList<Socket> listManager=manager.getSocketManagers();
+        listManager.remove(socket);
+        socket.close();
+    }
     public void moinitoringvalue(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
         String namemachine=bufferedReader.readLine();
-        String monitoringValue=bufferedReader.readLine();
+        String ProcessActive= bufferedReader.readLine();
+        String cpuTotalLoad=bufferedReader.readLine();
+        String cpuAvarageLoad= bufferedReader.readLine();
+        String cpuLoadPerCore= bufferedReader.readLine();
+        String CpuTemperature=bufferedReader.readLine();
+        String Speed= bufferedReader.readLine();
+        String cpuVoltage= bufferedReader.readLine();
+        String Power= bufferedReader.readLine();
+        String time= bufferedReader.readLine();
         String email=dbrms.Machine(namemachine);
         ManageUser manager=user.get(email);
         Iterator<Socket> itrlistmanager=manager.getSocketManagers().iterator();
@@ -136,7 +156,15 @@ public class Server implements Runnable{
                 PrintWriter prv=new PrintWriter(new OutputStreamWriter(socketManager.getOutputStream(),"UTF-16"));
                 prv.println("monitoringvalue");
                 prv.println(namemachine);
-                prv.println(monitoringValue);
+                prv.println(ProcessActive);
+                prv.println(cpuTotalLoad);
+                prv.println(cpuAvarageLoad);
+                prv.println(cpuLoadPerCore);
+                prv.println(CpuTemperature);
+                prv.println(Speed);
+                prv.println(cpuVoltage);
+                prv.println(Power);
+                prv.println(time);
                 printWriter.flush();
                 log.info("Send monitoring message at user "+email);
             }

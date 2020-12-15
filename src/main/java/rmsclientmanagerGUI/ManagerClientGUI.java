@@ -12,10 +12,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -44,8 +41,8 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private String PID;
     private String name;
     private String deviceSelected;
+    private String jtext;
     private ArrayList<String> devicelist;
-    private ArrayList<String> olddevicelist;
     private static ClientManager clientManager;
     private String user;
     /**
@@ -59,7 +56,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         devicecpuvoltage=new TreeMap<>();
         devicepower=new TreeMap<>();
         model=new DefaultListModel();
-        olddevicelist=new ArrayList<>();
+
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/java/rmsclientmanagerGUI/logoapp.jpeg").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
         Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");    
         this.setIconImage(icon);
@@ -81,17 +78,16 @@ public class ManagerClientGUI extends javax.swing.JFrame {
 
 
         this.refreshDeviceList();
-        for(int i=0;i<model.capacity();i++){
-            devicetemperature.put(devicelist.get(i),new DataSet("chartline"));
-            devicecpuload.put(devicelist.get(i),new DataSet("chartline"));
-            devicecpuvoltage.put(devicelist.get(i),new DataSet("chartline"));
-            devicepower.put(devicelist.get(i),new DataSet("chartline"));
-        }
-        
-        this.datasettemperature=devicetemperature.get(0);
-        this.datasetcpuload=devicecpuload.get(0);
-        this.datasetcupvoltage=devicecpuvoltage.get(0);
-        this.datasetpower=devicepower.get(0);
+        clientManager.mapinit();
+        this.devicecpuload=clientManager.getDevicecpuload();
+        this.devicetemperature=clientManager.getDevicetemperature();
+        this.devicecpuvoltage=clientManager.getDevicecpuvoltage();
+        this.devicepower=clientManager.getDevicepower();
+
+        this.datasettemperature=devicetemperature.get(devicelist.get(0));
+        this.datasetcpuload=devicecpuload.get(devicelist.get(0));
+        this.datasetcupvoltage=devicecpuvoltage.get(devicelist.get(0));
+        this.datasetpower=devicepower.get(devicelist.get(0));
         
         this.temperature=new ChartLine(jTemperaturePanel.getWidth(),jTemperaturePanel.getHeight(),"Temperature",this.datasettemperature);
         this.cpuload=new ChartLine(jCPULoadPanel.getWidth(),jCPULoadPanel.getHeight(),"CPULoad",this.datasetcpuload);
@@ -115,6 +111,10 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         deviceSelected=devicelist.get(0);
         jDashBoardPannel.setVisible(true);
     }
+
+    public void setJText(String Test) {
+        this.jTextArea1.append(Test);
+    }
     
     public DataSet getDataSetTemperature() {
         return datasettemperature;
@@ -130,22 +130,6 @@ public class ManagerClientGUI extends javax.swing.JFrame {
 
     public DataSet getDataSetPower() {
         return datasetpower;
-    }
-
-    public Map<String, DataSet> getDeviceTemperature() {
-        return devicetemperature;
-    }
-
-    public Map<String, DataSet> getDeviceCpuLoad() {
-        return devicecpuload;
-    }
-
-    public Map<String, DataSet> getDeviceCpuVoltage() {
-        return devicecpuvoltage;
-    }
-
-    public Map<String, DataSet> getDevicePower() {
-        return devicepower;
     }
 
     public String getPID() {
@@ -164,13 +148,6 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         jEmailUser.setText(this.user);
     }
 
-    public ArrayList<String> getDevicelist() {
-        return devicelist;
-    }
-
-    public ArrayList<String> getOlddevicelist() {
-        return olddevicelist;
-    }
 
     public void refreshDeviceList(){
         clientManager.retrieveDevices();
@@ -191,9 +168,12 @@ public class ManagerClientGUI extends javax.swing.JFrame {
             jDeviceList.setModel(model);
             jDeviceMenu.validate();
         }
-        this.olddevicelist=devicelist;
         this.devicelist=listdevice;
         clientManager.mapRefresh();
+        this.devicecpuload=clientManager.getDevicecpuload();
+        this.devicecpuvoltage=clientManager.getDevicecpuvoltage();
+        this.devicetemperature=clientManager.getDevicetemperature();
+        this.devicepower=clientManager.getDevicepower();
     }
 
     /**
@@ -226,6 +206,11 @@ public class ManagerClientGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("RMS Manager");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jMenuPannel.setBackground(new java.awt.Color(51, 51, 51));
         jMenuPannel.setMaximumSize(new java.awt.Dimension(200, 200));
@@ -389,6 +374,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
 
         jTextArea1.setEditable(false);
         jTextArea1.setBackground(new java.awt.Color(51, 51, 51));
+        jTextArea1.setForeground(new java.awt.Color(255,255,255));
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jTextArea1.setPreferredSize(new java.awt.Dimension(150, 92));
@@ -509,10 +495,10 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         jPowerPanel.removeAll();
         jCPULoadPanel.removeAll();
         jCPUVoltagePanel.removeAll();
-        this.datasettemperature=devicetemperature.get(index);
-        this.datasetcpuload=devicecpuload.get(index);
-        this.datasetcupvoltage=devicecpuvoltage.get(index);
-        this.datasetpower=devicepower.get(index);
+        this.datasettemperature=devicetemperature.get(deviceSelected);
+        this.datasetcpuload=devicecpuload.get(deviceSelected);
+        this.datasetcupvoltage=devicecpuvoltage.get(deviceSelected);
+        this.datasetpower=devicepower.get(deviceSelected);
         
         this.temperature=new ChartLine(jTemperaturePanel.getWidth(),jTemperaturePanel.getHeight(),"Temperature",this.datasettemperature);
         this.cpuload=new ChartLine(jCPULoadPanel.getWidth(),jCPULoadPanel.getHeight(),"CPULoad",this.datasetcpuload);
@@ -561,7 +547,10 @@ public class ManagerClientGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(f, "Field of Process name mustn't be empty", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jKillProcessWithNameButtonMouseClicked
-
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {
+         clientManager.logout();
+         dispose();
+    }
     /**
      * @param args the command line arguments
      */
