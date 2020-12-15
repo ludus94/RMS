@@ -1,5 +1,7 @@
 package rmsclientGUI;
 
+import rmsclient.Client;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +17,7 @@ public class LoginGUI extends JFrame {
     private JButton signInButton;
     private JLabel image;
     private JButton exitButton;
-
+    private Client client;
     public LoginGUI(String title){
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,12 +51,16 @@ public class LoginGUI extends JFrame {
                     JOptionPane.showMessageDialog(null,"Incorrect login\nthere isn't email\nplease retype");
                 else if(password.equals(""))
                     JOptionPane.showMessageDialog(null,"Incorrect login\nthere isn't password\nplease retype");
+                else if(password.length()>8){
+                    JOptionPane.showMessageDialog(null,"Password must be length 8 character");
+                }
                 else{
+                    client=new Client();
+                    int value=client.login(email,password);
+                    if(value==0){
+                        dispose();
+                    }
                     dispose();
-                    //JFrame RMSFrame = new ManageRMSGUI(email,image);
-                    //RMSFrame.setSize(500,500);
-                    //RMSFrame.setVisible(true);
-                    //RMSFrame.setResizable(true);
                 }
             }
         });

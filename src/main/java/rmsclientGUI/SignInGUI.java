@@ -1,5 +1,7 @@
 package rmsclientGUI;
 
+import rmsclient.Client;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,7 +20,9 @@ public class SignInGUI extends JFrame {
     private JPasswordField passwordField1;
     private JPasswordField passwordField2;
     private JTextField photoTextField;
-
+    private JTextField jsurnametextField;
+    private Client client;
+    private String extension;
     public SignInGUI(){
         super("Sign In ARSM");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,6 +36,24 @@ public class SignInGUI extends JFrame {
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String email=emailTextField.getText();
+                String name=nameTextField.getText();
+                String surname=jsurnametextField.getText();
+                String password1=String.valueOf(passwordField1.getPassword());
+                String password2=String.valueOf(passwordField2.getPassword());
+                String path=photoTextField.getText();
+                if(password1.length()<=8 && password2.length()<=8){
+                    client=new Client();
+                    int value=client.sigin(email,password1,password2,name,surname,path,extension);
+                    if(value==0){
+                        JOptionPane optionPane = new JOptionPane("User registered with success", JOptionPane.INFORMATION_MESSAGE);
+                        dispose();
+                        JFrame frame = new LoginGUI("Login ARSM");
+                        frame.setSize(500, 500);
+                        frame.setVisible(true);
+                        frame.setResizable(true);
+                    }
+                }
 
             }
         });
@@ -49,6 +71,7 @@ public class SignInGUI extends JFrame {
                     Matcher matcher=pat.matcher(returnFile);
                     if(matcher.find()) {
                        path=returnDir+returnFile;
+                       extension=returnFile.substring(returnFile.length()-4,returnFile.length());
                        photoTextField.setText(path);
                    }else{
                        JOptionPane optionPane = new JOptionPane("File isn't an image", JOptionPane.ERROR_MESSAGE);
@@ -75,4 +98,5 @@ public class SignInGUI extends JFrame {
             }
         });
     }
+
 }
