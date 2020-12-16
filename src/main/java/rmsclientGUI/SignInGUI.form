@@ -35,7 +35,8 @@
         <properties>
           <background color="-11556813"/>
           <font name="JetBrains Mono" style="2"/>
-          <foreground color="-1"/>
+          <foreground color="-16711423"/>
+          <hideActionText value="false"/>
           <text value="Register"/>
         </properties>
       </component>
@@ -98,7 +99,7 @@
           <background color="-7989484"/>
           <enabled value="true"/>
           <font name="JetBrains Mono" style="2"/>
-          <foreground color="-1"/>
+          <foreground color="-16777216"/>
           <text value="Back"/>
         </properties>
       </component>

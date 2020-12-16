@@ -46,7 +46,8 @@ public class SignInGUI extends JFrame {
                     client=new Client();
                     int value=client.sigin(email,password1,password2,name,surname,path,extension);
                     if(value==0){
-                        JOptionPane optionPane = new JOptionPane("User registered with success", JOptionPane.INFORMATION_MESSAGE);
+                        JFrame frameoption=new JFrame();
+                        JOptionPane.showMessageDialog(frameoption,"User registered with success");
                         dispose();
                         JFrame frame = new LoginGUI("Login ARSM");
                         frame.setSize(500, 500);
@@ -54,7 +55,8 @@ public class SignInGUI extends JFrame {
                         frame.setResizable(true);
                     }
                     if(value==2){
-                        JOptionPane optionPane = new JOptionPane("User all ready existis in system", JOptionPane.INFORMATION_MESSAGE);
+                        JFrame frameoption=new JFrame();
+                        JOptionPane.showMessageDialog(frameoption,"User all ready existis in system");
                         dispose();
                         JFrame frame = new LoginGUI("Login ARSM");
                         frame.setSize(500, 500);
