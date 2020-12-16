@@ -43,7 +43,7 @@ public class DbRms {
         PreparedStatement pst=connection.prepareStatement(Query.selectNameMachines());
         pst.setString(1,email);
         ResultSet resultSet=pst.executeQuery();
-        if(resultSet!=null){
+        if(resultSet.next()==true){
             String out = "";
             while(resultSet.next()){
                 out=out+resultSet.getString("name")+"\n";
@@ -81,7 +81,7 @@ public class DbRms {
         pst.setString(1,email);
         pst.setString(2,name);
         ResultSet resultSet=pst.executeQuery();
-        if (resultSet==null){
+        if (resultSet.next()==false){
             PreparedStatement pst2=connection.prepareStatement(Query.insertMachine());
             String id=name+email;
             pst2.setString(1, String.valueOf(id.hashCode()));
