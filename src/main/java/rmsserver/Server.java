@@ -43,11 +43,11 @@ public class Server implements Runnable{
             try {
                 control(socket);
             } catch (IOException ex) {
-
+                ex.printStackTrace();
             } catch (SQLException ex2) {
-
+                ex2.printStackTrace();
             } catch (NullPointerException ex3) {
-
+                ex3.printStackTrace();
             }
         }
     }

@@ -27,7 +27,7 @@ public class DbRms {
         pst.setString(1,email);
         pst.setString(2,password);
         ResultSet resultSet=pst.executeQuery();
-        if(resultSet.getRowId("email")==null){
+        if(resultSet.next()==false){
             return 1;
         }else{
             return 0;
