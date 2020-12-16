@@ -49,7 +49,7 @@ public class Client {
             return namemachine;
         }else{
             try{
-                String s=InetAddress.getLocalHost().getHostName().replace("(\\.[a-z]{1,})"," ");
+                String s=InetAddress.getLocalHost().getHostName().replaceAll("(\\.[a-z]{1,})"," ");
                 s=s.replace("-"," ");
                 return s;
             } catch (UnknownHostException e) {
