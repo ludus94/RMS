@@ -87,6 +87,7 @@ public class DbRms {
             pst2.setString(1, String.valueOf(id.hashCode()));
             pst2.setString(2,email);
             pst2.setString(3,name);
+            pst2.executeUpdate();
         }
     }
     public synchronized String Machine(String name) throws SQLException {

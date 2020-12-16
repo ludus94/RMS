@@ -86,7 +86,15 @@ public class Server implements Runnable{
         String name=bufferedReader.readLine();
         String surname=bufferedReader.readLine();
         String image= bufferedReader.readLine();
-        printWriter.println(dbrms.signin(name,surname,email,password,image.getBytes("UTF-16")));
+        int value=dbrms.signin(name,surname,email,password,image.getBytes("UTF-16"));
+        if(value==0){
+            log.info("User "+email+" register with success");
+        }else if(value==2){
+            log.info("User "+email+" already exist");
+        }else if(value==3){
+            log.info("User "+email+" generic error");
+        }
+        printWriter.println(value);
         printWriter.flush();
     }
     public void loginclient(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
@@ -183,7 +191,7 @@ public class Server implements Runnable{
         String os=bufferedReader.readLine();
         String booted= bufferedReader.readLine();
         String email=dbrms.Machine(namemachine);
-        ManageUser manager=user.get(email);
+        ManageUser manager = user.get(email);
         Iterator<Socket> itrlistmanager=manager.getSocketManagers().iterator();
         if(itrlistmanager!=null){
             while (itrlistmanager.hasNext()){
