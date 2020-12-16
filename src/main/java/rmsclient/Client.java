@@ -44,16 +44,16 @@ public class Client {
      * @return
      */
     public String getNameMachine(){
-        String namemachine=System.getenv("COMPUTERNAME");
-        if (namemachine!=null)
+        String namemachine= System.getenv("COMPUTERNAME");
+        if(namemachine!=null){
             return namemachine;
-        else {
-            try {
-
-                String s = InetAddress.getLocalHost().getHostName().replaceAll("(\\.[a-z]{1,})", " ");
+        }else{
+            try{
+                String s=InetAddress.getLocalHost().getHostName().replace("(\\.[a-z]{1,})"," ");
                 s=s.replace("-"," ");
                 return s;
             } catch (UnknownHostException e) {
+                e.printStackTrace();
             }
         }
         return null;
@@ -70,7 +70,6 @@ public class Client {
     public int login(String email,String password)  {
         try {
             PrintWriter prw = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(), "UTF-16"));
-            System.out.print(getNameMachine());
             prw.println("login client");
             prw.println(getNameMachine());
             prw.println(email);
