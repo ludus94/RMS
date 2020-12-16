@@ -33,12 +33,13 @@ public class DbRms {
             return 0;
         }
     }
-    public synchronized String imageManagerQuery(String email) throws SQLException {
+    public synchronized byte[] imageManagerQuery(String email) throws SQLException {
         PreparedStatement pst=connection.prepareStatement(Query.selectImageUser());
         pst.setString(1,email);
         ResultSet resultSet=pst.executeQuery();
         while(resultSet.next()) {
-            return resultSet.getString("image");
+            return resultSet.getBytes("image");
+
         }
         return null;
     }

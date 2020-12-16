@@ -55,7 +55,7 @@ public class LoginGUI extends JFrame {
                 else if(password.equals(""))
                     JOptionPane.showMessageDialog(null,"Incorrect login\nthere isn't password\nplease retype");
                 else{
-                    dispose();
+
                     //JFrame RMSFrame = new ManageRMSGUI(email,image);
                     //RMSFrame.setSize(500,500);
                     //RMSFrame.setVisible(true);
@@ -71,6 +71,7 @@ public class LoginGUI extends JFrame {
                             JFrame f=new JFrame();
                             JOptionPane.showMessageDialog(f,"Incorrect user or password.Retry","Error",JOptionPane.ERROR_MESSAGE);
                         }
+                        dispose();
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }

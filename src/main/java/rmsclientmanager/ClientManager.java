@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 /***
  * Client Manager main class.
@@ -63,6 +64,7 @@ public class ClientManager{
         prw.println(password);
         prw.flush();
         BufferedReader br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
+
         int returnValue=Integer.parseInt(br.readLine());
         if(returnValue==0) {
            prw.println("image");
@@ -70,7 +72,6 @@ public class ClientManager{
            prw.flush();
            this.image= br.readLine();
            this.retrieveDevices();
-           this.controll();
         }
         return returnValue;
     }
@@ -124,7 +125,9 @@ public class ClientManager{
     public ImageIcon getImageIcon() throws UnsupportedEncodingException,IOException {
         ByteArrayInputStream imagebin = new ByteArrayInputStream(image.getBytes("UTF-16"));
         BufferedImage bufferedImage = ImageIO.read(imagebin);
-        ImageIcon imageIconUser = new ImageIcon(new ImageIcon(bufferedImage).getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+        ByteArrayOutputStream imageout=new ByteArrayOutputStream();
+        ImageIO.write(bufferedImage, "jpg", imageout );
+        ImageIcon imageIconUser = new ImageIcon(new ImageIcon(imageout.toByteArray()).getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
         return imageIconUser;
     }
     public void mapinit(){
@@ -208,7 +211,7 @@ public class ClientManager{
             if (br.readLine().contains("deviceavabile")) {
                 ArrayList<String> out = new ArrayList<>();
                 String input = null;
-                while ((input = br.readLine()) != null) {
+                while (!(input = br.readLine()).contains("stop")) {
                     out.add(input);
                 }
                 this.olddevicelist=this.devicesList;

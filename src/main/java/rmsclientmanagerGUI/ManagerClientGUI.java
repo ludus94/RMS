@@ -114,6 +114,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         deviceSelected=devicelist.get(0);
         jDashBoardPannel.setVisible(true);
         jTextArea1.setText(jouttext.get(deviceSelected).getOut());
+        clientManager.controll();
     }
 
     public void setJText(String Test) {

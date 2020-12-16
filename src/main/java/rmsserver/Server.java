@@ -210,7 +210,7 @@ public class Server implements Runnable{
     }
     public void image(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException{
         String email=bufferedReader.readLine();
-        String image= dbrms.imageManagerQuery(email);
+        byte[] image= dbrms.imageManagerQuery(email);
         printWriter.println(image);
         printWriter.flush();
     }
@@ -254,6 +254,7 @@ public class Server implements Runnable{
         log.info(out);
         printWriter.println("deviceavabile");
         printWriter.println(out);
+        printWriter.println("stop");
         printWriter.flush();
     }
 
