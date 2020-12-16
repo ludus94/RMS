@@ -31,7 +31,7 @@ public class Server implements Runnable{
         while(true){
             Socket socket= serverSocket.accept();
             Server server=new Server(socket);
-            log.info("--- Server run ---");
+            log.info("--- Connection Accept ---");
             Thread t=new Thread(server);
             t.start();
         }
@@ -40,14 +40,16 @@ public class Server implements Runnable{
     @Override
     public void run() {
         while(true) {
-         try {
-            control(socket);
-         }catch (IOException ex){
+            try {
+                control(socket);
+            } catch (IOException ex) {
 
-         }catch (SQLException ex2){
-             ex2.printStackTrace();
-         }
-         }
+            } catch (SQLException ex2) {
+
+            } catch (NullPointerException ex3) {
+
+            }
+        }
     }
 
     public void control(Socket socket) throws IOException, SQLException {
