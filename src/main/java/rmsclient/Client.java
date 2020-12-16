@@ -44,7 +44,19 @@ public class Client {
      * @return
      */
     public String getNameMachine(){
-        return System.getenv("COMPUTERNAME");
+        String namemachine=System.getenv("COMPUTERNAME");
+        if (namemachine!=null)
+            return namemachine;
+        else {
+            try {
+
+                String s = InetAddress.getLocalHost().getHostName().replaceAll("(\\.[a-z]{1,})", " ");
+                s=s.replace("-"," ");
+                return s;
+            } catch (UnknownHostException e) {
+            }
+        }
+        return null;
     }
     /***Log in with an existing user
      *
@@ -58,6 +70,7 @@ public class Client {
     public int login(String email,String password)  {
         try {
             PrintWriter prw = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(), "UTF-16"));
+            System.out.print(getNameMachine());
             prw.println("login client");
             prw.println(getNameMachine());
             prw.println(email);
