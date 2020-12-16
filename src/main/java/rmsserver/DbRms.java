@@ -37,7 +37,10 @@ public class DbRms {
         PreparedStatement pst=connection.prepareStatement(Query.selectImageUser());
         pst.setString(1,email);
         ResultSet resultSet=pst.executeQuery();
-        return resultSet.getString("image");
+        while(resultSet.next()) {
+            return resultSet.getString("image");
+        }
+        return null;
     }
     public synchronized String retriveDevice(String email) throws SQLException{
         PreparedStatement pst=connection.prepareStatement(Query.selectNameMachines());

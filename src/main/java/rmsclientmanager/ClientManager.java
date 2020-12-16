@@ -66,6 +66,8 @@ public class ClientManager{
         int returnValue=Integer.parseInt(br.readLine());
         if(returnValue==0) {
            prw.println("image");
+           prw.println(email);
+           prw.flush();
            this.image= br.readLine();
            this.retrieveDevices();
            this.controll();
@@ -200,6 +202,7 @@ public class ClientManager{
         try {
             PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(this.sock.getOutputStream(), "UTF-16"));
             printWriter.println("retrieve device");
+            printWriter.println(username);
             printWriter.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(this.sock.getInputStream(), "UTF-16"));
             if (br.readLine().contains("deviceavabile")) {
