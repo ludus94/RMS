@@ -44,7 +44,19 @@ public class Client {
      * @return
      */
     public String getNameMachine(){
-        return System.getenv("COMPUTERNAME");
+        String namemachine= System.getenv("COMPUTERNAME");
+        if(namemachine!=null){
+            return namemachine;
+        }else{
+            try{
+                String s=InetAddress.getLocalHost().getHostName().replace("(\\.[a-z]{1,})"," ");
+                s=s.replace("-"," ");
+                return s;
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
     /***Log in with an existing user
      *
