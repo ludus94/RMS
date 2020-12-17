@@ -61,7 +61,19 @@ public class MonitoringThreadClass implements Runnable {
                 LocalDateTime localDateTime=LocalDateTime.now();
                 pw.println("monitoringvalue");
                 pw.println(getNameMachine());
-                pw.print(monitoringSendValueDinamic());
+                pw.println(mv.getProcessActive(20));
+                pw.println(mv.cpuTotalLoad());
+                pw.println(mv.cpuAverageLoad());
+                pw.println(mv.cpuLoadPerCore());
+                pw.println(mv.getCpuTemperature());
+                int [] speed= mv.getFanSpeed();
+                if(speed.length>0)
+                    pw.println(speed[0]+" "+speed[1]);
+                else {
+                    pw.println("Speed Information not available");
+                }
+                pw.println(mv.getCpuVoltage());
+                pw.println(mv.getPower());
                 pw.println(localDateTime.getHour()+":"+localDateTime.getMinute());
                 pw.flush();
                 System.out.println(monitoringSendValueDinamic());
