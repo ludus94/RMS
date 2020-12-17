@@ -1,9 +1,6 @@
 package rmsclientmanager;
 
-import rmsclient.MonitoringThreadClass;
-import rmsclient.RMCThreadClass;
 import rmsclientmanagerGUI.DataSet;
-import rmsclientmanagerGUI.ManagerClientGUI;
 import rmsserver.StringObject;
 
 import javax.imageio.ImageIO;
@@ -13,10 +10,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 /***
  * Client Manager main class.
@@ -30,7 +25,7 @@ public class ClientManager{
     private ArrayList<String> devicesList;
     private ArrayList<String> olddevicelist;
     private String username;
-    private String image;
+    private byte[] image;
     private Map<String,DataSet> devicetemperature;
     private Map<String,DataSet> devicecpuload;
     private Map<String,DataSet> devicecpuvoltage;
@@ -64,13 +59,15 @@ public class ClientManager{
         prw.println(password);
         prw.flush();
         BufferedReader br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
-
         int returnValue=Integer.parseInt(br.readLine());
         if(returnValue==0) {
            prw.println("image");
            prw.println(email);
            prw.flush();
-           this.image= br.readLine();
+           BufferedInputStream imgbin=new BufferedInputStream(sock.getInputStream());
+           while(imgbin.available()==0);
+           this.image=new byte[imgbin.available()];
+           imgbin.read(image);
            this.retrieveDevices();
         }
         return returnValue;
@@ -114,7 +111,7 @@ public class ClientManager{
         return outjtext;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
@@ -123,12 +120,9 @@ public class ClientManager{
     }
 
     public ImageIcon getImageIcon() throws UnsupportedEncodingException,IOException {
-        ByteArrayInputStream imagebin = new ByteArrayInputStream(image.getBytes("UTF-16"));
-        BufferedImage bufferedImage = ImageIO.read(imagebin);
-        ByteArrayOutputStream imageout=new ByteArrayOutputStream();
-        ImageIO.write(bufferedImage, "jpg", imageout );
-        ImageIcon imageIconUser = new ImageIcon(new ImageIcon(imageout.toByteArray()).getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-        return imageIconUser;
+        Image image2=new ImageIcon(image).getImage();
+        Image image3=image2.getScaledInstance(75,75,75);
+        return new ImageIcon(image3);
     }
     public void mapinit(){
         retrieveDevices();

@@ -211,8 +211,9 @@ public class Server implements Runnable{
     public void image(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException{
         String email=bufferedReader.readLine();
         byte[] image= dbrms.imageManagerQuery(email);
-        printWriter.println(image);
-        printWriter.flush();
+        BufferedOutputStream imagebin=new BufferedOutputStream(socket.getOutputStream());
+        imagebin.write(image);
+        imagebin.flush();
     }
     public void rms(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
         String namemachine=bufferedReader.readLine();
