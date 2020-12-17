@@ -1,9 +1,14 @@
 package rmsclientmanagerGUI;
 
+
+import rmsclientGUI.LoginGUI;
+import rmsclientmanager.ClientManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,7 +23,9 @@ public class SignInGUI extends JFrame {
     private JPasswordField passwordField1;
     private JPasswordField passwordField2;
     private JTextField photoTextField;
-
+    private JTextField jsurnametextField;
+    private ClientManager client;
+    private String extension;
     public SignInGUI(){
         super("Sign In ARSM");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,6 +39,38 @@ public class SignInGUI extends JFrame {
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String email=emailTextField.getText();
+                String name=nameTextField.getText();
+                String surname=jsurnametextField.getText();
+                String password1=String.valueOf(passwordField1.getPassword());
+                String password2=String.valueOf(passwordField2.getPassword());
+                String path=photoTextField.getText();
+                if(password1.length()<=8 && password2.length()<=8){
+                    try {
+                        client=new ClientManager(email);
+                        int value=client.sigin(email,password1,password2,name,surname,path,extension);
+                        if(value==0){
+                            JFrame frameoption=new JFrame();
+                            JOptionPane.showMessageDialog(frameoption,"User registered with success");
+                            dispose();
+                            JFrame frame = new rmsclientmanagerGUI.LoginGUI("Login ARSM");
+                            frame.setSize(500, 500);
+                            frame.setVisible(true);
+                            frame.setResizable(true);
+                        }
+                        if(value==2){
+                            JFrame frameoption=new JFrame();
+                            JOptionPane.showMessageDialog(frameoption,"User all ready existis in system");
+                            dispose();
+                            JFrame frame = new rmsclientGUI.LoginGUI("Login ARSM");
+                            frame.setSize(500, 500);
+                            frame.setVisible(true);
+                            frame.setResizable(true);
+                        }
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
 
             }
         });
@@ -49,6 +88,7 @@ public class SignInGUI extends JFrame {
                     Matcher matcher=pat.matcher(returnFile);
                     if(matcher.find()) {
                        path=returnDir+returnFile;
+                       extension=returnFile.substring(returnFile.length()-4,returnFile.length());
                        photoTextField.setText(path);
                    }else{
                        JOptionPane optionPane = new JOptionPane("File isn't an image", JOptionPane.ERROR_MESSAGE);
@@ -75,4 +115,5 @@ public class SignInGUI extends JFrame {
             }
         });
     }
+
 }

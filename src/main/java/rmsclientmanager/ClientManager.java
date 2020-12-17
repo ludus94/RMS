@@ -173,9 +173,10 @@ public class ClientManager{
      * @throws IOException
      */
     public int sigin(String email, String password, String password2,String name, String surname, String path,String extension) throws IOException {
-        BufferedImage image=ImageIO.read(new File(path));
-        ByteArrayOutputStream imagebin=new ByteArrayOutputStream();
-        ImageIO.write(image,extension,imagebin);
+        BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(path));
+        byte[] imagebin=new byte[inputStream.available()];
+        inputStream.read(imagebin);
+        image=imagebin;
         PrintWriter prw = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(), "UTF-16"));
         if(password.equals(password2)) {
             prw.println("signin");
@@ -183,13 +184,17 @@ public class ClientManager{
             prw.println(password);
             prw.println(name);
             prw.println(surname);
-            prw.println(imagebin.toByteArray());
             prw.flush();
-        }else{
-            return 1;
+            BufferedReader br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
+            String image=br.readLine();
+            if(image.contains("image")) {
+                BufferedOutputStream bufferedOutputStream=new BufferedOutputStream(sock.getOutputStream());
+                bufferedOutputStream.write(imagebin);
+                bufferedOutputStream.flush();
+            }
+            return Integer.parseInt(br.readLine());
         }
-        BufferedReader br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
-        return Integer.parseInt(br.readLine());
+        return -1;
     }
     /***
      * Retrieve list of devices linked to

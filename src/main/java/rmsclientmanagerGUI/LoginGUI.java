@@ -6,10 +6,7 @@ import rmsclientmanager.ClientManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
 import java.io.IOException;
 
 public class LoginGUI extends JFrame {
@@ -64,6 +61,7 @@ public class LoginGUI extends JFrame {
                         ClientManager clientManager=new ClientManager(email);
                         int value=clientManager.login(email,password);
                         if(value==0) {
+                            dispose();
                             ManagerClientGUI manager = new ManagerClientGUI(clientManager);
                             manager.setUser(email);
                             manager.setVisible(true);
@@ -71,7 +69,6 @@ public class LoginGUI extends JFrame {
                             JFrame f=new JFrame();
                             JOptionPane.showMessageDialog(f,"Incorrect user or password.Retry","Error",JOptionPane.ERROR_MESSAGE);
                         }
-                        dispose();
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
@@ -93,9 +90,11 @@ public class LoginGUI extends JFrame {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+
+
             }
         });
+
     }
 
     public static void main(String[] args){

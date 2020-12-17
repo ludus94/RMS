@@ -116,14 +116,16 @@ public class Client {
             ByteArrayOutputStream imagebin = new ByteArrayOutputStream();
             ImageIO.write(image, extension, imagebin);
             PrintWriter prw = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(), "UTF-16"));
+            BufferedOutputStream bufferimage=new BufferedOutputStream(sock.getOutputStream());
             if (password.equals(password2)) {
                 prw.println("signin");
                 prw.println(email);
                 prw.println(password);
                 prw.println(name);
                 prw.println(surname);
-                prw.println(imagebin.toByteArray());
+                bufferimage.write(imagebin.toByteArray());
                 prw.flush();
+                bufferimage.flush();
                 BufferedReader br = new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-16"));
                 int value = Integer.parseInt(br.readLine());
                 sock.close();

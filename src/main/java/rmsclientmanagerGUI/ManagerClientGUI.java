@@ -80,6 +80,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
 
 
         this.refreshDeviceList();
+        this.jDeviceList.setModel(model);
         clientManager.mapinit();
         this.jouttext=clientManager.getOutjtext();
         this.devicecpuload=clientManager.getDevicecpuload();
@@ -112,6 +113,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         jDeviceList.setLayout(new java.awt.CardLayout());
         jDeviceList.setSelectedIndex(0);
         deviceSelected=devicelist.get(0);
+        jDeviceList.setVisible(true);
         jDashBoardPannel.setVisible(true);
         jTextArea1.setText(jouttext.get(deviceSelected).getOut());
     }

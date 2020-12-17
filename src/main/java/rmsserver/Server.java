@@ -3,6 +3,7 @@ package rmsserver;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.nio.Buffer;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,6 +43,12 @@ public class Server implements Runnable{
         while(true) {
             try {
                 control(socket);
+            } catch (SocketException ex4){
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (SQLException ex2) {
@@ -85,8 +92,14 @@ public class Server implements Runnable{
         String password=bufferedReader.readLine();
         String name=bufferedReader.readLine();
         String surname=bufferedReader.readLine();
-        String image= bufferedReader.readLine();
-        int value=dbrms.signin(name,surname,email,password,image.getBytes("UTF-16"));
+        printWriter.println("image");
+        printWriter.flush();
+        BufferedInputStream bufferedInputStream=new BufferedInputStream(socket.getInputStream());
+
+        while(bufferedInputStream.available()==0);
+        byte[] img=new byte[bufferedInputStream.available()];
+        bufferedInputStream.read(img);
+        int value=dbrms.signin(name,surname,email,password,img);
         if(value==0){
             log.info("User "+email+" register with success");
         }else if(value==2){
