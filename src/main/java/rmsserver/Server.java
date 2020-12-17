@@ -77,7 +77,9 @@ public class Server implements Runnable{
         else if(action.contains("monitoringvalue")){
             if(action.equals("monitoringvaluestatic"))
                 moinitoringValueStatic(bufferedReader,printWriter);
-            moinitoringvalue(bufferedReader,printWriter);
+            else {
+                moinitoringvalue(bufferedReader, printWriter);
+            }
         }else if(action.contains("rms")){
             rms(bufferedReader,printWriter);
         }else if(action.contains("image")){
