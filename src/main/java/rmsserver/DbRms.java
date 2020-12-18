@@ -47,13 +47,16 @@ public class DbRms {
         PreparedStatement pst=connection.prepareStatement(Query.selectNameMachines());
         pst.setString(1,email);
         ResultSet resultSet=pst.executeQuery();
-        if(resultSet.next()==true){
-            String out = "";
+        Boolean entry=false;
+        String out = "";
             while(resultSet.next()){
+                entry=true;
                 out=out+resultSet.getString("name")+"\n";
             }
-            return out;
-        }else{
+        if (entry==true) {
+               return out;
+        }
+        else{
             return "Client not connect";
         }
     }

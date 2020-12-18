@@ -62,6 +62,7 @@ public class MonitoringValue {
                 100d * p.getResidentSetSize() / memory.getTotal(), FormatUtil.formatBytes(p.getVirtualSize()),
                 FormatUtil.formatBytes(p.getResidentSetSize()), p.getName()));
         }
+        out=out+"stop\n";
         return out;
     }
     public Double getCpuTemperature(){

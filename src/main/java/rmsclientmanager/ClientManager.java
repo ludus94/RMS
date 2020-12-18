@@ -12,12 +12,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 /***
  * Client Manager main class.
  * Allows users to manage all devices linked to their account.
  */
-public class ClientManager{
+public class ClientManager implements Runnable{
 
     private Socket sock;
     private int port=33333;
@@ -31,6 +32,7 @@ public class ClientManager{
     private Map<String,DataSet> devicecpuvoltage;
     private Map<String,DataSet> devicepower;
     private Map<String, StringObject>  outjtext;
+    private static Logger log;
     public ClientManager(String username) throws IOException {
         this.sock=new Socket(address,port);
         this.devicesList = new ArrayList<>();
@@ -41,6 +43,7 @@ public class ClientManager{
         this.devicecpuvoltage=new TreeMap<>();
         this.devicepower=new TreeMap<>();
         this.outjtext=new TreeMap<>();
+        this.log=Logger.getLogger("global");
     }
     /***Log in with an existing user
      *
@@ -230,6 +233,8 @@ public class ClientManager{
         String cpuVoltage= bufferedReader.readLine();
         String Power= bufferedReader.readLine();
         String time=bufferedReader.readLine();
+        log.info(namedevice+time);
+        log.info(ProcessActive);
         devicetemperature.get(namedevice).setDataSetValue(Double.parseDouble(CpuTemperature),"°C",time);
         devicecpuload.get(namedevice).setDataSetValue(Double.parseDouble(cpuTotalLoad),"%",time);
         devicecpuvoltage.get(namedevice).setDataSetValue(Double.parseDouble(cpuVoltage),"mV",time);
@@ -277,10 +282,11 @@ public class ClientManager{
         }
         return null;
     }
-    public void controll(){
+    @Override
+    public void run() {
         while(true) {
             try {
-                BufferedReader input = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+                BufferedReader input = new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
                 if (input.readLine().contains("monitoringvalue")) {
                     monitoringvalue(input);
                 }
@@ -292,6 +298,4 @@ public class ClientManager{
             }
         }
     }
-
-
 }

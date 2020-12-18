@@ -79,9 +79,9 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         jEmailUser.setText(clientManager.getUsername());
 
 
+        clientManager.mapinit();
         this.refreshDeviceList();
         this.jDeviceList.setModel(model);
-        clientManager.mapinit();
         this.jouttext=clientManager.getOutjtext();
         this.devicecpuload=clientManager.getDevicecpuload();
         this.devicetemperature=clientManager.getDevicetemperature();
@@ -597,7 +597,8 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ManagerClientGUI(clientManager).setVisible(true);
-                clientManager.controll();
+                clientManager.run();
+
             }
         });
     }

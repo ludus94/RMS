@@ -76,6 +76,7 @@ public class MonitoringThreadClass implements Runnable {
                 LocalDateTime localDateTime=LocalDateTime.now();
                 pw.println("monitoringvalue");
                 pw.println(getNameMachine());
+                /*
                 pw.println(mv.getProcessActive(20));
                 pw.println(mv.cpuTotalLoad());
                 pw.println(mv.cpuAverageLoad());
@@ -90,6 +91,8 @@ public class MonitoringThreadClass implements Runnable {
                 pw.println(mv.getCpuVoltage());
                 pw.println(mv.getPower());
                 pw.println(localDateTime.getHour()+":"+localDateTime.getMinute());
+                 */
+                pw.println(monitoringSendValueDinamic());
                 pw.flush();
                 System.out.println(monitoringSendValueDinamic());
                 Thread.sleep(60000);

@@ -16,12 +16,11 @@ import java.util.logging.Logger;
 public class Server implements Runnable{
     private Socket socket;
     private DbRms dbrms;
-    private static Map<String,ManageUser> user;
+    private static Map<String,ManageUser> user=new TreeMap<>();
     private static final int port=33333;
     private static Logger log;
 
     public Server(Socket sock) {
-        this.user=new TreeMap<>();
         this.dbrms=new DbRms("DB_RMS","postgres" +
                 "","dp20202021");
         this.socket=sock;
@@ -167,7 +166,8 @@ public class Server implements Runnable{
     }
     public void moinitoringvalue(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
         String namemachine=bufferedReader.readLine();
-        String ProcessActive= bufferedReader.readLine();
+        String ProcessActive="";
+        while (!(ProcessActive=ProcessActive+bufferedReader.readLine()).contains("stop"));
         String cpuTotalLoad=bufferedReader.readLine();
         String cpuAvarageLoad= bufferedReader.readLine();
         String cpuLoadPerCore= bufferedReader.readLine();
@@ -194,7 +194,17 @@ public class Server implements Runnable{
                 prv.println(cpuVoltage);
                 prv.println(Power);
                 prv.println(time);
-                printWriter.flush();
+                log.info("monitoring of "+namemachine);
+                log.info(ProcessActive);
+                log.info(cpuTotalLoad);
+                log.info(cpuAvarageLoad);
+                log.info(cpuLoadPerCore);
+                log.info(CpuTemperature);
+                log.info(Speed);
+                log.info(cpuVoltage);
+                log.info(Power);
+                log.info(time);
+                prv.flush();
                 log.info("Send monitoring message at user "+email);
             }
         }else{
