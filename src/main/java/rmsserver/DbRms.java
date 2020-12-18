@@ -22,7 +22,7 @@ public class DbRms {
             throwables.printStackTrace();
         }
     }
-    public  int loginQuery(String email, String password) throws SQLException {
+    public synchronized int loginQuery(String email, String password) throws SQLException {
         PreparedStatement pst=connection.prepareStatement(Query.matchingPassword());
         pst.setString(1,email);
         pst.setString(2,password);
@@ -33,7 +33,7 @@ public class DbRms {
             return 0;
         }
     }
-    public  byte[] imageManagerQuery(String email) throws SQLException {
+    public synchronized byte[] imageManagerQuery(String email) throws SQLException {
         PreparedStatement pst=connection.prepareStatement(Query.selectImageUser());
         pst.setString(1,email);
         ResultSet resultSet=pst.executeQuery();
@@ -43,7 +43,7 @@ public class DbRms {
         }
         return null;
     }
-    public  String retriveDevice(String email) throws SQLException{
+    public synchronized String retriveDevice(String email) throws SQLException{
         PreparedStatement pst=connection.prepareStatement(Query.selectNameMachines());
         pst.setString(1,email);
         ResultSet resultSet=pst.executeQuery();
@@ -57,13 +57,13 @@ public class DbRms {
             return "Client not connect";
         }
     }
-    public  void delateMachine(String name,String email) throws SQLException {
+    public synchronized void delateMachine(String name,String email) throws SQLException {
         PreparedStatement pst=connection.prepareStatement(Query.deleteMachine());
         pst.setString(1,name);
         pst.setString(2,email);
         pst.executeQuery();
     }
-    public  int signin(String name,String surname,String email,String password,byte[] image) throws SQLException {
+    public synchronized int signin(String name,String surname,String email,String password,byte[] image) throws SQLException {
         PreparedStatement pst=connection.prepareStatement(Query.selectUser());
         pst.setString(1,email);
         ResultSet resultSet=pst.executeQuery();
@@ -80,7 +80,7 @@ public class DbRms {
         }
         return 2;
     }
-    public  void loginmachine(String name,String email) throws SQLException {
+    public synchronized  void loginmachine(String name,String email) throws SQLException {
         PreparedStatement pst=connection.prepareStatement(Query.selectMachine());
         pst.setString(1,email);
         pst.setString(2,name);
@@ -94,7 +94,7 @@ public class DbRms {
             pst2.executeUpdate();
         }
     }
-    public  String Machine(String name) throws SQLException {
+    public synchronized  String Machine(String name) throws SQLException {
         PreparedStatement pst=connection.prepareStatement(Query.selectEmailUser());
         pst.setString(1,name);
         ResultSet resultSet=pst.executeQuery();
@@ -102,7 +102,7 @@ public class DbRms {
                return resultSet.getString("email");
         return null;
     }
-    public ArrayList<String> retriveListDevice(String email) throws  SQLException{
+    public synchronized ArrayList<String> retriveListDevice(String email) throws  SQLException{
         PreparedStatement preparedStatement= connection.prepareStatement(Query.selectMachines());
         preparedStatement.setString(1,email);
         ResultSet result=preparedStatement.executeQuery();
