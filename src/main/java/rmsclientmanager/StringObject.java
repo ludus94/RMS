@@ -1,4 +1,4 @@
-package rmsserver;
+package rmsclientmanager;
 
 public class StringObject {
     private String out;

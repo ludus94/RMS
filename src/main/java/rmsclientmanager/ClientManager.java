@@ -1,12 +1,9 @@
 package rmsclientmanager;
 
 import rmsclientmanagerGUI.DataSet;
-import rmsserver.StringObject;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -225,36 +222,27 @@ public class ClientManager implements Runnable{
     public void monitoringvalue(BufferedReader bufferedReader) throws IOException{
         String namedevice=bufferedReader.readLine();
         String ProcessActive="";
-        while (!(ProcessActive=ProcessActive+bufferedReader.readLine()).contains("stop"));
+        while (!(ProcessActive=ProcessActive+bufferedReader.readLine()+"\n").contains("stop"));
         ProcessActive=ProcessActive+"\n";
         ProcessActive=ProcessActive.replace("stop", "");
         String cpuTotalLoad=bufferedReader.readLine();
-        String cpuAvarageLoad= bufferedReader.readLine()+"\n";
-        String cpuLoadPerCore= bufferedReader.readLine()+"\n";
+        String cpuAvarageLoad="CPU Avarage Load:"+bufferedReader.readLine()+"\n";
+        String cpuLoadPerCore="CPU Load Per Core:"+bufferedReader.readLine()+"\n";
         String CpuTemperature=bufferedReader.readLine();
-        String Speed= bufferedReader.readLine()+"\n";
+        String Speed="Speed Fan:"+ bufferedReader.readLine()+"\n";
         String cpuVoltage= bufferedReader.readLine();
         String Power= bufferedReader.readLine();
         String time=bufferedReader.readLine();
-        log.info(namedevice+time);
-        log.info(ProcessActive);
-        log.info("CPU Total load: "+cpuTotalLoad);
-        log.info("CPU Avarage Load: "+cpuAvarageLoad);
-        log.info("CPU Avarage Load: "+cpuLoadPerCore);
-        log.info(CpuTemperature);
-        log.info(Speed);
-        log.info(cpuVoltage);
-        log.info(Power);
-        log.info(time);
+
         devicetemperature.get(namedevice).setDataSetValue(Double.parseDouble(CpuTemperature),"°C",time);
         devicecpuload.get(namedevice).setDataSetValue(Double.parseDouble(cpuTotalLoad),"%",time);
         devicecpuvoltage.get(namedevice).setDataSetValue(Double.parseDouble(cpuVoltage),"mV",time);
         devicepower.get(namedevice).setDataSetValue(Double.parseDouble(Power),"mW",time);
-        outjtext.get(namedevice).setOut("--- Measuring at "+time+"---",false);
-        outjtext.get(namedevice).setOut(ProcessActive,false);
-        outjtext.get(namedevice).setOut(cpuAvarageLoad,false);
-        outjtext.get(namedevice).setOut(cpuLoadPerCore,false);
-        outjtext.get(namedevice).setOut(Speed,false);
+        outjtext.get(namedevice).setOut("--- Measuring at "+time+"---\n",false);
+        outjtext.get(namedevice).setOut(ProcessActive+"\n",false);
+        outjtext.get(namedevice).setOut(cpuAvarageLoad+"\n",false);
+        outjtext.get(namedevice).setOut(cpuLoadPerCore+"\n",false);
+        outjtext.get(namedevice).setOut(Speed+"\n",false);
 
     }
     public void monitoringvaluestatic(BufferedReader bufferedReader) throws IOException{

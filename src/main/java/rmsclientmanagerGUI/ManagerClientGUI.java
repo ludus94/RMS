@@ -1,18 +1,16 @@
 package rmsclientmanagerGUI;
 
 import rmsclientmanager.ClientManager;
-import rmsserver.StringObject;
+import rmsclientmanager.StringObject;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /*
@@ -115,11 +113,13 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         deviceSelected=devicelist.get(0);
         jDeviceList.setVisible(true);
         jDashBoardPannel.setVisible(true);
+        jTextArea1.setAutoscrolls(true);
         jTextArea1.setText(jouttext.get(deviceSelected).getOut());
     }
 
     public void setJText(String Test) {
         this.jTextArea1.append(Test);
+        this.jTextArea1.revalidate();
     }
     
     public DataSet getDataSetTemperature() {
@@ -525,6 +525,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         jCPUVoltagePanel.setLayout(new java.awt.BorderLayout());
         jCPUVoltagePanel.add(cpuvoltage.getChartPannel(),BorderLayout.CENTER);
         jCPUVoltagePanel.validate();
+        jTextArea1.setAutoscrolls(true);
         jTextArea1.setText(jouttext.get(deviceSelected).getOut());
         
     }//GEN-LAST:event_jDeviceListValueChanged
