@@ -224,7 +224,10 @@ public class ClientManager implements Runnable{
     }
     public void monitoringvalue(BufferedReader bufferedReader) throws IOException{
         String namedevice=bufferedReader.readLine();
-        String ProcessActive= bufferedReader.readLine()+"\n";
+        String ProcessActive="";
+        while (!(ProcessActive=ProcessActive+bufferedReader.readLine()).contains("stop"));
+        ProcessActive=ProcessActive+"\n";
+        ProcessActive=ProcessActive.replace("stop", "");
         String cpuTotalLoad=bufferedReader.readLine();
         String cpuAvarageLoad= bufferedReader.readLine()+"\n";
         String cpuLoadPerCore= bufferedReader.readLine()+"\n";
@@ -235,6 +238,14 @@ public class ClientManager implements Runnable{
         String time=bufferedReader.readLine();
         log.info(namedevice+time);
         log.info(ProcessActive);
+        log.info(cpuTotalLoad);
+        log.info(cpuAvarageLoad);
+        log.info(cpuLoadPerCore);
+        log.info(CpuTemperature);
+        log.info(Speed);
+        log.info(cpuVoltage);
+        log.info(Power);
+        log.info(time);
         devicetemperature.get(namedevice).setDataSetValue(Double.parseDouble(CpuTemperature),"°C",time);
         devicecpuload.get(namedevice).setDataSetValue(Double.parseDouble(cpuTotalLoad),"%",time);
         devicecpuvoltage.get(namedevice).setDataSetValue(Double.parseDouble(cpuVoltage),"mV",time);
