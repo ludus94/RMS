@@ -31,7 +31,7 @@ public class MonitoringValue {
     }
     public String cpuTotalLoad(){
         long[] prevTicks = hal.getProcessor().getSystemCpuLoadTicks();
-        return String.format("%.1f", hal.getProcessor().getSystemCpuLoadBetweenTicks(prevTicks) * 100);
+        return String.format("%.1f", hal.getProcessor().getSystemCpuLoadBetweenTicks(prevTicks) * 100).replace(",", ".");
     }
     public String cpuAverageLoad(){
         double[] loadAverage = hal.getProcessor().getSystemLoadAverage(3);
