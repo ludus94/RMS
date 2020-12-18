@@ -238,9 +238,9 @@ public class ClientManager implements Runnable{
         String time=bufferedReader.readLine();
         log.info(namedevice+time);
         log.info(ProcessActive);
-        log.info(cpuTotalLoad);
-        log.info(cpuAvarageLoad);
-        log.info(cpuLoadPerCore);
+        log.info("CPU Total load: "+cpuTotalLoad);
+        log.info("CPU Avarage Load: "+cpuAvarageLoad);
+        log.info("CPU Avarage Load: "+cpuLoadPerCore);
         log.info(CpuTemperature);
         log.info(Speed);
         log.info(cpuVoltage);
