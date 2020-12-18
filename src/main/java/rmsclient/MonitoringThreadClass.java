@@ -4,7 +4,9 @@ import facade.MonitoringValue;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 
 /***
@@ -25,8 +27,21 @@ public class MonitoringThreadClass implements Runnable {
         this.sock = sock;
         this.mv=new MonitoringValue();
     }
+
     public String getNameMachine(){
-        return System.getenv("COMPUTERNAME");
+        String namemachine= System.getenv("COMPUTERNAME");
+        if(namemachine!=null){
+            return namemachine;
+        }else{
+            try{
+                String s= InetAddress.getLocalHost().getHostName().replaceAll("(\\.[a-z]{1,})"," ");
+                s=s.replace("-"," ");
+                return s;
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     /***
