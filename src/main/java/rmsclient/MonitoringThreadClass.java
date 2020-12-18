@@ -21,7 +21,7 @@ public class MonitoringThreadClass implements Runnable {
      * @throws IOException
      */
     public MonitoringThreadClass(Socket sock) throws IOException {
-        this.pw=new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
+        this.pw=new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),"UTF-16"));
         this.sock = sock;
         this.mv=new MonitoringValue();
     }
