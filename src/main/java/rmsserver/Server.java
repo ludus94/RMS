@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class Server implements Runnable{
     private Socket socket;
     private DbRms dbrms;
-    private Map<String,ManageUser> user;
+    private static Map<String,ManageUser> user;
     private static final int port=33333;
     private static Logger log;
 
