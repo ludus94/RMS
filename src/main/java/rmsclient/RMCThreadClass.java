@@ -25,6 +25,7 @@ public class RMCThreadClass{
         this.rmc=new RemoteSystemControl();
     }
 
+
     /***
      * Handles command requests and execute them
      * @param action Action name
