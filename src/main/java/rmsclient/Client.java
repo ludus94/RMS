@@ -10,7 +10,7 @@ import java.net.*;
  * Client main class.
  * Allows users to log in and sign in, thus connecting to the server and sending data
  */
-public class Client implements Runnable {
+public class Client {
     private Socket sock;
     private int port=33333;
     private static final String address="ludovicorusso.ddns.net";
@@ -82,7 +82,10 @@ public class Client implements Runnable {
                 prw.println(getNameMachine());
                 prw.println(staticValue());
                 prw.flush();
-                this.run();
+                Thread monitoring = new Thread(new MonitoringThreadClass(sock));
+                Thread rmc = new Thread(new RMCThreadClass(sock));
+                rmc.start();
+                monitoring.start();
             }
             return returnValue;
         }catch(IOException ex){
@@ -137,22 +140,4 @@ public class Client implements Runnable {
         return -1;
     }
 
-    @Override
-    public void run() {
-        try {
-            Thread monitoring = new Thread(new MonitoringThreadClass(sock));
-            Thread rmc = new Thread(new RMCThreadClass(sock));
-            rmc.start();
-            monitoring.start();
-            while (true) {
-                notifyAll();
-                Thread.sleep(200);
-            }
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
