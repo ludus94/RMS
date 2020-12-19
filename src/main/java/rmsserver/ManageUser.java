@@ -16,8 +16,10 @@ public class ManageUser {
      */
     public ManageUser() {
         if(this.clientManagers==null && this.clientManagers==null) {
-            this.clientUserMachines = new TreeMap<>();
-            this.clientManagers = new ArrayList<>();
+            synchronized (ManageUser.class) {
+                this.clientUserMachines = new TreeMap<>();
+                this.clientManagers = new ArrayList<>();
+            }
         }
     }
 
@@ -26,7 +28,7 @@ public class ManageUser {
      * @param name
      * @param socket
      */
-    public void addClient(String name, Socket socket){
+    public synchronized void addClient(String name, Socket socket){
         clientUserMachines.put(name,socket);
     }
 
@@ -34,7 +36,7 @@ public class ManageUser {
      * Remove a client on the structure
      * @param name
      */
-    public void removeClientUser(String name){
+    public synchronized void removeClientUser(String name){
         clientUserMachines.remove(name);
     }
 
@@ -42,7 +44,7 @@ public class ManageUser {
      * Add a port of client manager when require a connection
      * @param socket
      */
-    public void addClientManager(Socket socket){
+    public synchronized void addClientManager(Socket socket){
         clientManagers.add(socket);
     }
 
@@ -50,7 +52,7 @@ public class ManageUser {
      * Remove a port of Manager when require a disconnection
      * @param socket
      */
-    public void removeClientManager(Socket socket){
+    public synchronized void removeClientManager(Socket socket){
         clientManagers.remove(socket);
     }
 
@@ -59,7 +61,7 @@ public class ManageUser {
      * @param name
      * @return
      */
-    public Socket getSocketMachine(String name){
+    public synchronized Socket getSocketMachine(String name){
         return clientUserMachines.get(name);
     }
 
@@ -67,7 +69,7 @@ public class ManageUser {
      * Return an ArrayList that contains a socket of user
      * @return ArrayList\<Socket\>
      */
-    public ArrayList<Socket> getSocketMachines(){
+    public synchronized ArrayList<Socket> getSocketMachines(){
         ArrayList<Socket> ports=new ArrayList<>();
         for (Map.Entry<String,Socket> entry: clientUserMachines.entrySet()){
             ports.add(entry.getValue());
@@ -79,7 +81,7 @@ public class ManageUser {
      * Return an ArrayList that contains the names of machine associated an user
      * @return
      */
-    public ArrayList<String> getNameMachines(){
+    public synchronized ArrayList<String> getNameMachines(){
         ArrayList<String> ports=new ArrayList<>();
         for (Map.Entry<String,Socket> entry: clientUserMachines.entrySet()){
             ports.add(entry.getKey());

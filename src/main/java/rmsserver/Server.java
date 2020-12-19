@@ -6,17 +6,14 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.nio.Buffer;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Logger;
 
 //implements runnable
 public class Server implements Runnable{
     private Socket socket;
     private DbRms dbrms;
-    private Map<String,ManageUser> user;
+    private Map<String,ManageUser> user= new TreeMap<>();
     private static final int port=33333;
     private static Logger log;
 
@@ -25,7 +22,6 @@ public class Server implements Runnable{
                 "","dp20202021");
         this.socket=sock;
         this.log=Logger.getLogger("global");
-        this.user = new TreeMap<>();
     }
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket=new ServerSocket(port);
@@ -64,6 +60,7 @@ public class Server implements Runnable{
         PrintWriter printWriter=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-16"));
         String action=bufferedReader.readLine();
         System.out.println(socket.getInetAddress().getHostName());
+
         if(action.contains("signin")){
             signin(bufferedReader,printWriter);
         }
@@ -97,7 +94,6 @@ public class Server implements Runnable{
         printWriter.println("image");
         printWriter.flush();
         BufferedInputStream bufferedInputStream=new BufferedInputStream(socket.getInputStream());
-
         while(bufferedInputStream.available()==0);
         byte[] img=new byte[bufferedInputStream.available()];
         bufferedInputStream.read(img);
@@ -179,8 +175,6 @@ public class Server implements Runnable{
         String time= bufferedReader.readLine();
         String email=dbrms.Machine(namemachine);
         ManageUser manager=user.get(email);
-        printWriter.println("ok");
-        printWriter.flush();
         Iterator<Socket> itrlistmanager=manager.getSocketManagers().iterator();
         if(itrlistmanager!=null){
             while (itrlistmanager.hasNext()){

@@ -14,7 +14,6 @@ public class RMCThreadClass implements Runnable{
     private RemoteSystemControl rmc;
     private Socket sock;
     private PrintWriter pw;
-    private MonitoringThreadClass mv;
 
     /***
      * Initializes required Classes
@@ -23,7 +22,6 @@ public class RMCThreadClass implements Runnable{
      */
     public RMCThreadClass(Socket sock) throws IOException {
         this.sock=sock;
-        this.mv=new MonitoringThreadClass(this.sock);
         this.rmc=new RemoteSystemControl();
     }
 
@@ -61,8 +59,6 @@ public class RMCThreadClass implements Runnable{
      */
     @Override
     public void run() {
-        Thread thread=new Thread(this.mv);
-        thread.start();
         while (true){
             try {
                 br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
