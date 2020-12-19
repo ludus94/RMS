@@ -13,21 +13,26 @@ import java.util.logging.Logger;
 public class Server implements Runnable{
     private Socket socket;
     private DbRms dbrms;
-    private Map<String,ManageUser> user= new TreeMap<>();
+    private Map<String,ManageUser> user;
+    private ManageUser manageUser;
     private static final int port=33333;
     private static Logger log;
 
-    public Server(Socket sock) {
+    public Server(Socket sock,ManageUser manageUser,Map<String,ManageUser> usermap) {
         this.dbrms=new DbRms("DB_RMS","postgres" +
                 "","dp20202021");
         this.socket=sock;
         this.log=Logger.getLogger("global");
+        this.manageUser=manageUser;
+        this.user=usermap;
     }
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket=new ServerSocket(port);
+        ManageUser manageUser=new ManageUser();
+        Map<String,ManageUser> manageUserMap=new TreeMap<>();
         while(true){
             Socket socket= serverSocket.accept();
-            Server server=new Server(socket);
+            Server server=new Server(socket,manageUser,manageUserMap);
             log.info("--- Connection Accept ---");
             Thread t=new Thread(server);
             t.start();

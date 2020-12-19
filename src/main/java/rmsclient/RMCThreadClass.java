@@ -22,6 +22,7 @@ public class RMCThreadClass implements Runnable{
      */
     public RMCThreadClass(Socket sock) throws IOException {
         this.sock=sock;
+        this.br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
         this.rmc=new RemoteSystemControl();
     }
 
@@ -61,7 +62,6 @@ public class RMCThreadClass implements Runnable{
     public void run() {
         while (true){
             try {
-                br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
                 String action= br.readLine();
                 controllAction(action,br);
             } catch (IOException e) {
