@@ -82,7 +82,7 @@ public class Client implements Runnable {
                 prw.println(getNameMachine());
                 prw.println(staticValue());
                 prw.flush();
-
+                this.run();
             }
             return returnValue;
         }catch(IOException ex){
