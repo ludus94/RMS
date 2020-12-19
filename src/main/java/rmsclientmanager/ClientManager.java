@@ -252,30 +252,33 @@ public class ClientManager implements Runnable{
         outjtext.get(namemachine).setOut("Operating System: "+os,false);
         outjtext.get(namemachine).setOut("Booted System: "+booted,false);
     }
-    public String rmsmanage(String command,Integer index,String PID){
+    public String rmsmanage(String command,String deviceSelected,String PID){
         try {
+            System.out.println(deviceSelected);
             PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(), "UTF-16"));
             if (command.contains("shutdown") && (PID.contains("") || PID == null)) {
                 printWriter.println(command);
-                printWriter.println(devicesList.get(index));
+                printWriter.println(deviceSelected);
                 printWriter.flush();
             } else if (command.contains("reboot") && (PID.contains("") || PID == null)) {
                 printWriter.println(command);
-                printWriter.println(devicesList.get(index));
+                printWriter.println(deviceSelected);
                 printWriter.flush();
             } else if (command.contains("killprocesswithname") && (!PID.contains("") || PID != null)) {
                 printWriter.println(command);
-                printWriter.println(devicesList.get(index));
+                printWriter.println(deviceSelected);
                 printWriter.println(PID);
                 printWriter.flush();
             } else if (command.contains("killprocess") && (!PID.contains("") || PID != null)) {
                 printWriter.println(command);
-                printWriter.println(devicesList.get(index));
+                printWriter.println(deviceSelected);
                 printWriter.println(PID);
                 printWriter.flush();
             }
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-16"));
-            outjtext.get(devicesList.get(index)).setOut(bufferedReader.readLine(), false);
+            if(command.contains("killprocess")) {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-16"));
+                outjtext.get(deviceSelected).setOut(bufferedReader.readLine(), false);
+            }
         }catch(IOException ex){
 
         }

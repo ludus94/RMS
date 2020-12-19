@@ -93,8 +93,9 @@ public class MonitoringThreadClass implements Runnable {
                 pw.println(localDateTime.getHour()+":"+localDateTime.getMinute());
                  */
                 pw.print(monitoringSendValueDinamic());
-                pw.println(localDateTime.getHour()+":"+localDateTime.getMinute());
+                pw.println(localDateTime.getHour()+":"+ localDateTime.getMinute()+":"+localDateTime.getSecond());
                 pw.flush();
+                System.out.println(localDateTime.getHour()+":"+ localDateTime.getMinute()+":"+localDateTime.getSecond());
                 System.out.println(monitoringSendValueDinamic());
                 Thread.sleep(60000);
             } catch (InterruptedException e) {

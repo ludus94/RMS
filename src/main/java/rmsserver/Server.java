@@ -258,20 +258,22 @@ public class Server implements Runnable{
             printWriter.flush();
             log.info("Send"+command+" "+pid+" message at machine "+namemachine+" at user"+email);
         }
-        BufferedReader bufferedReaderClient=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-16"));
-        String returned=bufferedReaderClient.readLine();
-        Iterator<Socket> itrlistmanager=manager.getSocketManagers().iterator();
-        if(itrlistmanager!=null){
-            while (itrlistmanager.hasNext()){
-                Socket socketManager=itrlistmanager.next();
-                PrintWriter prv=new PrintWriter(new OutputStreamWriter(socketManager.getOutputStream(),"UTF-16"));
-                prv.println(namemachine);
-                prv.println(returned);
-                printWriter.flush();
-                log.info("Send "+returned+" at machine "+namemachine+" at user "+email);
+        if(command.contains("killprocess")) {
+            BufferedReader bufferedReaderClient = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-16"));
+            String returned = bufferedReaderClient.readLine();
+            Iterator<Socket> itrlistmanager = manager.getSocketManagers().iterator();
+            if (itrlistmanager != null) {
+                while (itrlistmanager.hasNext()) {
+                    Socket socketManager = itrlistmanager.next();
+                    PrintWriter prv = new PrintWriter(new OutputStreamWriter(socketManager.getOutputStream(), "UTF-16"));
+                    prv.println(namemachine);
+                    prv.println(returned);
+                    printWriter.flush();
+                    log.info("Send " + returned + " at machine " + namemachine + " at user " + email);
+                }
+            } else {
+                log.info("No one client manager on line to user " + email);
             }
-        }else{
-            log.info("No one client manager on line to user "+email);
         }
     }
     public void retriveDevice(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
