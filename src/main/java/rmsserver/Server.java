@@ -178,6 +178,8 @@ public class Server implements Runnable{
         String time= bufferedReader.readLine();
         String email=dbrms.Machine(namemachine);
         ManageUser manager=user.get(email);
+        printWriter.println("ok");
+        printWriter.flush();
         Iterator<Socket> itrlistmanager=manager.getSocketManagers().iterator();
         if(itrlistmanager!=null){
             while (itrlistmanager.hasNext()){
