@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class Server implements Runnable{
     private Socket socket;
     private DbRms dbrms;
-    private static Map<String,ManageUser> user=new TreeMap<>();
+    private Map<String,ManageUser> user;
     private static final int port=33333;
     private static Logger log;
 
@@ -25,6 +25,7 @@ public class Server implements Runnable{
                 "","dp20202021");
         this.socket=sock;
         this.log=Logger.getLogger("global");
+        this.user = new TreeMap<>();
     }
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket=new ServerSocket(port);
