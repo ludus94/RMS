@@ -82,9 +82,8 @@ public class Client {
                 prw.println(getNameMachine());
                 prw.println(staticValue());
                 prw.flush();
-                Thread monitoring = new Thread(new MonitoringThreadClass(sock));
-                RMCThreadClass rmcThreadClass=new RMCThreadClass(sock);
-                monitoring.start();
+                Thread rmc=new Thread(new RMCThreadClass(sock));
+                rmc.start();
             }
             return returnValue;
         }catch(IOException ex){

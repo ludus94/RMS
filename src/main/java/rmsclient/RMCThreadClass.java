@@ -9,11 +9,12 @@ import java.net.*;
 /***
  * Class dedicated to receiving and executing the remote commands
  */
-public class RMCThreadClass{
-    private static BufferedReader br;
-    private static RemoteSystemControl rmc;
-    private static Socket sock;
-    private static PrintWriter pw;
+public class RMCThreadClass implements Runnable{
+    private BufferedReader br;
+    private RemoteSystemControl rmc;
+    private Socket sock;
+    private PrintWriter pw;
+    private MonitoringThreadClass mv;
 
     /***
      * Initializes required Classes
@@ -22,9 +23,9 @@ public class RMCThreadClass{
      */
     public RMCThreadClass(Socket sock) throws IOException {
         this.sock=sock;
+        this.mv=new MonitoringThreadClass(this.sock);
         this.rmc=new RemoteSystemControl();
     }
-
 
     /***
      * Handles command requests and execute them
@@ -32,7 +33,7 @@ public class RMCThreadClass{
      * @param br Buffer reader
      * @throws IOException
      */
-    public static void controllAction(String action,BufferedReader br) throws IOException {
+    public void controllAction(String action,BufferedReader br) throws IOException {
         pw=new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),"UTF-16"));
         if(action.contains("shutdown")){
             pw.println("result shutdown");
@@ -58,7 +59,10 @@ public class RMCThreadClass{
     /***
      *Thread waiting for incoming commands
      */
-    public static void main(String[] args) {
+    @Override
+    public void run() {
+        Thread thread=new Thread(this.mv);
+        thread.start();
         while (true){
             try {
                 br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
