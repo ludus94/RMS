@@ -241,8 +241,8 @@ public class Server implements Runnable{
         imagebin.flush();
     }
     public void rms(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
-        String namemachine=bufferedReader.readLine();
         String command=bufferedReader.readLine();
+        String namemachine=bufferedReader.readLine();
         String email=dbrms.Machine(namemachine);
         ManageUser manager=new ManageUser();
         manager=user.get(email);
