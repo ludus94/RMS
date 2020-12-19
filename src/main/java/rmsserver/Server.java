@@ -247,6 +247,7 @@ public class Server implements Runnable{
         ManageUser manager=new ManageUser();
         manager=user.get(email);
         Socket client=manager.getSocketMachine(namemachine);
+        System.out.println(client.getInetAddress().getHostName());
         PrintWriter printWriterClient=new PrintWriter(new OutputStreamWriter(client.getOutputStream(),"UTF-16"));
         if(command.contains("shutdown") || command.contains("reboot")) {
             printWriterClient.println(command);
