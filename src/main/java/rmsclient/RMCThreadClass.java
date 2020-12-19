@@ -22,8 +22,6 @@ public class RMCThreadClass implements Runnable{
      */
     public RMCThreadClass(Socket sock) throws IOException {
         this.sock=sock;
-        this.br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
-        this.pw=new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),"UTF-16"));
         this.rmc=new RemoteSystemControl();
     }
 
@@ -34,6 +32,7 @@ public class RMCThreadClass implements Runnable{
      * @throws IOException
      */
     public void controllAction(String action,BufferedReader br) throws IOException {
+        pw=new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),"UTF-16"));
         if(action.contains("shutdown")){
             pw.println("result shutdown");
             pw.flush();
@@ -62,6 +61,7 @@ public class RMCThreadClass implements Runnable{
     public void run() {
         while (true){
             try {
+                br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
                 String action= br.readLine();
                 controllAction(action,br);
             } catch (IOException e) {
