@@ -497,37 +497,43 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private void jDeviceListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jDeviceListValueChanged
         jDashBoardPannel.setVisible(true);
         int index=jDeviceList.getSelectedIndex();
-        deviceSelected=devicelist.get(index);
-        jTemperaturePanel.removeAll();
-        jPowerPanel.removeAll();
-        jCPULoadPanel.removeAll();
-        jCPUVoltagePanel.removeAll();
-        jTextArea1.setText("");
-        this.datasettemperature=devicetemperature.get(deviceSelected);
-        this.datasetcpuload=devicecpuload.get(deviceSelected);
-        this.datasetcupvoltage=devicecpuvoltage.get(deviceSelected);
-        this.datasetpower=devicepower.get(deviceSelected);
-        
-        this.temperature=new ChartLine(jTemperaturePanel.getWidth(),jTemperaturePanel.getHeight(),"Temperature",this.datasettemperature);
-        this.cpuload=new ChartLine(jCPULoadPanel.getWidth(),jCPULoadPanel.getHeight(),"CPULoad",this.datasetcpuload);
-        this.cpuvoltage=new ChartLine(jCPUVoltagePanel.getWidth(),jCPUVoltagePanel.getHeight(),"CPUVoltage",this.datasetcupvoltage);
-        this.power=new ChartLine(jPowerPanel.getWidth(),jPowerPanel.getHeight(),"Power",this.datasetpower);
-        
-        jTemperaturePanel.setLayout(new java.awt.BorderLayout());
-        jTemperaturePanel.add(temperature.getChartPannel(), BorderLayout.CENTER);
-        jTemperaturePanel.validate();
-        jPowerPanel.setLayout(new java.awt.BorderLayout());
-        jPowerPanel.add(power.getChartPannel(), BorderLayout.CENTER);
-        jPowerPanel.validate();
-        jCPULoadPanel.setLayout(new java.awt.BorderLayout());
-        jCPULoadPanel.add(cpuload.getChartPannel(),BorderLayout.CENTER);
-        jCPULoadPanel.validate();
-        jCPUVoltagePanel.setLayout(new java.awt.BorderLayout());
-        jCPUVoltagePanel.add(cpuvoltage.getChartPannel(),BorderLayout.CENTER);
-        jCPUVoltagePanel.validate();
-        jTextArea1.setAutoscrolls(true);
-        jTextArea1.setText(jouttext.get(deviceSelected).getOut());
-        
+        if(index<0) {
+            index=0;
+        }
+            deviceSelected = devicelist.get(index);
+            jTemperaturePanel.removeAll();
+            jPowerPanel.removeAll();
+            jCPULoadPanel.removeAll();
+            jCPUVoltagePanel.removeAll();
+            jTextArea1.setText("");
+            devicetemperature = clientManager.getDevicetemperature();
+            devicecpuload = clientManager.getDevicecpuload();
+            devicecpuvoltage = clientManager.getDevicecpuvoltage();
+            devicepower = clientManager.getDevicepower();
+            this.datasettemperature = devicetemperature.get(deviceSelected);
+            this.datasetcpuload = devicecpuload.get(deviceSelected);
+            this.datasetcupvoltage = devicecpuvoltage.get(deviceSelected);
+            this.datasetpower = devicepower.get(deviceSelected);
+            this.temperature = new ChartLine(jTemperaturePanel.getWidth(), jTemperaturePanel.getHeight(), "Temperature", this.datasettemperature);
+            this.cpuload = new ChartLine(jCPULoadPanel.getWidth(), jCPULoadPanel.getHeight(), "CPULoad", this.datasetcpuload);
+            this.cpuvoltage = new ChartLine(jCPUVoltagePanel.getWidth(), jCPUVoltagePanel.getHeight(), "CPUVoltage", this.datasetcupvoltage);
+            this.power = new ChartLine(jPowerPanel.getWidth(), jPowerPanel.getHeight(), "Power", this.datasetpower);
+
+            jTemperaturePanel.setLayout(new java.awt.BorderLayout());
+            jTemperaturePanel.add(temperature.getChartPannel(), BorderLayout.CENTER);
+            jTemperaturePanel.validate();
+            jPowerPanel.setLayout(new java.awt.BorderLayout());
+            jPowerPanel.add(power.getChartPannel(), BorderLayout.CENTER);
+            jPowerPanel.validate();
+            jCPULoadPanel.setLayout(new java.awt.BorderLayout());
+            jCPULoadPanel.add(cpuload.getChartPannel(), BorderLayout.CENTER);
+            jCPULoadPanel.validate();
+            jCPUVoltagePanel.setLayout(new java.awt.BorderLayout());
+            jCPUVoltagePanel.add(cpuvoltage.getChartPannel(), BorderLayout.CENTER);
+            jCPUVoltagePanel.validate();
+            jTextArea1.setAutoscrolls(true);
+            jTextArea1.setText(jouttext.get(deviceSelected).getOut());
+
     }//GEN-LAST:event_jDeviceListValueChanged
 
     private void jRebootButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRebootButtonMouseClicked

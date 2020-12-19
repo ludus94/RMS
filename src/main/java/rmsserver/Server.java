@@ -62,7 +62,7 @@ public class Server implements Runnable{
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-16"));
         PrintWriter printWriter=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-16"));
         String action=bufferedReader.readLine();
-
+        System.out.println(socket.getInetAddress().getHostName());
         if(action.contains("signin")){
             signin(bufferedReader,printWriter);
         }
@@ -244,7 +244,8 @@ public class Server implements Runnable{
         String namemachine=bufferedReader.readLine();
         String command=bufferedReader.readLine();
         String email=dbrms.Machine(namemachine);
-        ManageUser manager=user.get(email);
+        ManageUser manager=new ManageUser();
+        manager=user.get(email);
         Socket client=manager.getSocketMachine(namemachine);
         PrintWriter printWriterClient=new PrintWriter(new OutputStreamWriter(client.getOutputStream(),"UTF-16"));
         if(command.contains("shutdown") || command.contains("reboot")) {

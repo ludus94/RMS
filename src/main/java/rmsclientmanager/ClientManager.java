@@ -257,19 +257,23 @@ public class ClientManager implements Runnable{
             System.out.println(deviceSelected);
             PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(), "UTF-16"));
             if (command.contains("shutdown") && (PID.contains("") || PID == null)) {
+                printWriter.println("rms");
                 printWriter.println(command);
                 printWriter.println(deviceSelected);
                 printWriter.flush();
             } else if (command.contains("reboot") && (PID.contains("") || PID == null)) {
+                printWriter.println("rms");
                 printWriter.println(command);
                 printWriter.println(deviceSelected);
                 printWriter.flush();
             } else if (command.contains("killprocesswithname") && (!PID.contains("") || PID != null)) {
+                printWriter.println("rms");
                 printWriter.println(command);
                 printWriter.println(deviceSelected);
                 printWriter.println(PID);
                 printWriter.flush();
             } else if (command.contains("killprocess") && (!PID.contains("") || PID != null)) {
+                printWriter.println("rms");
                 printWriter.println(command);
                 printWriter.println(deviceSelected);
                 printWriter.println(PID);
@@ -289,10 +293,11 @@ public class ClientManager implements Runnable{
         while(true) {
             try {
                 BufferedReader input = new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
-                if (input.readLine().contains("monitoringvalue")) {
+                String action=input.readLine();
+                if (action.equals("monitoringvalue")) {
                     monitoringvalue(input);
                 }
-                if (input.readLine().contains("monitoringvaluestatic")){
+                if (action.equals("monitoringvaluestatic")){
                     monitoringvalue(input);
                 }
             } catch (IOException e) {
