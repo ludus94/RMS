@@ -84,8 +84,6 @@ public class Client {
                 prw.flush();
                 Thread monitoring = new Thread(new MonitoringThreadClass(sock));
                 Thread rmc = new Thread(new RMCThreadClass(sock));
-                rmc.setPriority(Thread.MAX_PRIORITY);
-                monitoring.setPriority(Thread.NORM_PRIORITY);
                 rmc.start();
                 monitoring.start();
             }

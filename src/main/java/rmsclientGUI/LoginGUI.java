@@ -59,8 +59,9 @@ public class LoginGUI extends JFrame {
                     int value=client.login(email,password);
                     if(value==0){
                         dispose();
+                    }else if(value==1) {
+                        dispose();
                     }
-                    dispose();
                 }
             }
         });
