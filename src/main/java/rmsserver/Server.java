@@ -49,6 +49,7 @@ public class Server implements Runnable{
                     socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    break;
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -57,6 +58,7 @@ public class Server implements Runnable{
             } catch (NullPointerException ex3) {
                 try {
                     socket.close();
+                    break;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -68,7 +70,6 @@ public class Server implements Runnable{
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-16"));
         PrintWriter printWriter=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-16"));
         String action=bufferedReader.readLine();
-        System.out.println(socket.getInetAddress().getHostName());
         if(action.contains("signin")){
             signin(bufferedReader,printWriter);
         }
@@ -155,6 +156,12 @@ public class Server implements Runnable{
             }
             log.info("Client Manager user "+ email+" is added");
             printWriter.println(value);
+            printWriter.println("monitoringstatic");
+            ArrayList<String> device= dbrms.retriveNameMachine(email);
+            for(int i=0;i<device.size();i++){
+                printWriter.println(device.get(i));
+                printWriter.print(user.get(email).getMonitoringStatic(device.get(i)));
+            }
             printWriter.flush();
         }else{
             log.info("User not registerd");
@@ -199,16 +206,16 @@ public class Server implements Runnable{
                 prv.println(cpuVoltage);
                 prv.println(Power);
                 prv.println(time);
-                log.info("monitoring of "+namemachine);
-                log.info(ProcessActive);
-                log.info(cpuTotalLoad);
-                log.info(cpuAvarageLoad);
-                log.info(cpuLoadPerCore);
-                log.info(CpuTemperature);
-                log.info(Speed);
-                log.info(cpuVoltage);
-                log.info(Power);
-                log.info(time);
+                log.info("One massage of client ");
+                System.out.print("---Monitoring of machine "+namemachine+" user "+email+" at "+ time
+                                    +ProcessActive+"\n"
+                                    +cpuTotalLoad+"\n"
+                                    +cpuAvarageLoad+"\n"
+                                    +cpuLoadPerCore+"\n"
+                                    +CpuTemperature+"\n"
+                                    +Speed+"\n"
+                                    +cpuVoltage+"\n"
+                                    +Power);
                 prv.flush();
                 log.info("Send monitoring message at user "+email);
             }
@@ -231,11 +238,13 @@ public class Server implements Runnable{
                 prv.println(namemachine);
                 prv.println(os);
                 prv.println(booted);
+                prv.flush();
                 printWriter.flush();
                 log.info("Send monitoring static message at user "+email);
             }
         }else{
             log.info("No one client manager on line to user "+email);
+            user.get(email).addMonitoringStatic(namemachine, os+"\n"+booted+"\n");
         }
     }
     public void image(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException{
@@ -252,7 +261,6 @@ public class Server implements Runnable{
         ManageUser manager=new ManageUser();
         manager=user.get(email);
         Socket client=manager.getSocketMachine(namemachine);
-        System.out.println(client.getInetAddress().getHostName());
         PrintWriter printWriterClient=new PrintWriter(new OutputStreamWriter(client.getOutputStream(),"UTF-16"));
         if(command.contains("shutdown") || command.contains("reboot")) {
             printWriterClient.println(command);

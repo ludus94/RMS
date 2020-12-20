@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 public class ManageUser {
     private Map<String, Socket> clientUserMachines;
+    private Map<String,String> monitoringStatic;
     private ArrayList<Socket> clientManagers;
 
     /***
@@ -18,6 +19,7 @@ public class ManageUser {
         if(this.clientManagers==null && this.clientManagers==null) {
             synchronized (ManageUser.class) {
                 this.clientUserMachines = new TreeMap<>();
+                this.monitoringStatic=new TreeMap<>();
                 this.clientManagers = new ArrayList<>();
             }
         }
@@ -33,11 +35,21 @@ public class ManageUser {
     }
 
     /***
+     * Add a static information in a map
+     * @param name
+     * @param info
+     */
+    public synchronized void addMonitoringStatic(String name, String info){
+        monitoringStatic.put(name,info);
+    }
+
+    /***
      * Remove a client on the structure
      * @param name
      */
     public synchronized void removeClientUser(String name){
         clientUserMachines.remove(name);
+        monitoringStatic.remove(name);
     }
 
     /***
@@ -65,6 +77,14 @@ public class ManageUser {
         return clientUserMachines.get(name);
     }
 
+    /***
+     * Return a value of monitoring static
+     * @param name
+     * @return
+     */
+    public synchronized String getMonitoringStatic(String name){
+        return monitoringStatic.get(name);
+    }
     /***
      * Return an ArrayList that contains a socket of user
      * @return ArrayList\<Socket\>

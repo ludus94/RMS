@@ -60,6 +60,24 @@ public class DbRms {
             return "Client not connect";
         }
     }
+    public synchronized ArrayList<String> retriveNameMachine(String email) throws SQLException{
+        PreparedStatement pst=connection.prepareStatement(Query.selectNameMachines());
+        pst.setString(1,email);
+        ResultSet resultSet=pst.executeQuery();
+        Boolean entry=false;
+        ArrayList<String> device=new ArrayList<>();
+        while(resultSet.next()){
+            entry=true;
+            device.add(resultSet.getString("name"));
+        }
+        if (entry==true) {
+            return device;
+        }
+        else{
+            device.add("Client not connect");
+            return device;
+        }
+    }
     public synchronized void delateMachine(String name,String email) throws SQLException {
         PreparedStatement pst=connection.prepareStatement(Query.deleteMachine());
         pst.setString(1,name);
