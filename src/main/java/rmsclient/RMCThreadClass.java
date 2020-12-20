@@ -37,6 +37,8 @@ public class RMCThreadClass implements Runnable{
         if(action.contains("shutdown")){
             pw.println("result shutdown");
             pw.flush();
+            this.br.close();
+            pw.close();
             sock.close();
             rmc.shutDown();
         }else if(action.contains("reboot")){
