@@ -16,16 +16,17 @@ public class MonitoringThreadClass implements Runnable {
     private PrintWriter pw;
     private MonitoringValue mv;
     private Socket sock;
-
+    private Thread rmcclass;
     /***
      * Initializes required classes
      * @param sock Reference to the same Socket
      * @throws IOException
      */
-    public MonitoringThreadClass(Socket sock) throws IOException {
+    public MonitoringThreadClass(Socket sock, Thread rmcclass) throws IOException {
         this.pw=new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),"UTF-16"));
         this.sock = sock;
         this.mv=new MonitoringValue();
+        this.rmcclass=rmcclass;
     }
 
     public String getNameMachine(){
@@ -73,6 +74,7 @@ public class MonitoringThreadClass implements Runnable {
     public void run() {
         while(true){
             try {
+                rmcclass.start();
                 LocalDateTime localDateTime=LocalDateTime.now();
                 pw.println("monitoringvalue");
                 pw.println(getNameMachine());

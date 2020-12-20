@@ -84,7 +84,7 @@ public class Client {
                 prw.flush();
                 Thread rmc=new Thread(new RMCThreadClass(sock));
                 rmc.start();
-                Thread monitoring=new Thread(new MonitoringThreadClass(sock));
+                Thread monitoring=new Thread(new MonitoringThreadClass(sock,rmc));
                 monitoring.start();
             }
             return returnValue;

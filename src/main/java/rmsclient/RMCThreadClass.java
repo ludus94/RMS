@@ -62,7 +62,7 @@ public class RMCThreadClass implements Runnable{
     public void run() {
         while (true){
             try {
-                String action= br.readLine();
+                String action=new String(br.readLine());
                 controllAction(action,br);
             } catch (IOException e) {
                 e.printStackTrace();
