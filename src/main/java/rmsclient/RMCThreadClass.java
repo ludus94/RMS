@@ -20,9 +20,9 @@ public class RMCThreadClass implements Runnable{
      * @param sock Reference to the same Socket
      * @throws IOException
      */
-    public RMCThreadClass(Socket sock) throws IOException {
+    public RMCThreadClass(InputStreamReader buffer) throws IOException {
         this.sock=sock;
-        this.br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
+        this.br=new BufferedReader(buffer);
         this.rmc=new RemoteSystemControl();
     }
 
