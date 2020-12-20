@@ -9,7 +9,7 @@ import java.net.*;
 /***
  * Class dedicated to receiving and executing the remote commands
  */
-public class RMCThreadClass{
+public class RMCThreadClass implements Runnable{
     private BufferedReader br;
     private RemoteSystemControl rmc;
     private Socket sock;
@@ -58,7 +58,8 @@ public class RMCThreadClass{
     /***
      *Thread waiting for incoming commands
      */
-    public void listener() {
+    @Override
+    public void run() {
         while (true){
             try {
                 String action=new String(br.readLine());
