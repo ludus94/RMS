@@ -253,17 +253,17 @@ public class Server implements Runnable{
         PrintWriter printWriterClient=new PrintWriter(new OutputStreamWriter(client.getOutputStream(),"UTF-16"));
         if(command.contains("shutdown") || command.contains("reboot")) {
             printWriterClient.println(command);
-            printWriter.flush();
+            printWriterClient.flush();
             log.info("Send "+command+"message at machine "+namemachine+" at user "+email);
         }else{
             String pid=bufferedReader.readLine();
             printWriterClient.println(command);
             printWriterClient.println(pid);
-            printWriter.flush();
+            printWriterClient.flush();
             log.info("Send"+command+" "+pid+" message at machine "+namemachine+" at user"+email);
         }
         if(command.contains("killprocess")) {
-            BufferedReader bufferedReaderClient = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-16"));
+            BufferedReader bufferedReaderClient = new BufferedReader(new InputStreamReader(client.getInputStream(), "UTF-16"));
             String returned = bufferedReaderClient.readLine();
             Iterator<Socket> itrlistmanager = manager.getSocketManagers().iterator();
             if (itrlistmanager != null) {
@@ -272,7 +272,7 @@ public class Server implements Runnable{
                     PrintWriter prv = new PrintWriter(new OutputStreamWriter(socketManager.getOutputStream(), "UTF-16"));
                     prv.println(namemachine);
                     prv.println(returned);
-                    printWriter.flush();
+                    prv.flush();
                     log.info("Send " + returned + " at machine " + namemachine + " at user " + email);
                 }
             } else {
