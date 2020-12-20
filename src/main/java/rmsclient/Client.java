@@ -86,9 +86,11 @@ public class Client {
                 Thread monitoring=new Thread(new MonitoringThreadClass(sock));
                 rmc.start();
                 monitoring.start();
+                rmc.join();
+                monitoring.join();
             }
             return returnValue;
-        }catch(IOException ex){
+        }catch(IOException | InterruptedException ex){
 
         }
         return -1;
