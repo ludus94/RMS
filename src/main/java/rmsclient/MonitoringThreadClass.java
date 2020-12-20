@@ -74,7 +74,7 @@ public class MonitoringThreadClass implements Runnable {
     public void run() {
         while(true){
             try {
-                rmcclass.start();
+                rmcclass.run();
                 LocalDateTime localDateTime=LocalDateTime.now();
                 pw.println("monitoringvalue");
                 pw.println(getNameMachine());
