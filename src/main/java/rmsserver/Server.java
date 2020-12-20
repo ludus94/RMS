@@ -162,6 +162,7 @@ public class Server implements Runnable{
                 printWriter.println(device.get(i));
                 printWriter.print(user.get(email).getMonitoringStatic(device.get(i)));
             }
+            printWriter.println("stop");
             printWriter.flush();
         }else{
             log.info("User not registerd");

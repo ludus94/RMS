@@ -33,6 +33,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private Map<String,DataSet> devicecpuvoltage;
     private Map<String,DataSet> devicepower;
     private Map<String, StringObject> jouttext;
+    private Map<String,String> monitoricstatic;
     private DefaultListModel model=new DefaultListModel();
     private ChartLine temperature;
     private ChartLine cpuload;
@@ -57,6 +58,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         devicepower=new TreeMap<>();
         model=new DefaultListModel();
         jouttext=new TreeMap<>();
+        monitoricstatic=clientManager.getMonitoringValue();
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/java/rmsclientmanagerGUI/logoapp.jpeg").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
         Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");    
         this.setIconImage(icon);
@@ -114,7 +116,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         jDeviceList.setVisible(true);
         jDashBoardPannel.setVisible(true);
         jTextArea1.setAutoscrolls(true);
-        jTextArea1.setText(jouttext.get(deviceSelected).getOut());
+        jTextArea1.setText(monitoricstatic.get(deviceSelected)+"\n"+jouttext.get(deviceSelected).getOut());
     }
 
     public void setJText(String Test) {

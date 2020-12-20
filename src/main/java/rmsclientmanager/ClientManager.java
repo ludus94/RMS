@@ -29,11 +29,13 @@ public class ClientManager implements Runnable{
     private Map<String,DataSet> devicecpuvoltage;
     private Map<String,DataSet> devicepower;
     private Map<String, StringObject>  outjtext;
+    private Map<String, String> monitoringvalue;
     private static Logger log;
     public ClientManager(String username) throws IOException {
         this.sock=new Socket(address,port);
         this.devicesList = new ArrayList<>();
         this.olddevicelist=new ArrayList<>();
+        this.monitoringvalue=new TreeMap<>();
         this.username=username;
         this.devicetemperature=new TreeMap<>();
         this.devicecpuload=new TreeMap<>();
@@ -61,6 +63,11 @@ public class ClientManager implements Runnable{
         BufferedReader br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
         int returnValue=Integer.parseInt(br.readLine());
         if(returnValue==0) {
+           if(br.readLine().contains("monitoringstatic")){
+               while(!br.readLine().equals("stop")){
+                    monitoringvalue.put(br.readLine(), br.readLine());
+               }
+           }
            prw.println("image");
            prw.println(email);
            prw.flush();
@@ -109,6 +116,9 @@ public class ClientManager implements Runnable{
 
     public Map<String, StringObject> getOutjtext() {
         return outjtext;
+    }
+    public Map<String,String > getMonitoringValue(){
+        return monitoringvalue;
     }
 
     public byte[] getImage() {
