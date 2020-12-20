@@ -21,7 +21,7 @@ public class RMCThreadClass implements Runnable{
      * @throws IOException
      */
     public RMCThreadClass(InputStreamReader buffer) throws IOException {
-        this.sock=sock;
+        //this.sock=sock;
         this.br=new BufferedReader(buffer);
         this.rmc=new RemoteSystemControl();
     }
