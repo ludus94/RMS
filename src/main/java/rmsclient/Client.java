@@ -86,6 +86,8 @@ public class Client {
                 Thread monitoring=new Thread(new MonitoringThreadClass(sock));
                 rmc.start();
                 monitoring.start();
+                System.out.println(rmc.getPriority());
+                System.out.println(monitoring.getPriority());
             }
             return returnValue;
         }catch(IOException ex){
