@@ -65,7 +65,9 @@ public class Server implements Runnable{
         PrintWriter printWriter=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-16"));
         String action=bufferedReader.readLine();
         System.out.println(socket.getInetAddress().getHostName());
-
+        if(bufferedReader==null){
+            socket.close();
+        }
         if(action.contains("signin")){
             signin(bufferedReader,printWriter);
         }
