@@ -82,7 +82,7 @@ public class Client {
                 prw.println(getNameMachine());
                 prw.println(staticValue());
                 prw.flush();
-                Thread rmc=new Thread(new RMCThreadClass(new InputStreamReader(sock.getInputStream(),"UTF-16")));
+                Thread rmc=new Thread(new RMCThreadClass(sock));
                 Thread monitoring=new Thread(new MonitoringThreadClass(sock));
                 rmc.start();
                 monitoring.start();
