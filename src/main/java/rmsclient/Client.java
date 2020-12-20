@@ -85,7 +85,7 @@ public class Client {
                 RMCThreadClass rmc=new RMCThreadClass(sock);
                 Thread monitoring=new Thread(new MonitoringThreadClass(sock));
                 monitoring.start();
-
+                rmc.listener();
             }
             return returnValue;
         }catch(IOException ex){
