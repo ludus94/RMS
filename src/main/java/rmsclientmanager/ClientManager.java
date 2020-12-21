@@ -33,6 +33,7 @@ public class ClientManager implements Runnable{
     private Map<String, String> monitoringvalue;
     private static Logger log;
     private JTextUpgrade JTextUpgrade;
+    private Thread t;
     public ClientManager(String username) throws IOException {
         this.sock=new Socket(address,port);
         this.devicesList = new ArrayList<>();
@@ -238,7 +239,7 @@ public class ClientManager implements Runnable{
         String namedevice=bufferedReader.readLine();
         String ProcessActive="";
         String out="";
-        while (!(out=bufferedReader.readLine()).contains("stop")){
+        while (!(out=bufferedReader.readLine()).equals("stop")){
             ProcessActive=ProcessActive+out+"\n";
         }
         ProcessActive=ProcessActive.replace("stop", "\n");
@@ -262,7 +263,11 @@ public class ClientManager implements Runnable{
         outjtext.get(namedevice).setOut(Speed+"\n",false);
         JTextUpgrade.setDeviceSelected(namedevice);
         JTextUpgrade.setOutputjtext(outjtext);
-        JTextUpgrade.upgrade();
+        if (t==null){
+            t=new Thread(this.JTextUpgrade);
+            t.start();
+        }
+
 
     }
     public void monitoringvaluestatic(BufferedReader bufferedReader) throws IOException{
@@ -321,7 +326,6 @@ public class ClientManager implements Runnable{
                     monitoringvalue(input);
 
                 }
-                JTextUpgrade.upgrade();
             } catch (IOException e) {
                 e.printStackTrace();
             }

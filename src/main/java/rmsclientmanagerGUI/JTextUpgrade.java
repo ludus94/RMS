@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Map;
 
-public class JTextUpgrade {
+public class JTextUpgrade implements Runnable{
     private Map<String,StringObject> outputjtext;
     private JTextArea jTextArea;
     private String deviceSelected;
@@ -25,11 +25,17 @@ public class JTextUpgrade {
     public void setOutputjtext(Map<String, StringObject> outputjtext) {
         this.outputjtext = outputjtext;
     }
-
-    public void upgrade() {
-            if(outputjtext.containsKey(deviceSelected)) {
+@Override
+    public void run() {
+        while(true) {
+            if (outputjtext.containsKey(deviceSelected)) {
                 jTextArea.append(outputjtext.get(deviceSelected).getOut());
             }
-
+            try {
+                Thread.sleep(30000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

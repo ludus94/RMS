@@ -391,6 +391,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jTextArea1.setPreferredSize(new java.awt.Dimension(150, 92));
+        jTextArea1.setAutoscrolls(true);
         jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         jScrollPane1.add(jTextArea1);
         jScrollPane1.setViewportView(jTextArea1);
