@@ -34,13 +34,8 @@ public class ThreadJtextUpgrade implements Runnable{
     @Override
     public void run() {
         while(true){
-            try {
-                String action=bufferedReader.readLine();
-                if(action.contains("monitoringvalue")) {
-                    jTextArea.append(outputjtext.get(deviceSelected).getOut());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(outputjtext.containsKey(deviceSelected)) {
+                jTextArea.append(outputjtext.get(deviceSelected).getOut());
             }
 
         }
