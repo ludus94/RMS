@@ -262,6 +262,7 @@ public class ClientManager implements Runnable{
         outjtext.get(namedevice).setOut(Speed+"\n",false);
         JTextUpgrade.setDeviceSelected(namedevice);
         JTextUpgrade.setOutputjtext(outjtext);
+        JTextUpgrade.upgrade();
 
     }
     public void monitoringvaluestatic(BufferedReader bufferedReader) throws IOException{

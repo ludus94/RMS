@@ -30,10 +30,6 @@ public class JTextUpgrade {
             if(outputjtext.containsKey(deviceSelected)) {
                 jTextArea.append(outputjtext.get(deviceSelected).getOut());
             }
-            try {
-                Thread.sleep(60000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-        }
+
     }
 }
