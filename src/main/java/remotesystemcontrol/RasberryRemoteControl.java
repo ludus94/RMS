@@ -3,13 +3,19 @@ package remotesystemcontrol;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 
-public class RasberryRemoteControll {
+/***
+ * Class for Remote Control on Raspbian systems
+ */
+public class RasberryRemoteControl {
 
-    public RasberryRemoteControll(){
+    public RasberryRemoteControl(){
 
     }
+
+    /***
+     * Activates shutdown procedure
+     */
     public void shutDown() {
         try {
             Runtime.getRuntime().exec("shutdown -h now");
@@ -18,6 +24,9 @@ public class RasberryRemoteControll {
         }
     }
 
+    /***
+     * Activates reboot procedure
+     */
     public void reboot() {
         try {
             Runtime.getRuntime().exec("shutdown -r now");
@@ -26,6 +35,11 @@ public class RasberryRemoteControll {
         }
     }
 
+    /***
+     * Kills the process specified by pid
+     * @param pid PID of process target
+     * @return OS response
+     */
     public String killProcessPID(String pid){
         String app="";
         String out="";

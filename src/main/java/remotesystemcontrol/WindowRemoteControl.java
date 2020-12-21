@@ -4,11 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class WindowRemoteControll {
+/***
+ * Class for Remote Control on Windows systems
+ */
+public class WindowRemoteControl {
 
-    public WindowRemoteControll(){
+    public WindowRemoteControl(){
 
     }
+
+    /***
+     * Activates shutdown procedure
+     */
     public void shutDown() {
         try {
             Runtime.getRuntime().exec("shutdown.exe -s -t 0");
@@ -17,6 +24,9 @@ public class WindowRemoteControll {
         }
     }
 
+    /***
+     * Activates reboot procedure
+     */
     public void reboot() {
         try {
             Runtime.getRuntime().exec("shutdown.exe -r -t 0");
@@ -24,6 +34,12 @@ public class WindowRemoteControll {
             e.printStackTrace();
         }
     }
+
+    /***
+     * Activates kill process with name procedure
+     * @param nameprocess Process name
+     * @return OS response
+     */
     public String killProcessNameProcess(String nameprocess){
         String out="";
         String app="";
@@ -44,6 +60,11 @@ public class WindowRemoteControll {
         return out;
     }
 
+    /***
+     * Activates the kill with PID procedure
+     * @param pid Process PID
+     * @return OS response
+     */
     public String killProcessPID(String pid){
         String out="";
         String app="";

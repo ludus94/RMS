@@ -13,32 +13,64 @@ import oshi.software.os.OperatingSystem;
 import oshi.software.os.OperatingSystem.ProcessSort;
 import oshi.util.FormatUtil;
 
+/***
+ * This class contains the facade's OSHI library defined on the maven's dependencies.
+ *
+ */
 public class MonitoringValue {
     private SystemInfo si;
     private HardwareAbstractionLayer hal;
     private OperatingSystem os;
 
+    /***
+     * The constructor istance the object used to read information's machine
+     */
     public MonitoringValue() {
             si=new SystemInfo();
             hal=si.getHardware();
             os=si.getOperatingSystem();
     }
+
+    /***
+     * Get method for Operative System properties
+     * @return OS name and version as String
+     */
     public String getSystemOP(){
         return String.valueOf(os);
     }
+
+    /***
+     * Get method for BootedSystem
+     * @return Instance of Instant (Datetime) time since system boot
+     */
     public Instant getBootedSystem(){
         return Instant.ofEpochSecond(os.getSystemBootTime());
     }
+
+    /***
+     * Get method for CPUTotalLoad
+     * @return Percentage of CPU total usage (as String)
+     */
     public String cpuTotalLoad(){
         long[] prevTicks = hal.getProcessor().getSystemCpuLoadTicks();
         return String.format("%.1f", hal.getProcessor().getSystemCpuLoadBetweenTicks(prevTicks) * 100).replace(",", ".");
     }
+
+    /***
+     * Get method for CPUAverageLoad for each core
+     * @return Percentage of CPU's core average load (as String)
+     */
     public String cpuAverageLoad(){
         double[] loadAverage = hal.getProcessor().getSystemLoadAverage(3);
          return (loadAverage[0] < 0 ? " N/A" : String.format(" %.2f", loadAverage[0]))
             + (loadAverage[1] < 0 ? " N/A" : String.format(" %.2f", loadAverage[1]))
             + (loadAverage[2] < 0 ? " N/A" : String.format(" %.2f", loadAverage[2]));
     }
+
+    /***
+     * Get method for CPULoad for each core
+     * @return Percentage of CPU's core load (as String)
+     */
     public String cpuLoadPerCore(){
         StringBuilder procCpu = new StringBuilder();
         double[] load = hal.getProcessor().getProcessorCpuLoadBetweenTicks(hal.getProcessor().getProcessorCpuLoadTicks());
@@ -47,6 +79,12 @@ public class MonitoringValue {
         }
         return procCpu.toString();
     }
+
+    /***
+     * Returns a description of the most CPU demanding process (up to limit processes)
+     * @param limit Threshold of processes shown
+     * @return A description of Processes and the resources consumed (as String)
+     */
     public String getProcessActive(int limit){
         String out;
         OSProcess myProc = os.getProcess(os.getProcessId());
@@ -65,18 +103,38 @@ public class MonitoringValue {
         out=out+"stop\n";
         return out;
     }
+
+    /***
+     * Get method for CPUTemperature
+     * @return CPU temperature
+     */
     public Double getCpuTemperature(){
         Sensors sensor=hal.getSensors();
         return sensor.getCpuTemperature();
     }
+
+    /***
+     * Get method for FanSpeed
+     * @return CPU fan speed (as rpm)
+     */
     public int[] getFanSpeed(){
         Sensors sensor=hal.getSensors();
         return sensor.getFanSpeeds();
     }
+
+    /***
+     * Get method for CPUVoltage
+     * @return CPU Voltage (as Volt)
+     */
     public Double getCpuVoltage(){
         Sensors sensor=hal.getSensors();
         return sensor.getCpuVoltage();
     }
+
+    /***
+     * Get method for PowerSourceInformation
+     * @return Detailed information on Power Source Supplier
+     */
     public String getPowerSourceInformation(){
         List<PowerSource> powerSources=hal.getPowerSources();
         StringBuilder sb = new StringBuilder("Power Sources: ");
@@ -88,6 +146,11 @@ public class MonitoringValue {
         }
         return sb.toString();
     }
+
+    /***
+     * Get method for Power
+     * @return Power consumption (as mW)
+     */
     public double getPower(){
         List<PowerSource> powerSources=hal.getPowerSources();
         double power_mW=0;

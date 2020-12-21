@@ -3,11 +3,19 @@ package remotesystemcontrol;
 import java.io.*;
 import java.io.IOException;
 
-public class MacRemoteControll {
+/***
+ * Class for Remote Control on MacOs systems
+ */
+public class MacRemoteControl {
 
-    public MacRemoteControll(){
+    public MacRemoteControl(){
 
     }
+
+    /***
+     * Activates shutdown procedure
+     * @param password Administrator password needed to execute the shutdown command
+     */
     public void shutDown(String password) {
         try {
             Process process=Runtime.getRuntime().exec("sudo -S shutdown -h now");
@@ -18,6 +26,10 @@ public class MacRemoteControll {
         }
     }
 
+    /***
+     * Activates reboot procedure
+     * @param password Administrator password needed to execute the reboot command
+     */
     public void reboot(String password) {
         try {
             Process process=Runtime.getRuntime().exec("sudo -S shutdown -r now");
@@ -28,6 +40,12 @@ public class MacRemoteControll {
         }
     }
 
+    /***
+     * Kills the process specified by pid
+     * @param pid PID of the target process
+     * @param password Password needed
+     * @return Administrator password needed to execute the kill command
+     */
     public String killProcessPID(String pid,String password){
         String app="";
         String out="";
