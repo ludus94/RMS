@@ -7,13 +7,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Map;
 
-public class ThreadJtextUpgrade implements Runnable{
+public class JTextUpgrade {
     private Map<String,StringObject> outputjtext;
     private JTextArea jTextArea;
     private String deviceSelected;
-    private BufferedReader bufferedReader;
 
-    public ThreadJtextUpgrade(Map<String, StringObject> outputjtext, JTextArea jTextArea, String deviceSelected) {
+    public JTextUpgrade(Map<String, StringObject> outputjtext, JTextArea jTextArea, String deviceSelected) {
         this.outputjtext = outputjtext;
         this.jTextArea = jTextArea;
         this.deviceSelected = deviceSelected;
@@ -27,17 +26,14 @@ public class ThreadJtextUpgrade implements Runnable{
         this.outputjtext = outputjtext;
     }
 
-    public void setBufferedReader(BufferedReader bufferedReader) {
-        this.bufferedReader = bufferedReader;
-    }
-
-    @Override
-    public void run() {
-        while(true){
+    public void upgrade() {
             if(outputjtext.containsKey(deviceSelected)) {
                 jTextArea.append(outputjtext.get(deviceSelected).getOut());
             }
-
+            try {
+                Thread.sleep(60000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
         }
     }
 }

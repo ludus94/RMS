@@ -1,7 +1,7 @@
 package rmsclientmanager;
 
 import rmsclientmanagerGUI.DataSet;
-import rmsclientmanagerGUI.ThreadJtextUpgrade;
+import rmsclientmanagerGUI.JTextUpgrade;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,8 +32,7 @@ public class ClientManager implements Runnable{
     private Map<String, StringObject>  outjtext;
     private Map<String, String> monitoringvalue;
     private static Logger log;
-    private ThreadJtextUpgrade threadJtextUpgrade;
-    private Thread t;
+    private JTextUpgrade JTextUpgrade;
     public ClientManager(String username) throws IOException {
         this.sock=new Socket(address,port);
         this.devicesList = new ArrayList<>();
@@ -107,8 +106,8 @@ public class ClientManager implements Runnable{
         return devicepower;
     }
 
-    public void setThreadJtextUpgrade(ThreadJtextUpgrade threadJtextUpgrade) {
-        this.threadJtextUpgrade = threadJtextUpgrade;
+    public void setThreadJtextUpgrade(JTextUpgrade JTextUpgrade) {
+        this.JTextUpgrade = JTextUpgrade;
     }
 
     public ArrayList<String> getDevicesList() {
@@ -261,12 +260,9 @@ public class ClientManager implements Runnable{
         outjtext.get(namedevice).setOut(cpuAvarageLoad+"\n",false);
         outjtext.get(namedevice).setOut(cpuLoadPerCore+"\n",false);
         outjtext.get(namedevice).setOut(Speed+"\n",false);
-        threadJtextUpgrade.setDeviceSelected(namedevice);
-        threadJtextUpgrade.setOutputjtext(outjtext);
-        if(t==null) {
-            Thread t = new Thread(this.threadJtextUpgrade);
-            t.start();
-        }
+        JTextUpgrade.setDeviceSelected(namedevice);
+        JTextUpgrade.setOutputjtext(outjtext);
+
     }
     public void monitoringvaluestatic(BufferedReader bufferedReader) throws IOException{
         String namemachine=bufferedReader.readLine();
@@ -316,14 +312,15 @@ public class ClientManager implements Runnable{
         while(true) {
             try {
                 BufferedReader input = new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
-                threadJtextUpgrade.setBufferedReader(input);
                 String action=input.readLine();
                 if (action.equals("monitoringvalue")) {
                     monitoringvalue(input);
                 }
                 if (action.equals("monitoringvaluestatic")){
                     monitoringvalue(input);
+
                 }
+                JTextUpgrade.upgrade();
             } catch (IOException e) {
                 e.printStackTrace();
             }
