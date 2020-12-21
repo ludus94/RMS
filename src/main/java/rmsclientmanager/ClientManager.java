@@ -316,6 +316,7 @@ public class ClientManager implements Runnable{
         while(true) {
             try {
                 BufferedReader input = new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
+                threadJtextUpgrade.setBufferedReader(input);
                 String action=input.readLine();
                 if (action.equals("monitoringvalue")) {
                     monitoringvalue(input);
