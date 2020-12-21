@@ -77,6 +77,10 @@ public class ManageUser {
         return clientUserMachines.get(name);
     }
 
+    public Map<String, String> getMonitoringStatic() {
+        return monitoringStatic;
+    }
+
     /***
      * Return a value of monitoring static
      * @param name

@@ -156,13 +156,6 @@ public class Server implements Runnable{
             }
             log.info("Client Manager user "+ email+" is added");
             printWriter.println(value);
-            printWriter.println("monitoringstatic");
-            ArrayList<String> device= dbrms.retriveNameMachine(email);
-            for(int i=0;i<device.size();i++){
-                printWriter.println(device.get(i));
-                printWriter.print(user.get(email).getMonitoringStatic(device.get(i)));
-            }
-            printWriter.println("stop");
             printWriter.flush();
         }else{
             log.info("User not registerd");
@@ -210,13 +203,13 @@ public class Server implements Runnable{
                 log.info("One massage of client ");
                 System.out.print("---Monitoring of machine "+namemachine+" user "+email+" at "+ time
                                     +ProcessActive+"\n"
-                                    +cpuTotalLoad+"\n"
-                                    +cpuAvarageLoad+"\n"
-                                    +cpuLoadPerCore+"\n"
-                                    +CpuTemperature+"\n"
-                                    +Speed+"\n"
-                                    +cpuVoltage+"\n"
-                                    +Power);
+                                    +"CPU Total: "+cpuTotalLoad+"\n"
+                                    +"CPU Avarage Load: "+cpuAvarageLoad+"\n"
+                                    +"CPU Load Per Core: "+cpuLoadPerCore+"\n"
+                                    +"CPU Temperature: "+CpuTemperature+"\n"
+                                    +"Speed: "+Speed+"\n"
+                                    +"CPU Voltage: "+cpuVoltage+"\n"
+                                    +"Power:"+Power+"\n");
                 prv.flush();
                 log.info("Send monitoring message at user "+email);
             }
@@ -296,6 +289,18 @@ public class Server implements Runnable{
         String email=bufferedReader.readLine();
         String out= dbrms.retriveDevice(email);
         log.info(out);
+        Map<String,String> monitoringstatic=user.get(email).getMonitoringStatic();
+        if(monitoringstatic.size()>0) {
+            printWriter.println("monitoringstatic");
+            ArrayList<String> device = dbrms.retriveNameMachine(email);
+            for (int i = 0; i < device.size(); i++) {
+                printWriter.println(device.get(i));
+                printWriter.print(user.get(email).getMonitoringStatic(device.get(i)));
+            }
+            printWriter.println("stop");
+        }else{
+            printWriter.println("stop");
+        }
         printWriter.println("deviceavabile");
         printWriter.println(out);
         printWriter.println("stop");

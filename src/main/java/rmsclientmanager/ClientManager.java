@@ -1,6 +1,7 @@
 package rmsclientmanager;
 
 import rmsclientmanagerGUI.DataSet;
+import rmsclientmanagerGUI.ThreadJtextUpgrade;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +32,8 @@ public class ClientManager implements Runnable{
     private Map<String, StringObject>  outjtext;
     private Map<String, String> monitoringvalue;
     private static Logger log;
+    private ThreadJtextUpgrade threadJtextUpgrade;
+    private Thread t;
     public ClientManager(String username) throws IOException {
         this.sock=new Socket(address,port);
         this.devicesList = new ArrayList<>();
@@ -63,11 +66,6 @@ public class ClientManager implements Runnable{
         BufferedReader br=new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
         int returnValue=Integer.parseInt(br.readLine());
         if(returnValue==0) {
-           if(br.readLine().contains("monitoringstatic")){
-               while(!br.readLine().equals("stop")){
-                    monitoringvalue.put(br.readLine(), br.readLine());
-               }
-           }
            prw.println("image");
            prw.println(email);
            prw.flush();
@@ -109,6 +107,9 @@ public class ClientManager implements Runnable{
         return devicepower;
     }
 
+    public void setThreadJtextUpgrade(ThreadJtextUpgrade threadJtextUpgrade) {
+        this.threadJtextUpgrade = threadJtextUpgrade;
+    }
 
     public ArrayList<String> getDevicesList() {
         return devicesList;
@@ -217,6 +218,11 @@ public class ClientManager implements Runnable{
             printWriter.println(username);
             printWriter.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(this.sock.getInputStream(), "UTF-16"));
+            if(br.readLine().contains("monitoringstatic")){
+                while(!br.readLine().equals("stop")){
+                    monitoringvalue.put(br.readLine(), br.readLine());
+                }
+            }
             if (br.readLine().contains("deviceavabile")) {
                 ArrayList<String> out = new ArrayList<>();
                 String input = null;
@@ -232,9 +238,11 @@ public class ClientManager implements Runnable{
     public void monitoringvalue(BufferedReader bufferedReader) throws IOException{
         String namedevice=bufferedReader.readLine();
         String ProcessActive="";
-        while (!(ProcessActive=ProcessActive+bufferedReader.readLine()+"\n").contains("stop"));
-        ProcessActive=ProcessActive+"\n";
-        ProcessActive=ProcessActive.replace("stop", "");
+        String out="";
+        while (!(out=bufferedReader.readLine()).contains("stop")){
+            ProcessActive=ProcessActive+out+"\n";
+        }
+        ProcessActive=ProcessActive.replace("stop", "\n");
         String cpuTotalLoad=bufferedReader.readLine();
         String cpuAvarageLoad="CPU Avarage Load:"+bufferedReader.readLine()+"\n";
         String cpuLoadPerCore="CPU Load Per Core:"+bufferedReader.readLine()+"\n";
@@ -253,7 +261,12 @@ public class ClientManager implements Runnable{
         outjtext.get(namedevice).setOut(cpuAvarageLoad+"\n",false);
         outjtext.get(namedevice).setOut(cpuLoadPerCore+"\n",false);
         outjtext.get(namedevice).setOut(Speed+"\n",false);
-
+        threadJtextUpgrade.setDeviceSelected(namedevice);
+        threadJtextUpgrade.setOutputjtext(outjtext);
+        if(t==null) {
+            Thread t = new Thread(this.threadJtextUpgrade);
+            t.start();
+        }
     }
     public void monitoringvaluestatic(BufferedReader bufferedReader) throws IOException{
         String namemachine=bufferedReader.readLine();

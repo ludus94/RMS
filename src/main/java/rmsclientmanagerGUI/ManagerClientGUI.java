@@ -23,7 +23,7 @@ import javax.swing.*;
  *
  * @author L.RUSSO62
  */
-public class ManagerClientGUI extends javax.swing.JFrame {
+public class ManagerClientGUI extends javax.swing.JFrame  {
     private DataSet datasettemperature;
     private DataSet datasetcpuload;
     private DataSet  datasetcupvoltage;
@@ -46,6 +46,7 @@ public class ManagerClientGUI extends javax.swing.JFrame {
     private ArrayList<String> devicelist;
     private static ClientManager clientManager;
     private String user;
+    private ThreadJtextUpgrade threadJtextUpgrade;
     /**
      * Creates new form ManagerClient
      */
@@ -59,6 +60,8 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         model=new DefaultListModel();
         jouttext=new TreeMap<>();
         monitoricstatic=clientManager.getMonitoringValue();
+        this.threadJtextUpgrade=new ThreadJtextUpgrade(jouttext,jTextArea1,deviceSelected);
+        clientManager.setThreadJtextUpgrade(this.threadJtextUpgrade);
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/java/rmsclientmanagerGUI/logoapp.jpeg").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
         Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");    
         this.setIconImage(icon);
@@ -117,7 +120,10 @@ public class ManagerClientGUI extends javax.swing.JFrame {
         jDashBoardPannel.setVisible(true);
         jTextArea1.setAutoscrolls(true);
         jTextArea1.setText(monitoricstatic.get(deviceSelected)+"\n"+jouttext.get(deviceSelected).getOut());
+        this.threadJtextUpgrade.setDeviceSelected(deviceSelected);
     }
+
+
 
     public void setJText(String Test) {
         this.jTextArea1.append(Test);
@@ -534,7 +540,9 @@ public class ManagerClientGUI extends javax.swing.JFrame {
             jCPUVoltagePanel.add(cpuvoltage.getChartPannel(), BorderLayout.CENTER);
             jCPUVoltagePanel.validate();
             jTextArea1.setAutoscrolls(true);
+            this.threadJtextUpgrade.setDeviceSelected(deviceSelected);
             jTextArea1.setText(jouttext.get(deviceSelected).getOut());
+
 
     }//GEN-LAST:event_jDeviceListValueChanged
 

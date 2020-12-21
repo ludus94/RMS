@@ -13,7 +13,7 @@ public class StringObject {
 
     public void setOut(String out,boolean refresh) {
         if(!refresh)
-            this.out =this.out+out;
+            this.out =this.out+out+"\n";
         else{
             this.out="";
         }
