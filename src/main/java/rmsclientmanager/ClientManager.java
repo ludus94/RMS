@@ -244,10 +244,10 @@ public class ClientManager implements Runnable{
         }
         ProcessActive=ProcessActive.replace("stop", "\n");
         String cpuTotalLoad=bufferedReader.readLine();
-        String cpuAvarageLoad="CPU Avarage Load:"+bufferedReader.readLine()+"\n";
-        String cpuLoadPerCore="CPU Load Per Core:"+bufferedReader.readLine()+"\n";
+        String cpuAvarageLoad="CPU Avarage Load:"+bufferedReader.readLine();
+        String cpuLoadPerCore="CPU Load Per Core:"+bufferedReader.readLine();
         String CpuTemperature=bufferedReader.readLine();
-        String Speed="Speed Fan:"+ bufferedReader.readLine()+"\n";
+        String Speed="Speed Fan:"+ bufferedReader.readLine();
         String cpuVoltage= bufferedReader.readLine();
         String Power= bufferedReader.readLine();
         String time=bufferedReader.readLine();

@@ -119,7 +119,6 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         jDeviceList.setVisible(true);
         jDashBoardPannel.setVisible(true);
         jTextArea1.setAutoscrolls(true);
-        jTextArea1.setText(monitoricstatic.get(deviceSelected)+"\n"+jouttext.get(deviceSelected).getOut());
         this.threadJtextUpgrade.setDeviceSelected(deviceSelected);
     }
 
