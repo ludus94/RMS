@@ -239,9 +239,7 @@ public class ClientManager implements Runnable{
         String namedevice=bufferedReader.readLine();
         String ProcessActive="";
         String out="";
-        while (!(out=bufferedReader.readLine()).equals("stop")){
-            ProcessActive=ProcessActive+out+"\n";
-        }
+        while (!(ProcessActive=ProcessActive+bufferedReader.readLine()+"\n").contains("stop"));
         ProcessActive=ProcessActive.replace("stop", "\n");
         String cpuTotalLoad=bufferedReader.readLine();
         String cpuAvarageLoad="CPU Avarage Load:"+bufferedReader.readLine();
