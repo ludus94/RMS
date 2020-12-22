@@ -173,7 +173,7 @@ public class Server implements Runnable{
     public void moinitoringvalue(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
         String namemachine=bufferedReader.readLine();
         String ProcessActive="";
-        while (!(ProcessActive=ProcessActive+bufferedReader.readLine()).contains("stop"));
+        while (!(ProcessActive=ProcessActive+bufferedReader.readLine()+"\n").contains("stop"));
         String cpuTotalLoad=bufferedReader.readLine();
         String cpuAvarageLoad= bufferedReader.readLine();
         String cpuLoadPerCore= bufferedReader.readLine();
