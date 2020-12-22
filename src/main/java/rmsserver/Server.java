@@ -191,7 +191,7 @@ public class Server implements Runnable{
                 PrintWriter prv=new PrintWriter(new OutputStreamWriter(socketManager.getOutputStream(),"UTF-16"));
                 prv.println("monitoringvalue");
                 prv.println(namemachine);
-                prv.print(ProcessActive);
+                prv.println(ProcessActive);
                 prv.println(cpuTotalLoad);
                 prv.println(cpuAvarageLoad);
                 prv.println(cpuLoadPerCore);
