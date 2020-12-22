@@ -240,7 +240,7 @@ public class ClientManager implements Runnable{
         String ProcessActive="";
         String out="";
         while (!(ProcessActive=ProcessActive+bufferedReader.readLine()+"\n").contains("stop"));
-        ProcessActive=ProcessActive.replace("stop", "\n");
+        ProcessActive=ProcessActive.replace("stop\n", "");
         String cpuTotalLoad=bufferedReader.readLine();
         String cpuAvarageLoad="CPU Avarage Load:"+bufferedReader.readLine();
         String cpuLoadPerCore="CPU Load Per Core:"+bufferedReader.readLine();
