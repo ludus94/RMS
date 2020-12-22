@@ -559,7 +559,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
     private void jKillProcessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jKillProcessButtonMouseClicked
         JFrame f=new JFrame();
         String PID=JOptionPane.showInputDialog(f,"Enter process identify (PID)");
-        if(!PID.contains("")) {
+        if(!PID.isEmpty()) {
             this.PID = PID;
             clientManager.rmsmanage("killprocess",deviceSelected, PID);
         }
