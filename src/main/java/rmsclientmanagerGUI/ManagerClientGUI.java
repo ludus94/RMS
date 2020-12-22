@@ -103,16 +103,16 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         this.power=new ChartLine(jPowerPanel.getWidth(),jPowerPanel.getHeight(),"Power",this.datasetpower);
         
         jTemperaturePanel.setLayout(new java.awt.BorderLayout());
-        jTemperaturePanel.add(temperature.getChartPannel(),BorderLayout.CENTER);
+        jTemperaturePanel.add(temperature.getChartPanel(),BorderLayout.CENTER);
         jTemperaturePanel.validate();
         jPowerPanel.setLayout(new java.awt.BorderLayout());
-        jPowerPanel.add(power.getChartPannel(), BorderLayout.CENTER);
+        jPowerPanel.add(power.getChartPanel(), BorderLayout.CENTER);
         jPowerPanel.validate();
         jCPULoadPanel.setLayout(new java.awt.BorderLayout());
-        jCPULoadPanel.add(cpuload.getChartPannel(),BorderLayout.CENTER);
+        jCPULoadPanel.add(cpuload.getChartPanel(),BorderLayout.CENTER);
         jCPULoadPanel.validate();
         jCPUVoltagePanel.setLayout(new java.awt.BorderLayout());
-        jCPUVoltagePanel.add(cpuvoltage.getChartPannel(),BorderLayout.CENTER);
+        jCPUVoltagePanel.add(cpuvoltage.getChartPanel(),BorderLayout.CENTER);
         jCPUVoltagePanel.validate();
         jDeviceList.setLayout(new java.awt.CardLayout());
         jDeviceList.setSelectedIndex(0);
@@ -528,16 +528,16 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
             this.power = new ChartLine(jPowerPanel.getWidth(), jPowerPanel.getHeight(), "Power", this.datasetpower);
 
             jTemperaturePanel.setLayout(new java.awt.BorderLayout());
-            jTemperaturePanel.add(temperature.getChartPannel(), BorderLayout.CENTER);
+            jTemperaturePanel.add(temperature.getChartPanel(), BorderLayout.CENTER);
             jTemperaturePanel.validate();
             jPowerPanel.setLayout(new java.awt.BorderLayout());
-            jPowerPanel.add(power.getChartPannel(), BorderLayout.CENTER);
+            jPowerPanel.add(power.getChartPanel(), BorderLayout.CENTER);
             jPowerPanel.validate();
             jCPULoadPanel.setLayout(new java.awt.BorderLayout());
-            jCPULoadPanel.add(cpuload.getChartPannel(), BorderLayout.CENTER);
+            jCPULoadPanel.add(cpuload.getChartPanel(), BorderLayout.CENTER);
             jCPULoadPanel.validate();
             jCPUVoltagePanel.setLayout(new java.awt.BorderLayout());
-            jCPUVoltagePanel.add(cpuvoltage.getChartPannel(), BorderLayout.CENTER);
+            jCPUVoltagePanel.add(cpuvoltage.getChartPanel(), BorderLayout.CENTER);
             jCPUVoltagePanel.validate();
             jTextArea1.setAutoscrolls(true);
             this.JTextUpgrade.setDeviceSelected(deviceSelected);

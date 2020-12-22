@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
+/***
+ * Class to manage a user connect at server
+ */
 public class ManageUser {
     private Map<String, Socket> clientUserMachines;
     private Map<String,String> monitoringStatic;

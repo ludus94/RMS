@@ -17,12 +17,23 @@ import org.jfree.data.general.DefaultValueDataset;
 
 /**
  *
- * @author L.RUSSO62
+ * Facede for Dial Graphic
  */
 public class Dial {
      private ChartPanel chartPanel;
      private DialPlot plot;
      private DataSet dataset;
+
+    /***
+     * Costructor
+     * @param width
+     * @param height
+     * @param titleChart
+     * @param minval
+     * @param maxval
+     * @param gap
+     * @param dataset
+     */
      public Dial(int width,int height,String titleChart,int minval,int maxval,int gap,DataSet dataset){
          this.dataset=dataset;
         DialPlot plot=new DialPlot(this.dataset.getDataSetValue());
@@ -40,10 +51,18 @@ public class Dial {
          chartPanel.setVisible(true);
      }
 
+    /***
+     * Get dataset value
+     * @return
+     */
     public DataSet getDataset() {
         return dataset;
     }
 
+    /***
+     * Set a Data Set
+     * @param dataset
+     */
     public void setDataset(DataSet dataset) {
         this.dataset = dataset;
         this.plot.setDataset(dataset.getDataSetValue());

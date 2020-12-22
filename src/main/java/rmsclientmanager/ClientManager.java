@@ -77,6 +77,10 @@ public class ClientManager implements Runnable{
         }
         return returnValue;
     }
+
+    /***
+     * Method logout of client
+     */
     public void logout(){
         try {
             PrintWriter prw= new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),"UTF-16"));
@@ -88,53 +92,99 @@ public class ClientManager implements Runnable{
         }
 
     }
+
+    /***
+     * Get method DeviceTemperature
+     * @return reference of map
+     */
     public Map<String, DataSet> getDevicetemperature() {
         return devicetemperature;
     }
 
-
+    /***
+     * Get method DeviceCPUTemperature
+     * @return reference of map
+     */
     public Map<String, DataSet> getDevicecpuload() {
         return devicecpuload;
     }
 
-
+    /***
+     * Get method DeviceCPUVoltage
+     * @return reference of map
+     */
     public Map<String, DataSet> getDevicecpuvoltage() {
         return devicecpuvoltage;
     }
 
-
+    /***
+     * Get method DevicePower
+     * @return reference of map
+     */
     public Map<String, DataSet> getDevicepower() {
         return devicepower;
     }
 
+    /***
+     * Set method of thread updated for JTextArea
+     * @param JTextUpgrade
+     */
     public void setThreadJtextUpgrade(JTextUpgrade JTextUpgrade) {
         this.JTextUpgrade = JTextUpgrade;
     }
-
+    /***
+     * Get method DeviceCPUVoltage
+     * @return reference of ArrayList<String>
+     */
     public ArrayList<String> getDevicesList() {
         return devicesList;
     }
-
+    /***
+     * Get method Output JTextArea
+     * @return reference of map
+     */
     public Map<String, StringObject> getOutjtext() {
         return outjtext;
     }
+    /***
+     * Get method for MonitoringValue
+     * @return reference of map
+     */
     public Map<String,String > getMonitoringValue(){
         return monitoringvalue;
     }
 
+    /***
+     * Get method for Image byte
+     * @return image byte
+     */
     public byte[] getImage() {
         return image;
     }
 
+    /***
+     * Get method for Username
+     * @return username
+     */
     public String getUsername() {
         return username;
     }
 
+    /***
+     * Get method to obtain a ImageIcon User
+     * @return ImageIcon object
+     * @throws UnsupportedEncodingException
+     * @throws IOException
+     */
     public ImageIcon getImageIcon() throws UnsupportedEncodingException,IOException {
         Image image2=new ImageIcon(image).getImage();
         Image image3=image2.getScaledInstance(75,75,75);
         return new ImageIcon(image3);
     }
+
+    /***
+     * Initialization of map to use a dataset in the graphics
+     */
     public void mapinit(){
         retrieveDevices();
         for(int i=0;i<devicesList.size();i++){
@@ -145,6 +195,10 @@ public class ClientManager implements Runnable{
             outjtext.put(devicesList.get(i),new StringObject());
         }
     }
+
+    /***
+     * Using to refresh a graphics
+     */
     public void mapRefresh(){
         if(devicesList.size()> olddevicelist.size()) {
             for (int i = 0; i < devicesList.size(); i++) {
@@ -235,6 +289,12 @@ public class ClientManager implements Runnable{
         }catch(IOException ex){
         }
     }
+
+    /***
+     * Read a monitoring dynamic value on the buffer and display value on the GUI
+     * @param bufferedReader
+     * @throws IOException
+     */
     public void monitoringvalue(BufferedReader bufferedReader) throws IOException{
         String namedevice=bufferedReader.readLine();
         String ProcessActive="";
@@ -270,6 +330,11 @@ public class ClientManager implements Runnable{
 
 
     }
+    /***
+     * Read a monitoring value static on the buffer and display value on the GUI
+     * @param bufferedReader
+     * @throws IOException
+     */
     public void monitoringvaluestatic(BufferedReader bufferedReader) throws IOException{
         String namemachine=bufferedReader.readLine();
         String os=bufferedReader.readLine();
@@ -280,6 +345,14 @@ public class ClientManager implements Runnable{
         JTextUpgrade.setOutputjtext(outjtext);
 
     }
+
+    /***
+     * Send at server the command catch at GUI for shutdown,reboot and killprocess
+     * @param command
+     * @param deviceSelected
+     * @param PID
+     * @return String to printed in interface
+     */
     public String rmsmanage(String command,String deviceSelected,String PID){
         try {
             System.out.println(deviceSelected);
@@ -317,6 +390,10 @@ public class ClientManager implements Runnable{
         }
         return null;
     }
+
+    /***
+     * Thread to manage the monitoring value sends
+     */
     @Override
     public void run() {
         while(true) {
