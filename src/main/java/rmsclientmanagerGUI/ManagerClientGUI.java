@@ -177,7 +177,6 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
             JOptionPane.showMessageDialog(f,"Update device");
             int index=jDeviceList.getSelectedIndex();
             model.removeElementAt(jDeviceList.getSelectedIndex());
-            jDeviceList.remove(index);
             jDeviceList.setModel(model);
             jDeviceMenu.validate();
         }
