@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class LoginGUI extends JFrame {
+public class LoginClientGUI extends JFrame {
     private JPanel mainPanel;
     private JTextField emailTextField;
     private JPasswordField passwordField;
@@ -18,7 +18,7 @@ public class LoginGUI extends JFrame {
     private JLabel image;
     private JButton exitButton;
     private Client client;
-    public LoginGUI(String title){
+    public LoginClientGUI(String title){
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
@@ -84,7 +84,7 @@ public class LoginGUI extends JFrame {
     }
 
     public static void main(String[] args){
-        JFrame frame = new LoginGUI("Login ARSM");
+        JFrame frame = new LoginClientGUI("Login RSM Client");
         frame.setSize(500, 500);
         frame.setVisible(true);
         frame.setResizable(true);

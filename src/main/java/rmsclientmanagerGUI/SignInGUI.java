@@ -1,7 +1,7 @@
 package rmsclientmanagerGUI;
 
 
-import rmsclientGUI.LoginGUI;
+import rmsclientGUI.LoginClientGUI;
 import rmsclientmanager.ClientManager;
 
 import javax.swing.*;
@@ -53,7 +53,7 @@ public class SignInGUI extends JFrame {
                             JFrame frameoption=new JFrame();
                             JOptionPane.showMessageDialog(frameoption,"User registered with success");
                             dispose();
-                            JFrame frame = new rmsclientmanagerGUI.LoginGUI("Login ARSM");
+                            JFrame frame = new LoginClientManagerGUI("Login ARSM");
                             frame.setSize(500, 500);
                             frame.setVisible(true);
                             frame.setResizable(true);
@@ -62,7 +62,7 @@ public class SignInGUI extends JFrame {
                             JFrame frameoption=new JFrame();
                             JOptionPane.showMessageDialog(frameoption,"User all ready existis in system");
                             dispose();
-                            JFrame frame = new rmsclientGUI.LoginGUI("Login ARSM");
+                            JFrame frame = new LoginClientGUI("Login ARSM");
                             frame.setSize(500, 500);
                             frame.setVisible(true);
                             frame.setResizable(true);
@@ -108,7 +108,7 @@ public class SignInGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                JFrame frame = new LoginGUI("Login ARSM");
+                JFrame frame = new LoginClientGUI("Login ARSM");
                 frame.setSize(500, 500);
                 frame.setVisible(true);
                 frame.setResizable(true);

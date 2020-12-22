@@ -1,7 +1,5 @@
 package rmsclientmanagerGUI;
 
-import facade.MonitoringValue;
-import rmsclient.Client;
 import rmsclientmanager.ClientManager;
 
 import javax.swing.*;
@@ -9,7 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 
-public class LoginGUI extends JFrame {
+public class LoginClientManagerGUI extends JFrame {
     private JPanel mainPanel;
     private JTextField emailTextField;
     private JPasswordField passwordField;
@@ -18,7 +16,7 @@ public class LoginGUI extends JFrame {
     private JLabel image;
     private JButton exitButton;
 
-    public LoginGUI(String title){
+    public LoginClientManagerGUI(String title){
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
@@ -100,7 +98,7 @@ public class LoginGUI extends JFrame {
     }
 
     public static void main(String[] args){
-        JFrame frame = new LoginGUI("Login ARSM");
+        JFrame frame = new LoginClientManagerGUI("Login Client Manager RMS");
         frame.setSize(500, 500);
         frame.setVisible(true);
         frame.setResizable(true);
