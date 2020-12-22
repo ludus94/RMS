@@ -3,6 +3,7 @@ package rmsclientmanagerGUI;
 import rmsclientmanager.*;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Map;
@@ -30,6 +31,11 @@ public class JTextUpgrade implements Runnable{
         while(true) {
             if (outputjtext.containsKey(deviceSelected)) {
                 jTextArea.append(outputjtext.get(deviceSelected).getOut());
+                try {
+                    jTextArea.setCaretPosition(jTextArea.getLineStartOffset(jTextArea.getLineCount() - 1));
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                }
             }
             try {
                 Thread.sleep(30000);
