@@ -51,7 +51,7 @@ public class MonitoringThreadClass implements Runnable {
      */
     public String monitoringSendValueDinamic(){
         String out="";
-        out=mv.getProcessActive(20)+"\n";
+        out=mv.getProcessActive(20);
         out=out+mv.cpuTotalLoad()+"\n";
         out=out+mv.cpuAverageLoad()+"\n";
         out=out+mv.cpuLoadPerCore()+"\n";
