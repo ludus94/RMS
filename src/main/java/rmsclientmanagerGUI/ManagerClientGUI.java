@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -60,7 +61,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         model=new DefaultListModel();
         jouttext=new TreeMap<>();
         monitoricstatic=clientManager.getMonitoringValue();
-        this.JTextUpgrade =new JTextUpgrade(jouttext,jTextArea1,deviceSelected);
+        this.JTextUpgrade =new JTextUpgrade(jouttext,jTextArea1,deviceSelected,jScrollPane1);
         clientManager.setThreadJtextUpgrade(this.JTextUpgrade);
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/java/rmsclientmanagerGUI/logoapp.jpeg").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
         Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");    
@@ -388,11 +389,10 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         jTextArea1.setBackground(new java.awt.Color(51, 51, 51));
         jTextArea1.setForeground(new java.awt.Color(255,255,255));
         jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
         jTextArea1.setPreferredSize(new java.awt.Dimension(150, 92));
         jTextArea1.setAutoscrolls(true);
-        jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        jScrollPane1.add(jTextArea1);
+        DefaultCaret caret = (DefaultCaret) jTextArea1.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         jScrollPane1.setViewportView(jTextArea1);
         jShutdownButton.setText("Shutdown");
         jShutdownButton.addMouseListener(new java.awt.event.MouseAdapter() {

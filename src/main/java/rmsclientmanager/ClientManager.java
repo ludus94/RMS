@@ -240,6 +240,7 @@ public class ClientManager implements Runnable{
         String ProcessActive="";
         String out="";
         while (!(ProcessActive=ProcessActive+bufferedReader.readLine()+"\n").contains("stop"));
+        int index=ProcessActive.indexOf("stop");
         ProcessActive=ProcessActive.replace("stop\n", "");
         String cpuTotalLoad=bufferedReader.readLine();
         String cpuAvarageLoad="CPU Avarage Load:"+bufferedReader.readLine();
@@ -254,6 +255,7 @@ public class ClientManager implements Runnable{
         devicecpuload.get(namedevice).setDataSetValue(Double.parseDouble(cpuTotalLoad),"%",time);
         devicecpuvoltage.get(namedevice).setDataSetValue(Double.parseDouble(cpuVoltage),"mV",time);
         devicepower.get(namedevice).setDataSetValue(Double.parseDouble(Power),"mW",time);
+        outjtext.get(namedevice).setCount(outjtext.get(namedevice).getCount()+index);
         outjtext.get(namedevice).setOut("--- Measuring at "+time+"---\n",false);
         outjtext.get(namedevice).setOut(ProcessActive+"\n",false);
         outjtext.get(namedevice).setOut(cpuAvarageLoad+"\n",false);
