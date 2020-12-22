@@ -571,7 +571,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
     private void jKillProcessWithNameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jKillProcessWithNameButtonMouseClicked
         JFrame f=new JFrame();
         String name=JOptionPane.showInputDialog(f,"Enter process name");
-        if(!name.contains("")) {
+        if(!name.isEmpty()) {
             this.name = name;
             clientManager.rmsmanage("killprocesswithname", deviceSelected, name);
         }

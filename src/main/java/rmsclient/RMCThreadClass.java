@@ -48,7 +48,7 @@ public class RMCThreadClass implements Runnable{
             rmc.reboot();
         }else if(action.contains("killprocesswithname")){
             pw.println("result kill");
-            pw.println(rmc.killProcessNameProcess(br.readLine())); //Ricodati che non deve mai avvenire l' abbort di java
+            pw.println(rmc.killProcessNameProcess(br.readLine()));
             pw.flush();
         }else if(action.contains("killprocess")){
             pw.println("result kill");

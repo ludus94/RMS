@@ -274,6 +274,9 @@ public class ClientManager implements Runnable{
         String booted= bufferedReader.readLine();
         outjtext.get(namemachine).setOut("Operating System: "+os,false);
         outjtext.get(namemachine).setOut("Booted System: "+booted,false);
+        JTextUpgrade.setDeviceSelected(namemachine);
+        JTextUpgrade.setOutputjtext(outjtext);
+
     }
     public String rmsmanage(String command,String deviceSelected,String PID){
         try {
@@ -305,6 +308,7 @@ public class ClientManager implements Runnable{
             if(command.contains("killprocess")) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-16"));
                 outjtext.get(deviceSelected).setOut(bufferedReader.readLine(), false);
+                JTextUpgrade.setOutputjtext(outjtext);
             }
         }catch(IOException ex){
 
