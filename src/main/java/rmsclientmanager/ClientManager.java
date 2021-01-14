@@ -263,7 +263,7 @@ public class ClientManager implements Runnable{
     }
     /***
      * Retrieve list of devices linked to
-     * @return
+     *
      */
     public void retrieveDevices() {
         try {

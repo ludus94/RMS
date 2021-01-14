@@ -94,7 +94,7 @@ public class ManageUser {
     }
     /***
      * Return an ArrayList that contains a socket of user
-     * @return ArrayList\<Socket\>
+     *
      */
     public synchronized ArrayList<Socket> getSocketMachines(){
         ArrayList<Socket> ports=new ArrayList<>();

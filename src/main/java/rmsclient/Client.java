@@ -18,7 +18,7 @@ public class Client {
 
     /***
      * Initializes Socket and MonitoringValues
-     * @throws IOException
+     *
      */
     public Client() {
         try {
@@ -41,7 +41,7 @@ public class Client {
     }
     /***
      * Return the name of machine
-     * @return
+     *
      */
     public String getNameMachine(){
         String namemachine= System.getenv("COMPUTERNAME");
@@ -65,7 +65,7 @@ public class Client {
      * @return Error code:
      * code 0: Success
      * code 1: Incorrect parameters
-     * @throws IOException
+     *
      */
     public int login(String email,String password)  {
         try {
@@ -112,7 +112,7 @@ public class Client {
      * code 1: Password is not equal to password 2
      * code 2: User already exists in system
      * code 3: Generic error
-     * @throws IOException
+     *
      */
     public int sigin(String email, String password, String password2,String name, String surname, String path,String extension)  {
         try {
