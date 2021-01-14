@@ -20,7 +20,7 @@ public class ClientManager implements Runnable{
 
     private Socket sock;
     private int port=33333;
-    private static final String address="ludovicorusso.ddns.net";
+    private static final String address="62.98.33.48";
     private ArrayList<String> devicesList;
     private ArrayList<String> olddevicelist;
     private String username;
