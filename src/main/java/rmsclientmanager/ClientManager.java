@@ -134,7 +134,7 @@ public class ClientManager implements Runnable{
     }
     /***
      * Get method DeviceCPUVoltage
-     * @return reference of ArrayList<String>
+     *
      */
     public ArrayList<String> getDevicesList() {
         return devicesList;
