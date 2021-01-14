@@ -498,6 +498,9 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         if(jDeviceList.getSelectedIndex()>=0){
             JOptionPane.showMessageDialog(f,"Send Shutdown ");
             clientManager.rmsmanage("shutdown",deviceSelected,"");
+            Thread t=new Thread(clientManager);
+            t.start();
+            clientManager.setTmonitoring(t);
             refreshDeviceList();
         }
     }//GEN-LAST:event_jShutdownButtonMouseClicked
@@ -551,6 +554,9 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         if(jDeviceList.getSelectedIndex()>=0){
             JOptionPane.showMessageDialog(f,"Send Reboot");
             clientManager.rmsmanage("reboot", deviceSelected, "");
+            Thread t=new Thread(clientManager);
+            t.start();
+            clientManager.setTmonitoring(t);
             refreshDeviceList();
         }
     }//GEN-LAST:event_jRebootButtonMouseClicked

@@ -34,6 +34,7 @@ public class ClientManager implements Runnable{
     private static Logger log;
     private JTextUpgrade JTextUpgrade;
     private Thread t;
+    private Thread tmonitoring;
     public ClientManager(String username) throws IOException {
         this.sock=new Socket(address,port);
         this.devicesList = new ArrayList<>();
@@ -47,6 +48,11 @@ public class ClientManager implements Runnable{
         this.outjtext=new TreeMap<>();
         this.log=Logger.getLogger("global");
     }
+
+    public void setTmonitoring(Thread tmonitoring) {
+        this.tmonitoring = tmonitoring;
+    }
+
     /***Log in with an existing user
      *
      * @param email User's email
@@ -403,9 +409,10 @@ public class ClientManager implements Runnable{
                 if (action.equals("monitoringvalue")) {
                     monitoringvalue(input);
                 }
-                if (action.equals("monitoringvaluestatic")){
+                if (action.equals("monitoringvaluestatic")) {
                     monitoringvalue(input);
-
+                }if (action.equals("shutdown")|| action.equals("reboot")){
+                    break;
                 }
             } catch (IOException e) {
                 e.printStackTrace();

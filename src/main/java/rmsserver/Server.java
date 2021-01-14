@@ -346,12 +346,16 @@ public class Server implements Runnable{
         if(command.contains("shutdown") || command.contains("reboot")) {
             printWriterClient.println(command);
             printWriterClient.flush();
+            printWriter.println(command);
+            printWriter.flush();
             log.info("Send "+command+"message at machine "+namemachine+" at user "+email);
         }else{
             String pid=bufferedReader.readLine();
             printWriterClient.println(command);
             printWriterClient.println(pid);
             printWriterClient.flush();
+            printWriter.println(command);
+            printWriter.flush();
             log.info("Send"+command+" "+pid+" message at machine "+namemachine+" at user"+email);
         }
         if(command.contains("killprocess")) {
