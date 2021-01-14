@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -60,7 +61,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         model=new DefaultListModel();
         jouttext=new TreeMap<>();
         monitoricstatic=clientManager.getMonitoringValue();
-        this.JTextUpgrade =new JTextUpgrade(jouttext,jTextArea1,deviceSelected);
+        this.JTextUpgrade =new JTextUpgrade(jouttext,jTextArea1,deviceSelected,jScrollPane1);
         clientManager.setThreadJtextUpgrade(this.JTextUpgrade);
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/java/rmsclientmanagerGUI/logoapp.jpeg").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
         Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");    
@@ -102,16 +103,16 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         this.power=new ChartLine(jPowerPanel.getWidth(),jPowerPanel.getHeight(),"Power",this.datasetpower);
         
         jTemperaturePanel.setLayout(new java.awt.BorderLayout());
-        jTemperaturePanel.add(temperature.getChartPannel(),BorderLayout.CENTER);
+        jTemperaturePanel.add(temperature.getChartPanel(),BorderLayout.CENTER);
         jTemperaturePanel.validate();
         jPowerPanel.setLayout(new java.awt.BorderLayout());
-        jPowerPanel.add(power.getChartPannel(), BorderLayout.CENTER);
+        jPowerPanel.add(power.getChartPanel(), BorderLayout.CENTER);
         jPowerPanel.validate();
         jCPULoadPanel.setLayout(new java.awt.BorderLayout());
-        jCPULoadPanel.add(cpuload.getChartPannel(),BorderLayout.CENTER);
+        jCPULoadPanel.add(cpuload.getChartPanel(),BorderLayout.CENTER);
         jCPULoadPanel.validate();
         jCPUVoltagePanel.setLayout(new java.awt.BorderLayout());
-        jCPUVoltagePanel.add(cpuvoltage.getChartPannel(),BorderLayout.CENTER);
+        jCPUVoltagePanel.add(cpuvoltage.getChartPanel(),BorderLayout.CENTER);
         jCPUVoltagePanel.validate();
         jDeviceList.setLayout(new java.awt.CardLayout());
         jDeviceList.setSelectedIndex(0);
@@ -177,7 +178,6 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
             JOptionPane.showMessageDialog(f,"Update device");
             int index=jDeviceList.getSelectedIndex();
             model.removeElementAt(jDeviceList.getSelectedIndex());
-            jDeviceList.remove(index);
             jDeviceList.setModel(model);
             jDeviceMenu.validate();
         }
@@ -389,11 +389,10 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         jTextArea1.setBackground(new java.awt.Color(51, 51, 51));
         jTextArea1.setForeground(new java.awt.Color(255,255,255));
         jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
         jTextArea1.setPreferredSize(new java.awt.Dimension(150, 92));
         jTextArea1.setAutoscrolls(true);
-        jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        jScrollPane1.add(jTextArea1);
+        DefaultCaret caret = (DefaultCaret) jTextArea1.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         jScrollPane1.setViewportView(jTextArea1);
         jShutdownButton.setText("Shutdown");
         jShutdownButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -529,16 +528,16 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
             this.power = new ChartLine(jPowerPanel.getWidth(), jPowerPanel.getHeight(), "Power", this.datasetpower);
 
             jTemperaturePanel.setLayout(new java.awt.BorderLayout());
-            jTemperaturePanel.add(temperature.getChartPannel(), BorderLayout.CENTER);
+            jTemperaturePanel.add(temperature.getChartPanel(), BorderLayout.CENTER);
             jTemperaturePanel.validate();
             jPowerPanel.setLayout(new java.awt.BorderLayout());
-            jPowerPanel.add(power.getChartPannel(), BorderLayout.CENTER);
+            jPowerPanel.add(power.getChartPanel(), BorderLayout.CENTER);
             jPowerPanel.validate();
             jCPULoadPanel.setLayout(new java.awt.BorderLayout());
-            jCPULoadPanel.add(cpuload.getChartPannel(), BorderLayout.CENTER);
+            jCPULoadPanel.add(cpuload.getChartPanel(), BorderLayout.CENTER);
             jCPULoadPanel.validate();
             jCPUVoltagePanel.setLayout(new java.awt.BorderLayout());
-            jCPUVoltagePanel.add(cpuvoltage.getChartPannel(), BorderLayout.CENTER);
+            jCPUVoltagePanel.add(cpuvoltage.getChartPanel(), BorderLayout.CENTER);
             jCPUVoltagePanel.validate();
             jTextArea1.setAutoscrolls(true);
             this.JTextUpgrade.setDeviceSelected(deviceSelected);
@@ -559,7 +558,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
     private void jKillProcessButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jKillProcessButtonMouseClicked
         JFrame f=new JFrame();
         String PID=JOptionPane.showInputDialog(f,"Enter process identify (PID)");
-        if(!PID.contains("")) {
+        if(!PID.isEmpty()) {
             this.PID = PID;
             clientManager.rmsmanage("killprocess",deviceSelected, PID);
         }
@@ -571,7 +570,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
     private void jKillProcessWithNameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jKillProcessWithNameButtonMouseClicked
         JFrame f=new JFrame();
         String name=JOptionPane.showInputDialog(f,"Enter process name");
-        if(!name.contains("")) {
+        if(!name.isEmpty()) {
             this.name = name;
             clientManager.rmsmanage("killprocesswithname", deviceSelected, name);
         }

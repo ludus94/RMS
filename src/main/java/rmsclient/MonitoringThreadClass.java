@@ -28,7 +28,10 @@ public class MonitoringThreadClass implements Runnable {
         this.mv=new MonitoringValue();
 
     }
-
+    /***
+     * Get method for name machine
+     * @return String containing the machine's name
+     */
     public String getNameMachine(){
         String namemachine= System.getenv("COMPUTERNAME");
         if(namemachine!=null){
@@ -51,7 +54,7 @@ public class MonitoringThreadClass implements Runnable {
      */
     public String monitoringSendValueDinamic(){
         String out="";
-        out=mv.getProcessActive(20)+"\n";
+        out=mv.getProcessActive(20);
         out=out+mv.cpuTotalLoad()+"\n";
         out=out+mv.cpuAverageLoad()+"\n";
         out=out+mv.cpuLoadPerCore()+"\n";

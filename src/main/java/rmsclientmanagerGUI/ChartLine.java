@@ -12,14 +12,21 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
+ * Facade class of jFreeChart Library
  *
- * @author L.RUSSO62
  */
 public class ChartLine {
     
      private ChartPanel chartPanel;
      private DataSet dataset;
-     
+
+    /**
+     * Constructor of plot's object
+     * @param width
+     * @param height
+     * @param titleChart
+     * @param dataset
+     */
      public ChartLine(int width,int height,String titleChart,DataSet dataset){
          this.dataset=dataset;
          JFreeChart lineChartTemperature = ChartFactory.createLineChart(
@@ -33,15 +40,27 @@ public class ChartLine {
          chartPanel.setVisible(true);
      }
 
+    /***
+     * Get method for DataSet used in a plot
+     * @return
+     */
     public DefaultCategoryDataset getDataset() {
         return dataset.getDatasetCategory();
     }
 
+    /***
+     * Set Method to dataset in a plot
+     * @param dataset Dataset to insert
+     */
     public void setDataset(DataSet dataset) {
         this.dataset = dataset;
     }
-     
-     public ChartPanel getChartPannel(){
+
+    /***
+     * Get Method for Chart Panel
+     * @return
+     */
+     public ChartPanel getChartPanel(){
          return this.chartPanel;
      }
 }

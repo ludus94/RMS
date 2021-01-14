@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
 
+/***
+ * Class implement a server
+ */
 //implements runnable
 public class Server implements Runnable{
     private Socket socket;
@@ -18,6 +21,13 @@ public class Server implements Runnable{
     private static final int port=33333;
     private static Logger log;
 
+    /***
+     * Construct a object server
+     * @param sock socket connection
+     * @param manageUser managuser
+     * @param usermap usermap
+     *
+     */
     public Server(Socket sock,ManageUser manageUser,Map<String,ManageUser> usermap) {
         this.dbrms=new DbRms("DB_RMS","postgres" +
                 "","dp20202021");
@@ -26,6 +36,12 @@ public class Server implements Runnable{
         this.manageUser=manageUser;
         this.user=usermap;
     }
+
+    /***
+     * Main of class
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket=new ServerSocket(port);
         ManageUser manageUser=new ManageUser();
@@ -39,6 +55,9 @@ public class Server implements Runnable{
         }
     }
 
+    /***
+     * Thread for multiple connection
+     */
     @Override
     public void run() {
         while(true) {
@@ -66,6 +85,12 @@ public class Server implements Runnable{
         }
     }
 
+    /***
+     * Method of control action message
+     * @param socket
+     * @throws IOException
+     * @throws SQLException
+     */
     public void control(Socket socket) throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-16"));
         PrintWriter printWriter=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-16"));
@@ -95,6 +120,13 @@ public class Server implements Runnable{
         }
     }
 
+    /***
+     * Register a new user
+     * @param bufferedReader
+     * @param printWriter
+     * @throws IOException
+     * @throws SQLException
+     */
     public void signin(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException{
         String email=bufferedReader.readLine();
         String password=bufferedReader.readLine();
@@ -117,6 +149,14 @@ public class Server implements Runnable{
         printWriter.println(value);
         printWriter.flush();
     }
+
+    /***
+     * method to login client
+     * @param bufferedReader
+     * @param printWriter
+     * @throws IOException
+     * @throws SQLException
+     */
     public void loginclient(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
         String namemachine=bufferedReader.readLine();
         String email=bufferedReader.readLine();
@@ -141,6 +181,14 @@ public class Server implements Runnable{
             printWriter.flush();
         }
     }
+
+    /***
+     * Login of manager client
+     * @param bufferedReader
+     * @param printWriter
+     * @throws IOException
+     * @throws SQLException
+     */
     public void loginmanager(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException, SQLException {
         String email=bufferedReader.readLine();
         String password=bufferedReader.readLine();
@@ -163,6 +211,12 @@ public class Server implements Runnable{
             printWriter.flush();
         }
     }
+
+    /***
+     * Method log out
+     * @param bufferedReader
+     * @throws IOException
+     */
     public void logout(BufferedReader bufferedReader) throws IOException{
         String email=bufferedReader.readLine();
         ManageUser manager=user.get(email);
@@ -170,10 +224,18 @@ public class Server implements Runnable{
         listManager.remove(socket);
         socket.close();
     }
+
+    /***
+     * Method monitoringvalue is used for proxy to client and client manager
+     * @param bufferedReader
+     * @param printWriter
+     * @throws IOException
+     * @throws SQLException
+     */
     public void moinitoringvalue(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
         String namemachine=bufferedReader.readLine();
         String ProcessActive="";
-        while (!(ProcessActive=ProcessActive+bufferedReader.readLine()).contains("stop"));
+        while (!(ProcessActive=ProcessActive+bufferedReader.readLine()+"\n").contains("stop"));
         String cpuTotalLoad=bufferedReader.readLine();
         String cpuAvarageLoad= bufferedReader.readLine();
         String cpuLoadPerCore= bufferedReader.readLine();
@@ -191,7 +253,7 @@ public class Server implements Runnable{
                 PrintWriter prv=new PrintWriter(new OutputStreamWriter(socketManager.getOutputStream(),"UTF-16"));
                 prv.println("monitoringvalue");
                 prv.println(namemachine);
-                prv.println(ProcessActive);
+                prv.print(ProcessActive);
                 prv.println(cpuTotalLoad);
                 prv.println(cpuAvarageLoad);
                 prv.println(cpuLoadPerCore);
@@ -217,6 +279,15 @@ public class Server implements Runnable{
             log.info("No one client manager on line to user "+email);
         }
     }
+
+    /***
+     * Monitoring static value proxy method
+     *
+     * @param bufferedReader
+     * @param printWriter
+     * @throws IOException
+     * @throws SQLException
+     */
     public void moinitoringValueStatic(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
         String namemachine=bufferedReader.readLine();
         String os=bufferedReader.readLine();
@@ -241,6 +312,14 @@ public class Server implements Runnable{
             user.get(email).addMonitoringStatic(namemachine, os+"\n"+booted+"\n");
         }
     }
+
+    /***
+     * Retrieve a byte image and send it
+     * @param bufferedReader
+     * @param printWriter
+     * @throws IOException
+     * @throws SQLException
+     */
     public void image(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException{
         String email=bufferedReader.readLine();
         byte[] image= dbrms.imageManagerQuery(email);
@@ -248,6 +327,14 @@ public class Server implements Runnable{
         imagebin.write(image);
         imagebin.flush();
     }
+
+    /***
+     * Used to manage a shutdown,reboot,killprocess proxy method
+     * @param bufferedReader
+     * @param printWriter
+     * @throws IOException
+     * @throws SQLException
+     */
     public void rms(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
         String command=bufferedReader.readLine();
         String namemachine=bufferedReader.readLine();
@@ -285,6 +372,14 @@ public class Server implements Runnable{
             }
         }
     }
+
+    /***
+     * message retrive device
+     * @param bufferedReader
+     * @param printWriter
+     * @throws IOException
+     * @throws SQLException
+     */
     public void retriveDevice(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
         String email=bufferedReader.readLine();
         String out= dbrms.retriveDevice(email);
