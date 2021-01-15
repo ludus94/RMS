@@ -13,7 +13,7 @@ import java.net.*;
 public class Client {
     private Socket sock;
     private int port=33333;
-    private static final String address="151.73.211.114";
+    private static final String address="62.98.16.73";
     private MonitoringValue mv;
 
     /***

@@ -7,7 +7,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -18,7 +17,6 @@ public class JTextUpgrade implements Runnable{
     private Map<String,StringObject> outputjtext;
     private JTextArea jTextArea;
     private JScrollPane jScrollPane;
-    private JList<String> deviceList;
     private String deviceSelected;
 
     /***
@@ -28,12 +26,11 @@ public class JTextUpgrade implements Runnable{
      * @param deviceSelected
      * @param jScrollPane
      */
-    public JTextUpgrade(Map<String, StringObject> outputjtext, JTextArea jTextArea, String deviceSelected,JScrollPane jScrollPane,JList<String> deviceList) {
+    public JTextUpgrade(Map<String, StringObject> outputjtext, JTextArea jTextArea, String deviceSelected,JScrollPane jScrollPane) {
         this.outputjtext = outputjtext;
         this.jTextArea = jTextArea;
         this.deviceSelected = deviceSelected;
         this.jScrollPane=jScrollPane;
-        this.deviceList=deviceList;
     }
 
     /***
@@ -43,15 +40,7 @@ public class JTextUpgrade implements Runnable{
     public void setDeviceSelected(String deviceSelected) {
         this.deviceSelected = deviceSelected;
     }
-    public void setDevices(ArrayList<String> devices){
-        DefaultListModel model=new DefaultListModel();
-        int i=0;
-        for(String device:devices){
-            model.add(i,device);
-            i++;
-        }
-        deviceList.setModel(model);
-    }
+
     /***
      * Seth Method for text to display in a text area
      * @param outputjtext Map

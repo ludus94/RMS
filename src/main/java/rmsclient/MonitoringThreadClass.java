@@ -60,10 +60,8 @@ public class MonitoringThreadClass implements Runnable {
         out=out+mv.cpuLoadPerCore()+"\n";
         out=out+mv.getCpuTemperature()+"\n";
         int [] speed= mv.getFanSpeed();
-        if(speed.length==1)
-           out=out+speed[0]+"\n";
-        else if(speed.length==2)
-            out=out+speed[0]+" "+speed[1]+"\n";
+        if(speed.length>0)
+           out=out+speed[0]+" "+speed[1]+"\n";
         else {
             out = out + "Speed Information not available\n";
         }

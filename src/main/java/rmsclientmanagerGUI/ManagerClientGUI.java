@@ -61,7 +61,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         model=new DefaultListModel();
         jouttext=new TreeMap<>();
         monitoricstatic=clientManager.getMonitoringValue();
-        this.JTextUpgrade =new JTextUpgrade(jouttext,jTextArea1,deviceSelected,jScrollPane1,jDeviceList);
+        this.JTextUpgrade =new JTextUpgrade(jouttext,jTextArea1,deviceSelected,jScrollPane1);
         clientManager.setThreadJtextUpgrade(this.JTextUpgrade);
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/java/rmsclientmanagerGUI/logoapp.jpeg").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
         Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");    

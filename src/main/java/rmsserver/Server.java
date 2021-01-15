@@ -171,14 +171,6 @@ public class Server implements Runnable{
                 ManageUser manageUser=user.get(email);
                 manageUser.addClient(namemachine, this.socket);
             }
-            ArrayList<Socket> manager=manageUser.getSocketManagers();
-            if(!manager.isEmpty()){
-                Iterator<Socket> itrmanager=manager.iterator();
-                while(itrmanager.hasNext()){
-                    Socket sockmanager=itrmanager.next();
-                    this.retriveDevice(new BufferedReader(new InputStreamReader(sockmanager.getInputStream(),"UTF-8")),new PrintWriter(new OutputStreamWriter(sockmanager.getOutputStream(),"UTF-8")));
-                }
-            }
             dbrms.loginmachine(namemachine,email);
             log.info("Client "+namemachine+ " user "+ email+" is added");
             printWriter.println(value);
@@ -394,8 +386,8 @@ public class Server implements Runnable{
      */
     public void retriveDevice(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
         String email=bufferedReader.readLine();
-        String out=""; //dbrms.retriveDevice(email);
-
+        String out= dbrms.retriveDevice(email);
+        log.info(out);
         Map<String,String> monitoringstatic=user.get(email).getMonitoringStatic();
         if(monitoringstatic.size()>0) {
             printWriter.println("monitoringstatic");
@@ -408,12 +400,6 @@ public class Server implements Runnable{
         }else{
             printWriter.println("stop");
         }
-        ManageUser connect=user.get(email);
-        Iterator<String> iterconnect=connect.getNameMachines().iterator();
-        while(iterconnect.hasNext()){
-            out=out+iterconnect.next()+"\n";
-        }
-        log.info(out);
         printWriter.println("deviceavabile");
         printWriter.println(out);
         printWriter.println("stop");
