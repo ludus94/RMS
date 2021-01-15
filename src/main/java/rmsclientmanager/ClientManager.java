@@ -213,6 +213,7 @@ public class ClientManager implements Runnable{
                     devicecpuload.put(devicesList.get(i), new DataSet("chartline"));
                     devicecpuvoltage.put(devicesList.get(i), new DataSet("chartline"));
                     devicepower.put(devicesList.get(i), new DataSet("chartline"));
+                    this.outjtext.put(devicesList.get(i), new StringObject());
                 }
             }
         }else if(devicesList.size()<olddevicelist.size()){
@@ -223,6 +224,7 @@ public class ClientManager implements Runnable{
                     devicecpuload.remove(olddevicelist.get(i));
                     devicecpuvoltage.remove(olddevicelist.get(i));
                     devicepower.remove(olddevicelist.get(i));
+                    outjtext.remove(olddevicelist.get(i));
                 }
             }
         }
@@ -291,6 +293,7 @@ public class ClientManager implements Runnable{
                 }
                 this.olddevicelist=this.devicesList;
                 this.devicesList = out;
+                JTextUpgrade.setDevices(this.devicesList);
             }
         }catch(IOException ex){
         }
@@ -316,7 +319,10 @@ public class ClientManager implements Runnable{
         String cpuVoltage= bufferedReader.readLine();
         String Power= bufferedReader.readLine();
         String time=bufferedReader.readLine();
-
+        if(!devicesList.contains(namedevice)){
+            this.retrieveDevices();
+            mapRefresh();
+        }
         devicetemperature.get(namedevice).setDataSetValue(Double.parseDouble(CpuTemperature),"°C",time);
         devicecpuload.get(namedevice).setDataSetValue(Double.parseDouble(cpuTotalLoad),"%",time);
         devicecpuvoltage.get(namedevice).setDataSetValue(Double.parseDouble(cpuVoltage),"mV",time);
@@ -415,7 +421,7 @@ public class ClientManager implements Runnable{
                     break;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+
             }
         }
     }
