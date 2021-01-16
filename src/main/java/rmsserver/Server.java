@@ -169,7 +169,9 @@ public class Server implements Runnable{
                 user.put(email, manageUser);
             }else{
                 ManageUser manageUser=user.get(email);
-                manageUser.addClient(namemachine, this.socket);
+                ManageUser manageUserNew=manageUser;
+                manageUserNew.addClientManager(this.socket);
+                user.replace(email,manageUser,manageUserNew);
             }
             dbrms.loginmachine(namemachine,email);
             log.info("Client "+namemachine+ " user "+ email+" is added");
@@ -200,7 +202,9 @@ public class Server implements Runnable{
                 user.put(email, manageUser);
             }else{
                 ManageUser manageUser=user.get(email);
-                manageUser.addClientManager(this.socket);
+                ManageUser manageUserNew=manageUser;
+                manageUserNew.addClientManager(this.socket);
+                user.replace(email,manageUser,manageUserNew);
             }
             log.info("Client Manager user "+ email+" is added");
             printWriter.println(value);
@@ -388,6 +392,10 @@ public class Server implements Runnable{
         String email=bufferedReader.readLine();
         String out= dbrms.retriveDevice(email);
         log.info(out);
+        log.info("User Connect");
+        Iterator<String> connect=user.get(email).getNameMachines().iterator();
+        while(connect.hasNext())
+            log.info(connect.next());
         Map<String,String> monitoringstatic=user.get(email).getMonitoringStatic();
         if(monitoringstatic.size()>0) {
             printWriter.println("monitoringstatic");
