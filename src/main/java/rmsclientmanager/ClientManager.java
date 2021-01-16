@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
@@ -213,6 +214,7 @@ public class ClientManager implements Runnable{
                     devicecpuload.put(devicesList.get(i), new DataSet("chartline"));
                     devicecpuvoltage.put(devicesList.get(i), new DataSet("chartline"));
                     devicepower.put(devicesList.get(i), new DataSet("chartline"));
+                    outjtext.put(devicesList.get(i),new StringObject());
                 }
             }
         }else if(devicesList.size()<olddevicelist.size()){
@@ -223,6 +225,7 @@ public class ClientManager implements Runnable{
                     devicecpuload.remove(olddevicelist.get(i));
                     devicecpuvoltage.remove(olddevicelist.get(i));
                     devicepower.remove(olddevicelist.get(i));
+                    outjtext.remove(devicesList.get(i));
                 }
             }
         }
@@ -406,13 +409,25 @@ public class ClientManager implements Runnable{
             try {
                 BufferedReader input = new BufferedReader(new InputStreamReader(sock.getInputStream(),"UTF-16"));
                 String action=input.readLine();
+                if(action.equals("deviceupdate")){
+                    System.out.println("Retrive");
+                    retrieveDevices();
+                    mapRefresh();
+                    JTextUpgrade.setJdeviceListText(devicesList);
+                }
                 if (action.equals("monitoringvalue")) {
                     monitoringvalue(input);
                 }
                 if (action.equals("monitoringvaluestatic")) {
                     monitoringvalue(input);
-                }if (action.equals("shutdown")|| action.equals("reboot")){
+                }
+                if (action.equals("shutdown")|| action.equals("reboot")){
                     break;
+                }
+                Iterator<String> device=devicesList.iterator();
+                System.out.println("---Device List---");
+                while(device.hasNext()){
+                    System.out.println(device.next());
                 }
             } catch (IOException e) {
                 e.printStackTrace();

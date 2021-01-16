@@ -1,5 +1,6 @@
 package rmsclientmanagerGUI;
 
+
 import rmsclientmanager.*;
 
 import javax.swing.*;
@@ -7,6 +8,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -17,6 +19,7 @@ public class JTextUpgrade implements Runnable{
     private Map<String,StringObject> outputjtext;
     private JTextArea jTextArea;
     private JScrollPane jScrollPane;
+    private JList<String> jdeviceList;
     private String deviceSelected;
 
     /***
@@ -26,11 +29,12 @@ public class JTextUpgrade implements Runnable{
      * @param deviceSelected
      * @param jScrollPane
      */
-    public JTextUpgrade(Map<String, StringObject> outputjtext, JTextArea jTextArea, String deviceSelected,JScrollPane jScrollPane) {
+    public JTextUpgrade(Map<String, StringObject> outputjtext, JTextArea jTextArea, String deviceSelected,JScrollPane jScrollPane,JList<String> jdeviceList) {
         this.outputjtext = outputjtext;
         this.jTextArea = jTextArea;
         this.deviceSelected = deviceSelected;
         this.jScrollPane=jScrollPane;
+        this.jdeviceList=jdeviceList;
     }
 
     /***
@@ -49,6 +53,15 @@ public class JTextUpgrade implements Runnable{
         this.outputjtext = outputjtext;
     }
 
+    public void setJdeviceListText(ArrayList<String> devices){
+        DefaultListModel model=new DefaultListModel();
+        int i=0;
+        for(String device:devices){
+            model.add(i,device);
+            i++;
+        }
+        jdeviceList.setModel(model);
+    }
     /***
      * Thread to upgrade information
      */

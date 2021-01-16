@@ -80,7 +80,7 @@ public class ManageUser {
         return clientUserMachines.get(name);
     }
 
-    public Map<String, String> getMonitoringStatic() {
+    public synchronized Map<String, String> getMonitoringStatic() {
         return monitoringStatic;
     }
 
@@ -120,7 +120,7 @@ public class ManageUser {
      * Return an array list that contains the number of port associated at client manager
      * @return
      */
-    public ArrayList<Socket> getSocketManagers(){
+    public synchronized ArrayList<Socket> getSocketManagers(){
         return clientManagers;
     }
 

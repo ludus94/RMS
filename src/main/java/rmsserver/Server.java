@@ -169,14 +169,21 @@ public class Server implements Runnable{
                 user.put(email, manageUser);
             }else{
                 ManageUser manageUser=user.get(email);
-                ManageUser manageUserNew=manageUser;
-                manageUserNew.addClientManager(this.socket);
-                user.replace(email,manageUser,manageUserNew);
+                manageUser.addClient(namemachine,this.socket);
+                user.remove(email);
+                user.put(email,manageUser);
             }
             dbrms.loginmachine(namemachine,email);
             log.info("Client "+namemachine+ " user "+ email+" is added");
             printWriter.println(value);
             printWriter.flush();
+            Iterator<Socket> managerconnect=user.get(email).getSocketManagers().iterator();
+            while(managerconnect.hasNext()){
+                Socket manager=managerconnect.next();
+                PrintWriter printWriterm=new PrintWriter(new OutputStreamWriter(manager.getOutputStream(),"UTF-16"));
+                printWriterm.println("deviceupdate");
+                printWriterm.flush();
+            }
         }else{
             log.info("User not registerd");
             printWriter.println(1);
@@ -202,9 +209,9 @@ public class Server implements Runnable{
                 user.put(email, manageUser);
             }else{
                 ManageUser manageUser=user.get(email);
-                ManageUser manageUserNew=manageUser;
-                manageUserNew.addClientManager(this.socket);
-                user.replace(email,manageUser,manageUserNew);
+                manageUser.addClientManager(this.socket);
+                user.remove(email);
+                user.put(email, manageUser);
             }
             log.info("Client Manager user "+ email+" is added");
             printWriter.println(value);
@@ -353,6 +360,9 @@ public class Server implements Runnable{
             printWriter.println(command);
             printWriter.flush();
             log.info("Send "+command+"message at machine "+namemachine+" at user "+email);
+            manager.removeClientUser(namemachine);
+            printWriter.println("deviceupdate");
+            printWriter.flush();
         }else{
             String pid=bufferedReader.readLine();
             printWriterClient.println(command);
@@ -390,12 +400,9 @@ public class Server implements Runnable{
      */
     public void retriveDevice(BufferedReader bufferedReader,PrintWriter printWriter) throws IOException,SQLException {
         String email=bufferedReader.readLine();
-        String out= dbrms.retriveDevice(email);
-        log.info(out);
+        String out=new String(); //dbrms.retriveDevice(email);
         log.info("User Connect");
         Iterator<String> connect=user.get(email).getNameMachines().iterator();
-        while(connect.hasNext())
-            log.info(connect.next());
         Map<String,String> monitoringstatic=user.get(email).getMonitoringStatic();
         if(monitoringstatic.size()>0) {
             printWriter.println("monitoringstatic");
@@ -409,7 +416,12 @@ public class Server implements Runnable{
             printWriter.println("stop");
         }
         printWriter.println("deviceavabile");
-        printWriter.println(out);
+        while(connect.hasNext()) {
+            String conn=connect.next();
+            printWriter.println(conn);
+            out = out + conn+ "\n";
+        }
+        log.info(out);
         printWriter.println("stop");
         printWriter.flush();
     }

@@ -61,7 +61,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         model=new DefaultListModel();
         jouttext=new TreeMap<>();
         monitoricstatic=clientManager.getMonitoringValue();
-        this.JTextUpgrade =new JTextUpgrade(jouttext,jTextArea1,deviceSelected,jScrollPane1);
+        this.JTextUpgrade =new JTextUpgrade(jouttext,jTextArea1,deviceSelected,jScrollPane1,jDeviceList);
         clientManager.setThreadJtextUpgrade(this.JTextUpgrade);
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/java/rmsclientmanagerGUI/logoapp.jpeg").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
         Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientmanagerGUI/logoapp.jpeg");    
@@ -82,11 +82,12 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         }
         jEmailUser.setText(clientManager.getUsername());
 
-
         clientManager.mapinit();
         this.refreshDeviceList();
+
         this.jDeviceList.setModel(model);
         this.jouttext=clientManager.getOutjtext();
+        this.devicelist=clientManager.getDevicesList();
         this.devicecpuload=clientManager.getDevicecpuload();
         this.devicetemperature=clientManager.getDevicetemperature();
         this.devicecpuvoltage=clientManager.getDevicecpuvoltage();
@@ -177,11 +178,10 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         if(jDeviceList.getSelectedIndex()>=0){
             JOptionPane.showMessageDialog(f,"Update device");
             int index=jDeviceList.getSelectedIndex();
-            model.removeElementAt(jDeviceList.getSelectedIndex());
+            model.removeElementAt(index);
             jDeviceList.setModel(model);
             jDeviceMenu.validate();
         }
-        this.devicelist=listdevice;
         clientManager.mapRefresh();
         this.devicecpuload=clientManager.getDevicecpuload();
         this.devicecpuvoltage=clientManager.getDevicecpuvoltage();
@@ -511,7 +511,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         if(index<0) {
             index=0;
         }
-            deviceSelected = devicelist.get(index);
+            deviceSelected = clientManager.getDevicesList().get(index);
             jTemperaturePanel.removeAll();
             jPowerPanel.removeAll();
             jCPULoadPanel.removeAll();
