@@ -361,6 +361,8 @@ public class Server implements Runnable{
             printWriter.flush();
             log.info("Send "+command+"message at machine "+namemachine+" at user "+email);
             manager.removeClientUser(namemachine);
+            user.remove(email);
+            user.put(email, manager);
             printWriter.println("deviceupdate");
             printWriter.flush();
         }else{
