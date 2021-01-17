@@ -132,6 +132,34 @@ public class ClientManager implements Runnable{
         return devicepower;
     }
 
+    public void setDevicesList(ArrayList<String> devicesList) {
+        this.devicesList = devicesList;
+    }
+
+    public void setDevicetemperature(Map<String, DataSet> devicetemperature) {
+        this.devicetemperature = devicetemperature;
+    }
+
+    public void setDevicecpuload(Map<String, DataSet> devicecpuload) {
+        this.devicecpuload = devicecpuload;
+    }
+
+    public void setDevicecpuvoltage(Map<String, DataSet> devicecpuvoltage) {
+        this.devicecpuvoltage = devicecpuvoltage;
+    }
+
+    public void setDevicepower(Map<String, DataSet> devicepower) {
+        this.devicepower = devicepower;
+    }
+
+    public void setOutjtext(Map<String, StringObject> outjtext) {
+        this.outjtext = outjtext;
+    }
+
+    public void setMonitoringvalue(Map<String, String> monitoringvalue) {
+        this.monitoringvalue = monitoringvalue;
+    }
+
     /***
      * Set method of thread updated for JTextArea
      * @param JTextUpgrade
@@ -219,8 +247,7 @@ public class ClientManager implements Runnable{
             }
         }else if(devicesList.size()<olddevicelist.size()){
             for(int i=0;i<devicesList.size();i++){
-                String name=devicesList.get(i);
-                if(!olddevicelist.get(i).contains(name)){
+                if(!devicetemperature.containsKey(devicesList.get(i))){
                     devicetemperature.remove(olddevicelist.get(i));
                     devicecpuload.remove(olddevicelist.get(i));
                     devicecpuvoltage.remove(olddevicelist.get(i));
@@ -292,8 +319,14 @@ public class ClientManager implements Runnable{
                 while (!(input = br.readLine()).contains("stop")) {
                     out.add(input);
                 }
-                this.olddevicelist=this.devicesList;
-                this.devicesList = out;
+                if(out.contains("empty")){
+                    this.olddevicelist=this.devicesList;
+                    this.devicesList = new ArrayList<>();
+                }
+                else {
+                    this.olddevicelist = this.devicesList;
+                    this.devicesList = out;
+                }
             }
         }catch(IOException ex){
         }
@@ -412,6 +445,11 @@ public class ClientManager implements Runnable{
                 if(action.equals("deviceupdate")){
                     System.out.println("Retrive");
                     retrieveDevices();
+                    Iterator<String> device=devicesList.iterator();
+                    System.out.println("---Device List---");
+                    while(device.hasNext()){
+                        System.out.println(device.next());
+                    }
                     mapRefresh();
                     JTextUpgrade.setJdeviceListText(devicesList);
                 }
@@ -421,14 +459,10 @@ public class ClientManager implements Runnable{
                 if (action.equals("monitoringvaluestatic")) {
                     monitoringvalue(input);
                 }
-                if (action.equals("shutdown")|| action.equals("reboot")){
-                    break;
-                }
-                Iterator<String> device=devicesList.iterator();
-                System.out.println("---Device List---");
-                while(device.hasNext()){
-                    System.out.println(device.next());
-                }
+                //if (action.equals("shutdown")|| action.equals("reboot")){
+                   // break;
+                //}
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

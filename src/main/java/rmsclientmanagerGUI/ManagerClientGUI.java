@@ -178,15 +178,42 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         if(jDeviceList.getSelectedIndex()>=0){
             JOptionPane.showMessageDialog(f,"Update device");
             int index=jDeviceList.getSelectedIndex();
+            String deviceremoved=(String)model.get(index);
+            System.out.println("Device Removed "+deviceremoved);
             model.removeElementAt(index);
             jDeviceList.setModel(model);
             jDeviceMenu.validate();
+
+            this.devicecpuload=clientManager.getDevicecpuload();
+            this.devicecpuvoltage=clientManager.getDevicecpuvoltage();
+            this.devicetemperature=clientManager.getDevicetemperature();
+            this.devicepower=clientManager.getDevicepower();
+            this.jouttext=clientManager.getOutjtext();
+            this.devicelist= clientManager.getDevicesList();
+
+            this.devicecpuload.remove(deviceremoved);
+            this.devicecpuvoltage.remove(deviceremoved);
+            this.devicetemperature.remove(deviceremoved);
+            this.devicepower.remove(deviceremoved);
+            this.jouttext.remove(deviceremoved);
+            this.devicelist.remove(deviceremoved);
+
+            clientManager.setDevicecpuload(this.devicecpuload);
+            clientManager.setDevicecpuvoltage(this.devicecpuvoltage);
+            clientManager.setDevicetemperature(this.devicetemperature);
+            clientManager.setDevicepower(this.devicepower);
+            clientManager.setOutjtext(this.jouttext);
+            clientManager.setDevicesList(this.devicelist);
+
         }
         clientManager.mapRefresh();
+
         this.devicecpuload=clientManager.getDevicecpuload();
         this.devicecpuvoltage=clientManager.getDevicecpuvoltage();
         this.devicetemperature=clientManager.getDevicetemperature();
         this.devicepower=clientManager.getDevicepower();
+        this.jouttext=clientManager.getOutjtext();
+        this.devicelist= clientManager.getDevicesList();
     }
 
     /**

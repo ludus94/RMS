@@ -1,6 +1,7 @@
 package rmsserver;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -365,6 +366,7 @@ public class Server implements Runnable{
             user.put(email, manager);
             printWriter.println("deviceupdate");
             printWriter.flush();
+            System.out.print("Device Update");
         }else{
             String pid=bufferedReader.readLine();
             printWriterClient.println(command);
@@ -404,7 +406,8 @@ public class Server implements Runnable{
         String email=bufferedReader.readLine();
         String out=new String(); //dbrms.retriveDevice(email);
         log.info("User Connect");
-        Iterator<String> connect=user.get(email).getNameMachines().iterator();
+        ArrayList<String> userconnect=user.get(email).getNameMachines();
+        Iterator<String> connect=userconnect.iterator();
         Map<String,String> monitoringstatic=user.get(email).getMonitoringStatic();
         if(monitoringstatic.size()>0) {
             printWriter.println("monitoringstatic");
@@ -418,10 +421,14 @@ public class Server implements Runnable{
             printWriter.println("stop");
         }
         printWriter.println("deviceavabile");
-        while(connect.hasNext()) {
-            String conn=connect.next();
-            printWriter.println(conn);
-            out = out + conn+ "\n";
+        if(!userconnect.isEmpty()) {
+            while (connect.hasNext()) {
+                String conn = connect.next();
+                printWriter.println(conn);
+                out = out + conn + "\n";
+            }
+        }else{
+            printWriter.println("empty");
         }
         log.info(out);
         printWriter.println("stop");

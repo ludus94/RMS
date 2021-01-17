@@ -23,7 +23,7 @@ public class LoginClientGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
         this.pack();
-        Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/rmsclientGUI/logoapp.jpeg");
+        Image icon = Toolkit.getDefaultToolkit().getImage("src/main/resources/logoapp.jpeg");
         this.setIconImage(icon);
         passwordField.setToolTipText("Password must contain at least 8 characters");
 
@@ -92,7 +92,7 @@ public class LoginClientGUI extends JFrame {
 
     private void createUIComponents(){
         //modifica con il buffered image
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/logoapp.jpeg").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/resources/logoapp.jpeg").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
         image = new JLabel(imageIcon);
     }
 }
