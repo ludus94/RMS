@@ -341,6 +341,7 @@ public class ClientManager implements Runnable{
         String namedevice=bufferedReader.readLine();
         String ProcessActive="";
         String out="";
+        //se il disp non è presente crealo
         while (!(ProcessActive=ProcessActive+bufferedReader.readLine()+"\n").contains("stop"));
         int index=ProcessActive.indexOf("stop");
         ProcessActive=ProcessActive.replace("stop\n", "");

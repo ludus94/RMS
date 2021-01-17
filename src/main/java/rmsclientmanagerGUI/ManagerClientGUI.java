@@ -177,19 +177,19 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         JFrame f=new JFrame();
         if(jDeviceList.getSelectedIndex()>=0){
             JOptionPane.showMessageDialog(f,"Update device");
+
             int index=jDeviceList.getSelectedIndex();
-            String deviceremoved=(String)model.get(index);
+            String deviceremoved=jDeviceList.getSelectedValue();
             System.out.println("Device Removed "+deviceremoved);
-            model.removeElementAt(index);
+            model.removeElement(deviceremoved);
             jDeviceList.setModel(model);
             jDeviceMenu.validate();
-
             this.devicecpuload=clientManager.getDevicecpuload();
             this.devicecpuvoltage=clientManager.getDevicecpuvoltage();
             this.devicetemperature=clientManager.getDevicetemperature();
             this.devicepower=clientManager.getDevicepower();
             this.jouttext=clientManager.getOutjtext();
-            this.devicelist= clientManager.getDevicesList();
+
 
             this.devicecpuload.remove(deviceremoved);
             this.devicecpuvoltage.remove(deviceremoved);
@@ -206,7 +206,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
             clientManager.setDevicesList(this.devicelist);
 
         }
-        clientManager.mapRefresh();
+        //clientManager.mapRefresh();
 
         this.devicecpuload=clientManager.getDevicecpuload();
         this.devicecpuvoltage=clientManager.getDevicecpuvoltage();
@@ -214,6 +214,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         this.devicepower=clientManager.getDevicepower();
         this.jouttext=clientManager.getOutjtext();
         this.devicelist= clientManager.getDevicesList();
+
     }
 
     /**
@@ -534,6 +535,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
 
     private void jDeviceListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jDeviceListValueChanged
         jDashBoardPannel.setVisible(true);
+
         int index=jDeviceList.getSelectedIndex();
         if(index<0) {
             index=0;
