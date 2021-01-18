@@ -1,5 +1,8 @@
 package rmsserver;
 
+/***
+ * Parametric queries for retrieving data in a database
+ */
 public class Query {
     public static String insertUser(){
         return "insert into users " +

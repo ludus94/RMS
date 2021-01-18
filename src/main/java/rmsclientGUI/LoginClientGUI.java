@@ -3,11 +3,14 @@ package rmsclientGUI;
 import rmsclient.Client;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.Locale;
 
 public class LoginClientGUI extends JFrame {
     private JPanel mainPanel;
@@ -18,7 +21,8 @@ public class LoginClientGUI extends JFrame {
     private JLabel image;
     private JButton exitButton;
     private Client client;
-    public LoginClientGUI(String title){
+
+    public LoginClientGUI(String title) {
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
@@ -33,10 +37,11 @@ public class LoginClientGUI extends JFrame {
                 super.focusGained(e);
                 emailTextField.setText("");
             }
+
             @Override
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
-                if(emailTextField.getText().equals(""))
+                if (emailTextField.getText().equals(""))
                     emailTextField.setText("insert your email");
             }
         });
@@ -45,21 +50,20 @@ public class LoginClientGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String email = emailTextField.getText();
                 String password = String.valueOf(passwordField.getPassword());
-                if((email.equals("") || email.equals("insert your email")) && password.equals(""))
-                    JOptionPane.showMessageDialog(null,"Incorrect login\nthere aren't email and password\nplease retype");
-                else if(email.equals("") || email.equals("insert your email"))
-                    JOptionPane.showMessageDialog(null,"Incorrect login\nthere isn't email\nplease retype");
-                else if(password.equals(""))
-                    JOptionPane.showMessageDialog(null,"Incorrect login\nthere isn't password\nplease retype");
-                else if(password.length()>8){
-                    JOptionPane.showMessageDialog(null,"Password must be length 8 character");
-                }
-                else{
-                    client=new Client();
-                    int value=client.login(email,password);
-                    if(value==0){
+                if ((email.equals("") || email.equals("insert your email")) && password.equals(""))
+                    JOptionPane.showMessageDialog(null, "Incorrect login\nthere aren't email and password\nplease retype");
+                else if (email.equals("") || email.equals("insert your email"))
+                    JOptionPane.showMessageDialog(null, "Incorrect login\nthere isn't email\nplease retype");
+                else if (password.equals(""))
+                    JOptionPane.showMessageDialog(null, "Incorrect login\nthere isn't password\nplease retype");
+                else if (password.length() > 8) {
+                    JOptionPane.showMessageDialog(null, "Password must be length 8 character");
+                } else {
+                    client = new Client();
+                    int value = client.login(email, password);
+                    if (value == 0) {
                         dispose();
-                    }else if(value==1) {
+                    } else if (value == 1) {
                         dispose();
                     }
                 }
@@ -70,7 +74,7 @@ public class LoginClientGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 JFrame frame2 = new SignInGUI();
-                frame2.setSize(500,500);
+                frame2.setSize(500, 500);
                 frame2.setVisible(true);
                 frame2.setResizable(true);
             }
@@ -83,16 +87,17 @@ public class LoginClientGUI extends JFrame {
         });
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         JFrame frame = new LoginClientGUI("Login RSM Client");
         frame.setSize(500, 500);
         frame.setVisible(true);
         frame.setResizable(true);
     }
 
-    private void createUIComponents(){
+    private void createUIComponents() {
         //modifica con il buffered image
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/resources/logoapp.jpeg").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
         image = new JLabel(imageIcon);
     }
+
 }
