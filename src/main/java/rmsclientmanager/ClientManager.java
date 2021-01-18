@@ -132,29 +132,58 @@ public class ClientManager implements Runnable{
         return devicepower;
     }
 
+    /***
+     * Set method DeviceList
+     * @param devicesList
+     */
     public void setDevicesList(ArrayList<String> devicesList) {
         this.devicesList = devicesList;
     }
 
+    /***
+     * Set method Device temperature
+     * @param devicetemperature
+     */
     public void setDevicetemperature(Map<String, DataSet> devicetemperature) {
         this.devicetemperature = devicetemperature;
     }
 
+    /***
+     * Set method Device Cpu Load
+     * @param devicecpuload
+     */
     public void setDevicecpuload(Map<String, DataSet> devicecpuload) {
         this.devicecpuload = devicecpuload;
     }
 
+    /***
+     * Set method Device Cpu voltage
+     * @param devicecpuvoltage
+     */
     public void setDevicecpuvoltage(Map<String, DataSet> devicecpuvoltage) {
         this.devicecpuvoltage = devicecpuvoltage;
     }
 
+    /***
+     * Set method Device power
+     * @param devicepower
+     */
     public void setDevicepower(Map<String, DataSet> devicepower) {
         this.devicepower = devicepower;
     }
 
+    /***
+     * Set method to string append process
+     * @param outjtext
+     */
     public void setOutjtext(Map<String, StringObject> outjtext) {
         this.outjtext = outjtext;
     }
+
+    /***
+     * Set method monitorng value
+     * @param monitoringvalue
+     */
 
     public void setMonitoringvalue(Map<String, String> monitoringvalue) {
         this.monitoringvalue = monitoringvalue;
