@@ -184,6 +184,7 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
             model.removeElement(deviceremoved);
             jDeviceList.setModel(model);
             jDeviceMenu.validate();
+            jTextArea1.setText("");
             this.devicecpuload=clientManager.getDevicecpuload();
             this.devicecpuvoltage=clientManager.getDevicecpuvoltage();
             this.devicetemperature=clientManager.getDevicetemperature();
@@ -204,7 +205,10 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
             clientManager.setDevicepower(this.devicepower);
             clientManager.setOutjtext(this.jouttext);
             clientManager.setDevicesList(this.devicelist);
-
+            JTextUpgrade.setOutputjtext(this.jouttext);
+            jTextArea1.setText(jouttext.get(devicelist.get(0)).getOut());
+            deviceSelected=this.devicelist.get(0);
+            jDeviceList.setSelectedIndex(0);
         }
         //clientManager.mapRefresh();
 
@@ -537,10 +541,12 @@ public class ManagerClientGUI extends javax.swing.JFrame  {
         jDashBoardPannel.setVisible(true);
 
         int index=jDeviceList.getSelectedIndex();
+        System.out.println("index: "+index);
         if(index<0) {
             index=0;
         }
-            deviceSelected = clientManager.getDevicesList().get(index);
+            devicelist= clientManager.getDevicesList();
+            deviceSelected = devicelist.get(index);
             jTemperaturePanel.removeAll();
             jPowerPanel.removeAll();
             jCPULoadPanel.removeAll();

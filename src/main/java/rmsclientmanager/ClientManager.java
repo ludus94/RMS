@@ -341,7 +341,18 @@ public class ClientManager implements Runnable{
         String namedevice=bufferedReader.readLine();
         String ProcessActive="";
         String out="";
-        //se il disp non è presente crealo
+        if(!devicesList.contains(namedevice)){
+            System.out.print("Adder "+namedevice);
+            devicetemperature.put(namedevice, new DataSet("chartline"));
+            devicecpuload.put(namedevice, new DataSet("chartline"));
+            devicecpuvoltage.put(namedevice, new DataSet("chartline"));
+            devicepower.put(namedevice, new DataSet("chartline"));
+            outjtext.put(namedevice,new StringObject());
+            devicesList.add(namedevice);
+            JTextUpgrade.setJdeviceListText(devicesList);
+        }else{
+            System.out.println("Else name:"+namedevice);
+        }
         while (!(ProcessActive=ProcessActive+bufferedReader.readLine()+"\n").contains("stop"));
         int index=ProcessActive.indexOf("stop");
         ProcessActive=ProcessActive.replace("stop\n", "");
