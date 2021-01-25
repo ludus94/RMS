@@ -1,5 +1,8 @@
 package rmsclientmanager;
 
+/***
+ * Class using for append string process printed in jtext
+ */
 public class StringObject {
     private String out;
     private int count;

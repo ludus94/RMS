@@ -21,7 +21,7 @@ public class ClientManager implements Runnable{
 
     private Socket sock;
     private int port=33333;
-    private static final String address="151.73.96.214";
+    private static final String address="151.70.201.255";
     private ArrayList<String> devicesList;
     private ArrayList<String> olddevicelist;
     private String username;
